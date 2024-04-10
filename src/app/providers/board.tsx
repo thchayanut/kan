@@ -23,7 +23,7 @@ interface BoardData {
   lists: List[];
   workspace: {
     members: Members[];
-  };
+  } | null;
 }
 
 interface Label {
@@ -44,7 +44,7 @@ interface Members {
   publicId: string;
   user: {
     name: string | null;
-  };
+  } | null;
 }
 
 interface Card {

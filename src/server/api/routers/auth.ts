@@ -17,9 +17,6 @@ export const authRouter = createTRPCRouter({
         },
       })
 
-      console.log({ data })
-      console.log({ error })
-
       return data;
     })
 });

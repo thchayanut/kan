@@ -40,20 +40,12 @@ interface Card {
 }
 
 interface Label {
-  label: LabelData;
-}
-
-interface LabelData {
   publicId: string;
   name: string;
   colourCode: string;
 }
 
 interface Member {
-  member: MemberData;
-}
-
-interface MemberData {
   publicId: string;
   user: User;
 }
@@ -75,6 +67,8 @@ export default function BoardPage() {
   const { openModal, modalContentType } = useModal();
   const [selectedPublicListId, setSelectedPublicListId] =
     useState<PublicListId>("");
+
+  console.log({ boardData });
 
   const boardId = params?.boardId?.length ? params.boardId[0] : null;
 
@@ -277,7 +271,7 @@ export default function BoardPage() {
                                   {(card.labels?.length ?? 0) ||
                                   (card.members?.length ?? 0) ? (
                                     <div className="mt-2 flex justify-end space-x-1">
-                                      {card.labels?.map(({ label }) => (
+                                      {card.labels?.map((label) => (
                                         <span
                                           key={label.publicId}
                                           className="inline-flex w-fit items-center gap-x-1.5 rounded-full px-2 py-1 text-[10px] font-medium text-neutral-600 ring-1 ring-inset ring-light-600 dark:text-dark-1000 dark:ring-dark-800"
@@ -294,7 +288,7 @@ export default function BoardPage() {
                                         </span>
                                       ))}
                                       <div className="isolate flex -space-x-1 overflow-hidden">
-                                        {card.members?.map(({ member }) => (
+                                        {card.members?.map((member) => (
                                           <span
                                             key={member.publicId}
                                             className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-light-900 ring-2 ring-light-50 dark:bg-gray-500 dark:ring-dark-500"

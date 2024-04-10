@@ -17,121 +17,77 @@ export const boardRouter = createTRPCRouter({
 
       // @todo: validate user has access to workspace
 
-      if (!userId) return;
+      // if (!userId) return
 
-      const workspace = await ctx.db.query.workspaces.findFirst({
-        where: eq(workspaces.publicId, input.workspacePublicId),
-      })
+      // const workspace = await ctx.db.query.workspaces.findFirst({
+      //   where: eq(workspaces.publicId, input.workspacePublicId),
+      // })
 
-      if (!workspace) return;
+      // if (!workspace) return;
 
-      return ctx.db.query.boards.findMany({
-        where: and(eq(boards.workspaceId, workspace.id), isNull(boards.deletedAt)),
-        columns: {
-          publicId: true,
-          name: true,
-        },
-      });
+      const { data, error } = await ctx.supabase.from('board').select(`
+        publicId,
+        name
+      `).is('deletedAt', null);
+
+      return data;
     }),
   byId: publicProcedure
     .input(z.object({ id: z.string().min(12) }))
-    .query(({ ctx, input }) => 
-      ctx.db.query.boards.findFirst({
-        where: and(eq(boards.publicId, input.id), isNull(boards.deletedAt)),
-        columns: {
-          publicId: true,
-          name: true,
-        },
-        with: {
-          workspace: {
-            columns: {
-              publicId: true,
-            },
-            with: {
-              members: {
-                columns: {
-                  publicId: true,
-                },
-                with: {
-                  user: {
-                    columns: {
-                      name: true
-                    }
-                  }
-                }
-              }
-            }
-          },
-          labels: {
-            columns: {
-              publicId: true,
-              colourCode: true,
-              name: true,
-            }
-          },
-          lists: {
-            orderBy: [asc(lists.index)],
-            where: isNull(cards.deletedAt),
-            columns: {
-              publicId: true,
-              name: true,
-              boardId: true,
-              index: true,
-            },
-            with: {
-              cards: {
-                where: isNull(cards.deletedAt),
-                orderBy: [asc(cards.index)],
-                columns: {
-                  publicId: true,
-                  title: true,
-                  description: true,
-                  listId: true,
-                  index: true,
-                },
-                with: {
-                  labels: {
-                    columns: {
-                      labelId: false,
-                      cardId: false,
-                    },
-                    with: {
-                      label: {
-                        columns: {
-                          publicId: true,
-                          name: true,
-                          colourCode: true,
-                        }
-                      }
-                    }
-                  },
-                  members: {
-                    columns: {
-                      workspaceMemberId: false,
-                      cardId: false,
-                    },
-                    with: {
-                      member: {
-                        columns: {
-                          publicId: true,
-                        },
-                        with: {
-                          user: {
-                            columns: {
-                              name: true
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            },
-          },
-        },
-      })
-    ),
+    .query(async ({ ctx, input }) => {
+      const { data, error } = await ctx.supabase.from('board').select(`
+        publicId,
+        name,
+        workspace (
+          publicId,
+          members:workspace_members (
+            publicId,
+            user (
+              name
+            )
+          )
+        ),
+        labels:label (
+          publicId,
+          name,
+          colourCode
+        ),
+        lists:list (
+          publicId,
+          name,
+          boardId,
+          index,
+          cards:card (
+            publicId,
+            title,
+            description,
+            listId,
+            index,
+            labels:label (
+              publicId,
+              name,
+              colourCode
+            ),
+            members:workspace_members (
+              publicId,
+              user (
+                name
+              )
+            )
+          )
+        )
+      `)
+      .eq('publicId', input.id)
+      .is('deletedAt', null)
+      .is('lists.deletedAt', null)
+      .is('lists.cards.deletedAt', null)
+      .order('index', { foreignTable: 'list', ascending: true })
+      .order('index', { foreignTable: 'list.card', ascending: true })
+      .limit(1)
+      .single()
+
+      return data;
+    }),
   create: publicProcedure
     .input(
       z.object({
