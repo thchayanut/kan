@@ -1,3 +1,4 @@
+import { authRouter } from "~/server/api/routers/auth";
 import { boardRouter } from "~/server/api/routers/board";
 import { cardRouter } from "~/server/api/routers/card";
 import { labelRouter } from "~/server/api/routers/label";
@@ -12,6 +13,7 @@ import { createTRPCRouter } from "~/server/api/trpc";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
+  auth: authRouter,
   board: boardRouter,
   card: cardRouter,
   label: labelRouter,

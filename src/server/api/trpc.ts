@@ -13,7 +13,7 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 
 import { auth } from "~/server/auth";
-import { db } from "~/server/db";
+import { db, supabase } from "~/server/db";
 
 /**
  * 1. CONTEXT
@@ -44,6 +44,7 @@ export const createInnerTRPCContext = async (opts: CreateContextOptions) => {
     session,
     headers: opts.headers,
     db,
+    supabase
   };
 };
 

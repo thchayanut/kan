@@ -1,22 +1,23 @@
 "use client";
 
 import { Formik, Form, Field } from "formik";
-import { signIn } from "next-auth/react";
+import { api } from "~/trpc/react";
 
 interface FormValues {
   email: string;
 }
 
 export function Login() {
+  const login = api.auth.login.useMutation();
+
   return (
     <Formik
       initialValues={{
         email: "",
       }}
-      onSubmit={async (values: FormValues) => {
-        await signIn("email", {
+      onSubmit={(values: FormValues) => {
+        login.mutate({
           email: values.email,
-          callbackUrl: "/boards",
         });
       }}
     >
