@@ -1,7 +1,4 @@
 import { z } from "zod";
-import { and, eq, asc, isNull, inArray } from "drizzle-orm";
-
-import { boards, cards, lists, workspaces } from "~/server/db/schema";
 import { generateUID } from "~/utils/generateUID";
 
 import {
@@ -13,78 +10,81 @@ export const boardRouter = createTRPCRouter({
   all: publicProcedure
     .input(z.object({ workspacePublicId: z.string().min(12) }))
     .query(async ({ ctx, input }) => {
-      const userId = ctx.session?.user.id;
+      const workspace = await ctx.supabase
+        .from('workspace')
+        .select(`id`)
+        .eq('publicId', input.workspacePublicId)
+        .limit(1)
+        .single();
 
-      // @todo: validate user has access to workspace
+      if (!workspace.data) return;
 
-      // if (!userId) return
-
-      // const workspace = await ctx.db.query.workspaces.findFirst({
-      //   where: eq(workspaces.publicId, input.workspacePublicId),
-      // })
-
-      // if (!workspace) return;
-
-      const { data, error } = await ctx.supabase.from('board').select(`
-        publicId,
-        name
-      `).is('deletedAt', null);
+      const { data } = await ctx.supabase
+        .from('board')
+        .select(`
+          publicId,
+          name
+        `)
+        .is('deletedAt', null)
+        .eq('workspaceId', workspace.data.id);
 
       return data;
     }),
   byId: publicProcedure
     .input(z.object({ id: z.string().min(12) }))
     .query(async ({ ctx, input }) => {
-      const { data, error } = await ctx.supabase.from('board').select(`
-        publicId,
-        name,
-        workspace (
-          publicId,
-          members:workspace_members (
-            publicId,
-            user (
-              name
-            )
-          )
-        ),
-        labels:label (
+      const { data } = await ctx.supabase
+        .from('board')
+        .select(`
           publicId,
           name,
-          colourCode
-        ),
-        lists:list (
-          publicId,
-          name,
-          boardId,
-          index,
-          cards:card (
+          workspace (
             publicId,
-            title,
-            description,
-            listId,
-            index,
-            labels:label (
-              publicId,
-              name,
-              colourCode
-            ),
             members:workspace_members (
               publicId,
               user (
                 name
               )
             )
+          ),
+          labels:label (
+            publicId,
+            name,
+            colourCode
+          ),
+          lists:list (
+            publicId,
+            name,
+            boardId,
+            index,
+            cards:card (
+              publicId,
+              title,
+              description,
+              listId,
+              index,
+              labels:label (
+                publicId,
+                name,
+                colourCode
+              ),
+              members:workspace_members (
+                publicId,
+                user (
+                  name
+                )
+              )
+            )
           )
-        )
-      `)
-      .eq('publicId', input.id)
-      .is('deletedAt', null)
-      .is('lists.deletedAt', null)
-      .is('lists.cards.deletedAt', null)
-      .order('index', { foreignTable: 'list', ascending: true })
-      .order('index', { foreignTable: 'list.card', ascending: true })
-      .limit(1)
-      .single()
+        `)
+        .eq('publicId', input.id)
+        .is('deletedAt', null)
+        .is('lists.deletedAt', null)
+        .is('lists.cards.deletedAt', null)
+        .order('index', { foreignTable: 'list', ascending: true })
+        .order('index', { foreignTable: 'list.card', ascending: true })
+        .limit(1)
+        .single()
 
       return data;
     }),
@@ -96,22 +96,35 @@ export const boardRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const userId = ctx.session?.user.id;
+      const userId = ctx.user?.id;
 
       if (!userId) return;
 
-      const workspace = await ctx.db.query.workspaces.findFirst({
-        where: eq(workspaces.publicId, input.workspacePublicId),
-      })
+      const workspace = await ctx.supabase
+        .from('workspace')
+        .select(`id`)
+        .eq('publicId', input.workspacePublicId)
+        .limit(1)
+        .single();
 
-      if (!workspace) return;
+      console.log({ workspace })
 
-      return ctx.db.insert(boards).values({
-        publicId: generateUID(),
-        name: input.name,
-        createdBy: userId,
-        workspaceId: workspace.id
-      });
+      if (!workspace.data) return;
+
+      const { data, error } = await ctx.supabase
+        .from('board')
+        .insert({
+          publicId: generateUID(),
+          name: input.name,
+          createdBy: userId,
+          workspaceId: workspace.data.id
+        })
+        .select(`
+          publicId,
+          name
+        `);
+
+      return data;
     }),
     update: publicProcedure
       .input(
@@ -119,41 +132,59 @@ export const boardRouter = createTRPCRouter({
           boardId: z.string().min(12),
           name: z.string().min(1),
         }))
-      .mutation(({ ctx, input }) => {
-        const userId = ctx.session?.user.id;
+      .mutation(async ({ ctx, input }) => {
+        const userId = ctx.user?.id;
 
         if (!userId) return;
 
-        return ctx.db.update(boards).set({ name: input.name }).where(eq(boards.publicId, input.boardId));
+        const { data } = await ctx.supabase
+          .from('board')
+          .update({ name: input.name })
+          .eq('publicId', input.boardId);
+
+        return data;
       }),
     delete: publicProcedure
       .input(
         z.object({ 
           boardPublicId: z.string().min(12),
         }))
-      .mutation(({ ctx, input }) => {
-        const userId = ctx.session?.user.id;
+      .mutation(async ({ ctx, input }) => {
+        const userId = ctx.user?.id;
   
         if (!userId) return;
-  
-        return ctx.db.transaction(async (tx) => {
-          const board = await tx.query.boards.findFirst({
-            where: eq(boards.publicId, input.boardPublicId),
-            with: {
-              lists: true,
-            }
-          })
-  
-          if (!board) return;
 
-          const listIds = board.lists.map((list) => list.id)
-  
-          await tx.update(boards).set({ deletedAt: new Date(), deletedBy: userId }).where(eq(boards.id, board.id));
+        const board = await ctx.supabase
+          .from('board')
+          .select(`
+            id,
+            lists:list (id)
+          `)
+          .eq('publicId', input.boardPublicId)
+          .limit(1)
+          .single();
+        
+        if (!board.data) return;
 
-          if (listIds.length) {
-            await tx.update(lists).set({ deletedAt: new Date(), deletedBy: userId }).where(eq(lists.boardId, board.id));
-            await tx.update(cards).set({ deletedAt: new Date(), deletedBy: userId }).where(inArray(cards.listId, listIds));
-          }
-        })
-      }),
+        const listIds = board.data.lists.map((list) => list.id);
+
+        const deletedAt = new Date().toString();
+
+        await ctx.supabase
+          .from('board')
+          .update({ deletedAt, deletedBy: userId })
+          .eq('id', board.data.id);
+
+        if (listIds.length) {
+          await ctx.supabase
+            .from('list')
+            .update({ deletedAt, deletedBy: userId })
+            .eq('boardId', board.data.id);
+          
+          await ctx.supabase
+            .from('card')
+            .update({ deletedAt, deletedBy: userId })
+            .in('listId', listIds);
+        }
+      })
 });

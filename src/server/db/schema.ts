@@ -27,7 +27,7 @@ export const boards = pgTable(
     createdBy: uuid("createdBy").notNull().references(() => users.id),
     createdAt: timestamp("createdAt").defaultNow().notNull(),
     updatedAt: timestamp("updatedAt"),
-    deletedAt: timestamp("deletedAt").defaultNow(),
+    deletedAt: timestamp("deletedAt"),
     deletedBy: uuid("deletedBy").references(() => users.id),
     importId: bigint("importId", { mode: "number" }).references(() => imports.id),
     workspaceId: bigint("workspaceId", { mode: "number" }).notNull().references(() => workspaces.id),
