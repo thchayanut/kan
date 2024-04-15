@@ -19,65 +19,69 @@ export const cardRouter = createTRPCRouter({
         memberPublicIds: z.array(z.string().min(12))
       }),
     )
-    .mutation(({ ctx, input }) => {
-      const userId = ctx.session?.user.id;
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.user?.id;
 
       if (!userId) return;
 
-      return ctx.db.transaction(async (tx) => {
-        const list = await tx.query.lists.findFirst({
-          where: eq(lists.publicId, input.listPublicId),
-          columns: {
-            id: true
-          }
-        });
+      const list = await ctx.supabase
+        .from('list')
+        .select(`id, cards:card (index)`)
+        .eq('publicId', input.listPublicId)
+        .order('index', { foreignTable: 'card', ascending: false })
+        .limit(1)
+        .single();
 
-        if (!list) return;
+      if (!list.data?.id) return;
 
-        const latestCard = await tx.query.cards.findFirst({
-          where: and(eq(cards.listId, list.id), isNull(cards.deletedAt)),
-          columns: {
-            index: true
-          },
-          orderBy: desc(cards.index)
-        });
+      const latestCard = list.data.cards.length && list.data.cards[0]
 
-        const newCard = await tx.insert(cards).values({
+      const newCard = await ctx.supabase
+        .from('card')
+        .insert({
           publicId: generateUID(),
           title: input.title,
           createdBy: userId,
-          listId: list.id,
+          listId: list.data.id,
           index: latestCard ? latestCard.index + 1 : 0
-        }).returning({ id: cards.id });
+        })
+        .select(`id`)
+        .limit(1)
+        .single();
 
-        const newCardId = newCard[0]?.id;
+      const newCardId = newCard.data?.id;
 
-        if (newCardId && input.labelsPublicIds.length) {
-          const labels = await tx.query.labels.findMany({
-            where: inArray(cards.publicId, input.labelsPublicIds),
-          });
+      if (newCardId && input.labelsPublicIds.length) {
+          const labels = await ctx.supabase
+            .from('label')
+            .select(`id`)
+            .eq('publicId', input.labelsPublicIds);
 
-          if (!labels.length) return;
+        if (!labels.data?.length) return;
 
-          const labelsInsert = labels.map((label) => ({ cardId: newCardId, labelId: label.id }))
+        const labelsInsert = labels.data.map((label) => ({ cardId: newCardId, labelId: label.id }));
 
-          await tx.insert(cardsToLabels).values(labelsInsert);
-        }
+        await ctx.supabase
+          .from('_card_labels')
+          .insert(labelsInsert);
+      }
 
-        if (newCardId && input.memberPublicIds.length) {
-          const members = await tx.query.workspaceMembers.findMany({
-            where: inArray(workspaceMembers.publicId, input.memberPublicIds),
-          });
+      if (newCardId && input.memberPublicIds.length) {
+        const members = await ctx.supabase
+          .from('workspace_members')
+          .select(`id`)
+          .eq('publicId', input.memberPublicIds);
 
-          if (!members.length) return;
+        if (!members.data?.length) return;
 
-          const membersInsert = members.map((member) => ({ cardId: newCardId, workspaceMemberId: member.id}))
+        const membersInsert = members.data.map((member) => ({ cardId: newCardId, workspaceMemberId: member.id }));
 
-          await tx.insert(cardToWorkspaceMembers).values(membersInsert);
-        }
+        await ctx.supabase
+          .from('_card_workspace_members')
+          .insert(membersInsert);
+      }
 
-        return newCard;
-      })
+      return newCard;
     }),
     addOrRemoveLabel: publicProcedure
       .input(
@@ -87,7 +91,7 @@ export const cardRouter = createTRPCRouter({
         }),
       )
       .mutation(({ ctx, input }) => {
-        const userId = ctx.session?.user.id;
+        const userId = ctx.user?.id;
 
         if (!userId) return;
 
@@ -124,7 +128,7 @@ export const cardRouter = createTRPCRouter({
         }),
       )
       .mutation(({ ctx, input }) => {
-        const userId = ctx.session?.user.id;
+        const userId = ctx.user?.id;
 
         if (!userId) return;
 
@@ -255,7 +259,7 @@ export const cardRouter = createTRPCRouter({
           description: z.string(),
         }))
       .mutation(({ ctx, input }) => {
-        const userId = ctx.session?.user.id;
+        const userId = ctx.user?.id;
 
         if (!userId) return;
 
@@ -267,7 +271,7 @@ export const cardRouter = createTRPCRouter({
           cardPublicId: z.string().min(12),
         }))
       .mutation(({ ctx, input }) => {
-        const userId = ctx.session?.user.id;
+        const userId = ctx.user?.id;
 
         if (!userId) return;
 
@@ -291,7 +295,7 @@ export const cardRouter = createTRPCRouter({
           newIndex: z.number().optional(),
         }))
       .mutation(({ ctx, input }) => {
-        const userId = ctx.session?.user.id;
+        const userId = ctx.user?.id;
 
         if (!userId) return;
 
