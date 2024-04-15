@@ -1,12 +1,10 @@
 import { z } from "zod";
-import { eq } from "drizzle-orm";
 
 import {
   createTRPCRouter,
   publicProcedure,
 } from "~/server/api/trpc";
 
-import { boards, cards, imports,  lists, workspaces } from "~/server/db/schema";
 import { generateUID } from "~/utils/generateUID";
 
 const TRELLO_API_URL = 'https://api.trello.com/1';
@@ -44,7 +42,7 @@ export const importRouter = createTRPCRouter({
         }),
       )
       .query(async ({ ctx, input }) => {
-        const userId = ctx.session?.user.id;
+        const userId = ctx.user?.id;
   
         if (!userId) return;
 
@@ -85,20 +83,35 @@ export const importRouter = createTRPCRouter({
         }),
       )
       .mutation(async ({ ctx, input }) => {
-        const userId = ctx.session?.user.id;
+        const userId = ctx.user?.id;
   
         if (!userId) return;
 
-        const newImport = await ctx.db.insert(imports).values({
-          publicId: generateUID(),
-          source: 'trello',
-          createdBy: userId,
-          status: 'started'
-        }).returning({ id: imports.id });
+        const newImport = await ctx.supabase
+          .from('import')
+          .insert({
+            publicId: generateUID(),
+            source: 'trello',
+            createdBy: userId,
+            status: 'started'
+          })
+          .select(`id`)
+          .limit(1)
+          .single();
 
-        const newImportId = newImport[0]?.id;
+        const newImportId = newImport.data?.id;
 
         let boardsCreated = 0;
+
+        const workspace = await ctx.supabase
+          .from('workspace')
+          .select(`id`)
+          .eq('publicId', input.workspacePublicId)
+          .is('deletedAt', null)
+          .limit(1)
+          .single();
+
+        if (!workspace.data) return;
 
         for (const boardId of input.boardIds) {
           const response = await fetch(`${TRELLO_API_URL}/boards/${boardId}?key=${input.apiKey}&token=${input.token}&lists=open&cards=open`);
@@ -117,64 +130,68 @@ export const importRouter = createTRPCRouter({
             }))
           }
 
-          const workspace = await ctx.db.query.workspaces.findFirst({
-            where: eq(workspaces.publicId, input.workspacePublicId),
-          })
-
-          if (!workspace) return;
-
-          await ctx.db.transaction(async (tx) => {
-            const newBoard = await tx.insert(boards).values({
+          const newBoard = await ctx.supabase
+            .from('board')
+            .insert({
               publicId: generateUID(),
               name: data.name,
               createdBy: userId,
               importId: newImportId,
-              workspaceId: workspace.id
-            }).returning({ id: boards.id });
+              workspaceId: workspace.data.id
+            })
+            .select(`id`)
+            .limit(1)
+            .single();
 
-            const newBoardId = newBoard[0]?.id
+          const newBoardId = newBoard.data?.id
 
-            if (!newBoardId) return;
+          if (!newBoardId) return;
 
-            let listIndex = 0;
+          let listIndex = 0;
 
-            for (const list of formattedData.lists) {
-              const newList = await tx.insert(lists).values({
+          for (const list of formattedData.lists) {
+            const newList = await ctx.supabase
+              .from('list')
+              .insert({
                 publicId: generateUID(),
                 name: list.name,
                 createdBy: userId,
                 boardId: newBoardId,
                 index: listIndex,
                 importId: newImportId
-              }).returning({ id: lists.id });
+              })
+              .select(`id`)
+              .limit(1)
+              .single();
 
-              const newListId = newList[0]?.id
+            const newListId = newList.data?.id
 
-              if (list.cards.length && newListId) {
-                const cardsInsert = list.cards.map((card, index) => ({ 
-                  publicId: generateUID(),
-                  title: card.name,
-                  description: card.description,
-                  createdBy: userId,
-                  listId: newListId,
-                  index,
-                  importId: newImportId
-                }))
+            if (list.cards.length && newListId) {
+              const cardsInsert = list.cards.map((card, index) => ({ 
+                publicId: generateUID(),
+                title: card.name,
+                description: card.description,
+                createdBy: userId,
+                listId: newListId,
+                index,
+                importId: newImportId
+              }))
 
-                await tx.insert(cards).values(cardsInsert);
-              }
-
-              listIndex ++
+              await ctx.supabase
+                .from('card')
+                .insert(cardsInsert);
             }
-          })
 
+            listIndex ++
+          }
           boardsCreated ++
         }
 
         if (boardsCreated > 0 && newImportId) {
-          await ctx.db.update(imports)
-            .set({ status: 'success' })
-            .where(eq(imports.id, newImportId))
+          await ctx.supabase
+            .from('import')
+            .update({ status: 'success' })
+            .eq('importId', newImportId);
         }
 
         return { boardsCreated }

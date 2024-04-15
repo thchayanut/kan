@@ -1,8 +1,4 @@
 import { z } from "zod";
-import { and, eq, isNull } from "drizzle-orm";
-
-import { workspaces, workspaceMembers } from "~/server/db/schema";
-
 import { generateUID } from "~/utils/generateUID";
 
 import {
@@ -38,7 +34,7 @@ export const workspaceRouter = createTRPCRouter({
 
       if (!userId) return;
 
-      const { data, error } = await ctx.supabase
+      const { data } = await ctx.supabase
         .from('workspace')
         .select(`
           publicId,
@@ -67,9 +63,6 @@ export const workspaceRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.user?.id;
-
-
-      console.log('>>> here <<<')
 
       if (!userId) return;
 
