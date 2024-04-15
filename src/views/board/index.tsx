@@ -86,16 +86,19 @@ export default function BoardPage() {
     enableReinitialize: true,
   });
 
-  if (!boardId) return <></>;
-
-  api.board.byId.useQuery(
-    { id: boardId },
+  const { data, isSuccess } = api.board.byId.useQuery(
+    { id: boardId ?? "" },
     {
-      onSuccess: (data) => {
-        if (data) setBoardData(data);
-      },
+      enabled: !!boardId,
     },
   );
+
+  if (isSuccess && data) {
+    console.log({ data });
+    setBoardData(data);
+  }
+
+  if (!boardId) return <></>;
 
   const openNewListForm = (publicBoardId: string) => {
     openModal("NEW_LIST");

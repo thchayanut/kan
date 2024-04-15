@@ -54,7 +54,7 @@ export default function SideNavigation({ user }: SideNavigationProps) {
               <li key={item.name}>
                 <ReactiveButton
                   href={item.href}
-                  current={pathname.includes(item.href)}
+                  current={pathname?.includes(item.href)}
                   name={item.name}
                   json={item.icon}
                 />

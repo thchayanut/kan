@@ -12,56 +12,52 @@ import {
 
 export const workspaceRouter = createTRPCRouter({
   all: publicProcedure
-    .query(({ ctx }) => {
-      const userId = ctx.session?.user.id;
+    .query(async ({ ctx }) => {
+      const userId = ctx.user?.id;
 
       if (!userId) return;
 
-      return ctx.db.query.workspaceMembers.findMany({
-        where: and(eq(workspaceMembers.userId, userId), isNull(workspaceMembers.deletedAt)),
-        columns: {
-          role: true,
-        },
-        with: {
-          workspace: {
-            columns: {
-              publicId: true,
-              name: true
-            }
-          }
-        }
-      });
+      const { data } = await ctx.supabase
+        .from('workspace_members')
+        .select(`
+          role,
+          workspace (
+            publicId,
+            name
+          )
+        `)
+        .eq('userId', userId)
+        .is('deletedAt', null);
+
+      return data;
     }),
   byId: publicProcedure
     .input(z.object({ publicId: z.string().min(12) }))
-    .query(({ ctx, input }) => {
-      const userId = ctx.session?.user.id;
+    .query(async ({ ctx, input }) => {
+      const userId = ctx.user?.id;
 
       if (!userId) return;
 
-      return ctx.db.query.workspaces.findFirst({
-        where: and(eq(workspaces.publicId, input.publicId), isNull(workspaces.deletedAt)),
-        columns: {
-          publicId: true,
-        },
-        with: {
-          members: {
-            columns: {
-              publicId: true,
-              role: true,
-            },
-            with: {
-              user: {
-                columns: {
-                  id: true,
-                  name: true,
-                  email: true,
-                }
-              }
-            }
-          }
-        }
-      });
+      const { data, error } = await ctx.supabase
+        .from('workspace')
+        .select(`
+          publicId,
+          members: workspace_members (
+            publicId,
+            role,
+            user (
+              id,
+              name,
+              email
+            )
+          )
+        `)
+        .eq('publicId', input.publicId)
+        .is('deletedAt', null)
+        .limit(1)
+        .single();
+
+      return data;
     }),
   create: publicProcedure
     .input(
@@ -70,35 +66,47 @@ export const workspaceRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const userId = ctx.session?.user.id;
+      const userId = ctx.user?.id;
+
+
+      console.log('>>> here <<<')
 
       if (!userId) return;
 
-      const workspace = await ctx.db.insert(workspaces).values({
-        publicId: generateUID(),
-        name: input.name,
-        slug: input.name.toLowerCase(),
-        createdBy: userId,
-      }).returning({ id: workspaces.id });
+      const workspace = await ctx.supabase
+        .from('workspace')
+        .insert({
+          publicId: generateUID(),
+          name: input.name,
+          slug: input.name.toLowerCase(),
+          createdBy: userId,
+        })
+        .select(`
+          id,
+          publicId,
+          name
+        `)
+        .limit(1)
+        .single()
 
-      const workspaceId = workspace[0]?.id;
+      const newWorkspaceId = workspace.data?.id
 
-      if (!workspaceId) return;
+      if (!newWorkspaceId) return;
 
-      await ctx.db.insert(workspaceMembers).values({
-        publicId: generateUID(),
-        userId,
-        workspaceId: workspaceId,
-        createdBy: userId,
-        role: 'admin'
-      })
+      await ctx.supabase
+        .from('workspace_members')
+        .insert({
+          publicId: generateUID(),
+          userId,
+          workspaceId: newWorkspaceId,
+          createdBy: userId,
+          role: 'admin'
+        })
 
-      return ctx.db.query.workspaces.findFirst({
-        where: eq(workspaces.id, workspaceId),
-        columns: {
-          publicId: true,
-          name: true,
-        },
-      });
+      const newWorkspace = { ...workspace.data };
+
+      delete newWorkspace.id;
+
+      return newWorkspace;
     }),
 });

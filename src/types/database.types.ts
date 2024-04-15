@@ -600,7 +600,22 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      reorder_list: {
+        Args: {
+          board_id: number
+          list_id: number
+          current_index: number
+          new_index: number
+        }
+        Returns: undefined
+      }
+      shift_list_index: {
+        Args: {
+          board_id: number
+          list_index: number
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       role: "admin" | "member" | "guest"

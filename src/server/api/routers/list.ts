@@ -1,7 +1,4 @@
 import { z } from "zod";
-import { and, desc, eq, sql, isNull } from "drizzle-orm";
-
-import { boards, cards, lists } from "~/server/db/schema";
 import { generateUID } from "~/utils/generateUID";
 
 import {
@@ -17,37 +14,39 @@ export const listRouter = createTRPCRouter({
         boardPublicId: z.string().min(12)
       }),
     )
-    .mutation(({ ctx, input }) => {
-      const userId = ctx.session?.user.id;
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.user?.id;
 
       if (!userId) return;
 
-      return ctx.db.transaction(async (tx) => {
-        const board = await tx.query.boards.findFirst({
-          where: eq(boards.publicId, input.boardPublicId),
-          columns: {
-            id: true
-          }
-        });
+      const board = await ctx.supabase
+        .from('board')
+        .select(`id, lists:list (index)`)
+        .eq('publicId', input.boardPublicId)
+        .order('index', { foreignTable: 'list', ascending: false })
+        .is('list.deletedAt', null)
+        .limit(1)
+        .single();
 
-        if (!board) return;
+      if (!board.data) return;
 
-        const latestList = await tx.query.lists.findFirst({
-          where: eq(lists.boardId, board.id),
-          columns: {
-            index: true
-          },
-          orderBy: desc(lists.index)
-        });
+      const latestListIndex = board.data.lists[0]?.index
 
-        return tx.insert(lists).values({
+      const { data } = await ctx.supabase
+        .from('list')
+        .insert({
           publicId: generateUID(),
           name: input.name,
           createdBy: userId,
-          boardId: board.id,
-          index: latestList ? latestList.index + 1 : 0
-        });
-      })
+          boardId: board.data.id,
+          index: latestListIndex  ? latestListIndex + 1 : 0
+        })
+        .select(`
+          publicId,
+          name
+        `);
+
+        return data;
     }),
   reorder: publicProcedure
     .input(
@@ -57,52 +56,70 @@ export const listRouter = createTRPCRouter({
         currentIndex: z.number(),
         newIndex: z.number(),
       }))
-    .mutation(({ ctx, input }) => {
-      const userId = ctx.session?.user.id;
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.user?.id;
 
       if (!userId) return;
 
-      return ctx.db.transaction(async (tx) => {
-        const [list] = await tx.select({ id: lists.id, boardId: lists.boardId }).from(lists).where(eq(lists.publicId, input.listId))
+      const list = await ctx.supabase
+        .from('list')
+        .select(`id, boardId`)
+        .eq('publicId', input.listId)
+        .limit(1)
+        .single();
 
-        if (!list) return;
+      if (!list?.data) return;
 
-        await tx.execute(sql`
-          UPDATE ${lists}
-          SET index =
-            CASE
-              WHEN ${lists.index} = ${input.currentIndex} AND ${lists.id} = ${list.id} THEN ${input.newIndex}
-              WHEN ${input.currentIndex} < ${input.newIndex} AND ${lists.index} > ${input.currentIndex} AND ${lists.index} <= ${input.newIndex} THEN ${lists.index} - 1
-              WHEN ${input.currentIndex} > ${input.newIndex} AND ${lists.index} >= ${input.newIndex} AND ${lists.index} < ${input.currentIndex} THEN ${lists.index} + 1
-              ELSE ${lists.index}
-            END
-          WHERE ${lists.boardId} = ${list.boardId};
-        `);
-      })
+      const { data } = await ctx.supabase
+        .rpc('reorder_list', { 
+          board_id: list.data.boardId, 
+          list_id: list.data.id, 
+          current_index: input.currentIndex,
+          new_index: input.newIndex,
+        })
+
+      return data;
     }),
   delete: publicProcedure
     .input(
       z.object({ 
         listPublicId: z.string().min(12),
       }))
-    .mutation(({ ctx, input }) => {
-      const userId = ctx.session?.user.id;
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.user?.id;
 
       if (!userId) return;
 
-      return ctx.db.transaction(async (tx) => {
-        const list = await tx.query.lists.findFirst({
-          where: eq(lists.publicId, input.listPublicId),
+      const list = await ctx.supabase
+        .from('list')
+        .select(`id, boardId, index`)
+        .eq('publicId', input.listPublicId)
+        .limit(1)
+        .single();
+
+      if (!list.data) return;
+
+      const deletedAt = new Date().toISOString();
+
+      await ctx.supabase
+        .from('list')
+        .update({ deletedAt, deletedBy: userId })
+        .eq('id', list.data.id)
+        .is('deletedAt', null);
+
+      await ctx.supabase
+        .from('card')
+        .update({ deletedAt, deletedBy: userId })
+        .eq('listId', list.data.id)
+        .is('deletedAt', null);
+      
+      const { data } = await ctx.supabase
+        .rpc('shift_list_index', { 
+          board_id: list.data.boardId, 
+          list_index: list.data.index
         })
 
-        if (!list) return;
-
-        await tx.update(lists).set({ deletedAt: new Date(), deletedBy: userId}).where(eq(lists.id, list.id));
-
-        await tx.update(cards).set({ deletedAt: new Date(), deletedBy: userId}).where(eq(cards.listId, list.id));
-
-        await tx.execute(sql`UPDATE ${lists} SET ${lists.index} = ${lists.index} - 1 WHERE ${lists.boardId} = ${list.boardId} AND ${lists.index} > ${list.index} AND ${lists.deletedAt} IS NULL;`);
-      })
+      return data;
     }),
   update: publicProcedure
     .input(
@@ -110,11 +127,18 @@ export const listRouter = createTRPCRouter({
         listPublicId: z.string().min(12),
         name: z.string().min(1),
       }))
-    .mutation(({ ctx, input }) => {
-      const userId = ctx.session?.user.id;
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.user?.id;
 
       if (!userId) return;
 
-      return ctx.db.update(lists).set({ name: input.name }).where(and(eq(lists.publicId, input.listPublicId), isNull(lists.deletedAt)));
+      const { data } = await ctx.supabase
+        .from('list')
+        .update({ name: input.name })
+        .eq('publicId', input.listPublicId)
+        .is('deletedAt', null)
+        .select(`publicId, name`);
+
+        return data;
     }),
 });

@@ -107,11 +107,9 @@ export const boardRouter = createTRPCRouter({
         .limit(1)
         .single();
 
-      console.log({ workspace })
-
       if (!workspace.data) return;
 
-      const { data, error } = await ctx.supabase
+      const { data } = await ctx.supabase
         .from('board')
         .insert({
           publicId: generateUID(),
@@ -168,23 +166,26 @@ export const boardRouter = createTRPCRouter({
 
         const listIds = board.data.lists.map((list) => list.id);
 
-        const deletedAt = new Date().toString();
+        const deletedAt = new Date().toISOString();
 
         await ctx.supabase
           .from('board')
           .update({ deletedAt, deletedBy: userId })
-          .eq('id', board.data.id);
+          .eq('id', board.data.id)
+          .is('deletedAt', null);
 
         if (listIds.length) {
           await ctx.supabase
             .from('list')
             .update({ deletedAt, deletedBy: userId })
-            .eq('boardId', board.data.id);
+            .eq('boardId', board.data.id)
+            .is('deletedAt', null);
           
           await ctx.supabase
             .from('card')
             .update({ deletedAt, deletedBy: userId })
-            .in('listId', listIds);
+            .in('listId', listIds)
+            .is('deletedAt', null);
         }
       })
 });
