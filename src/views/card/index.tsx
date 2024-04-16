@@ -31,19 +31,21 @@ export default function CardPage() {
     ? params.cardId[0]
     : params?.cardId;
 
-  const { data } = api.card.byId.useQuery({ id: cardId ?? "" });
+  const { data, error } = api.card.byId.useQuery({ id: cardId ?? "" });
 
-  const boardId = data?.list?.board?.publicId;
-  const labels = data?.list?.board?.labels;
-  const workspaceMembers = data?.list?.board?.workspace?.members;
   const board = data?.list?.board;
+  const boardId = board?.publicId;
+  const labels = board?.labels;
+  const workspaceMembers = board?.workspace?.members;
   const selectedLabels = data?.labels;
   const selectedMembers = data?.members;
+
+  console.log({ board: error });
 
   const formattedLabels =
     labels?.map((label) => {
       const isSelected = selectedLabels?.some(
-        (selectedLabel) => selectedLabel.label.publicId === label.publicId,
+        (selectedLabel) => selectedLabel.publicId === label.publicId,
       );
 
       return {
@@ -56,13 +58,13 @@ export default function CardPage() {
   const formattedLists =
     board?.lists.map((list) => ({
       ...list,
-      selected: list.publicId === data?.list.publicId,
+      selected: list.publicId === data?.list?.publicId,
     })) ?? [];
 
   const formattedMembers =
     workspaceMembers?.map((member) => {
       const isSelected = selectedMembers?.some(
-        (assignedMember) => assignedMember.member.publicId === member.publicId,
+        (assignedMember) => assignedMember.publicId === member.publicId,
       );
 
       return {

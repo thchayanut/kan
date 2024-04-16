@@ -90,35 +90,53 @@ export const cardRouter = createTRPCRouter({
           labelPublicId: z.string().min(12),
         }),
       )
-      .mutation(({ ctx, input }) => {
+      .mutation(async ({ ctx, input }) => {
         const userId = ctx.user?.id;
 
         if (!userId) return;
 
-        return ctx.db.transaction(async (tx) => {
-          const card = await tx.query.cards.findFirst({
-            where: and(eq(cards.publicId, input.cardPublicId), isNull(cards.deletedAt)),
+        const card = await ctx.supabase
+          .from('card')
+          .select(`id`)
+          .eq('publicId', input.cardPublicId)
+          .limit(1)
+          .single();
+
+        const label = await ctx.supabase
+          .from('label')
+          .select(`id`)
+          .eq('publicId', input.labelPublicId)
+          .limit(1)
+          .single();
+
+        if (!card.data || !label.data) return;
+
+        const existingLabel = await ctx.supabase
+          .from('_card_labels')
+          .select()
+          .eq('cardId', card.data.id)
+          .eq('labelId', label.data.id)
+          .limit(1)
+          .single();
+
+        if (existingLabel.data) {
+          await ctx.supabase
+            .from('_card_labels')
+            .delete()
+            .eq('cardId', card.data.id)
+            .eq('labelId', label.data.id);
+
+          return { newLabel: false };
+        }
+
+        await ctx.supabase
+          .from('_card_labels')
+          .insert({
+            cardId: card.data.id,
+            labelId: label.data.id,
           });
 
-          const label = await tx.query.labels.findFirst({
-            where: eq(labels.publicId, input.labelPublicId),
-          });
-          
-          if (!card || !label) return;
-
-          const labelExists = await tx.query.cardsToLabels.findFirst({
-            where: and(eq(cardsToLabels.cardId, card.id), eq(cardsToLabels.labelId, label.id)),
-          });
-
-          if (labelExists) {
-            return tx.delete(cardsToLabels).where(and(eq(cardsToLabels.cardId, card.id), eq(cardsToLabels.labelId, label.id)),);
-          }
-
-          return tx.insert(cardsToLabels).values({
-            cardId: card.id,
-            labelId: label.id,
-          });
-        })
+        return { newLabel: true };
       }),
     addOrRemoveMember: publicProcedure
       .input(
@@ -127,130 +145,111 @@ export const cardRouter = createTRPCRouter({
           workspaceMemberPublicId: z.string().min(12),
         }),
       )
-      .mutation(({ ctx, input }) => {
+      .mutation(async ({ ctx, input }) => {
         const userId = ctx.user?.id;
 
         if (!userId) return;
 
-        return ctx.db.transaction(async (tx) => {
-          const card = await tx.query.cards.findFirst({
-            where: and(eq(cards.publicId, input.cardPublicId), isNull(cards.deletedAt)),
+        const card = await ctx.supabase
+          .from('card')
+          .select(`id`)
+          .eq('publicId', input.cardPublicId)
+          .limit(1)
+          .single();
+
+        const member = await ctx.supabase
+          .from('workspace_members')
+          .select(`id`)
+          .eq('publicId', input.workspaceMemberPublicId)
+          .limit(1)
+          .single();
+        
+        if (!card.data || !member.data) return;
+
+        const existingMember = await ctx.supabase
+          .from('_card_workspace_members')
+          .select()
+          .eq('cardId', card.data.id)
+          .eq('workspaceMemberId', member.data.id)
+          .limit(1)
+          .single();
+
+        if (existingMember.data) {
+          await ctx.supabase
+            .from('_card_workspace_members')
+            .delete()
+            .eq('cardId', card.data.id)
+            .eq('workspaceMemberId', member.data.id);
+
+          return { newMember: false };
+        }
+
+        await ctx.supabase
+          .from('_card_workspace_members')
+          .insert({
+            cardId: card.data.id,
+            workspaceMemberId: member.data.id,
           });
 
-          const member = await tx.query.workspaceMembers.findFirst({
-            where: eq(workspaceMembers.publicId, input.workspaceMemberPublicId),
-          });
-          
-          if (!card || !member) return;
-
-          const memberExists = await tx.query.cardToWorkspaceMembers.findFirst({
-            where: and(eq(cardToWorkspaceMembers.cardId, card.id), eq(cardToWorkspaceMembers.workspaceMemberId, member.id)),
-          });
-
-          if (memberExists) {
-            return tx.delete(cardToWorkspaceMembers).where(and(eq(cardToWorkspaceMembers.cardId, card.id), eq(cardToWorkspaceMembers.workspaceMemberId, member.id)),);
-          }
-
-          return tx.insert(cardToWorkspaceMembers).values({
-            cardId: card.id,
-            workspaceMemberId: member.id,
-          });
-        })
+        return { newMember: true };
       }),
     byId: publicProcedure
       .input(z.object({ id: z.string().min(12) }))
-      .query(({ ctx, input }) => 
-        ctx.db.query.cards.findFirst({
-          with: {
-            labels: {
-              columns: {
-                labelId: false,
-                cardId: false,
-              },
-              with: {
-                label: {
-                  columns: {
-                    publicId: true,
-                    name: true,
-                    colourCode: true,
-                  }
-                },
-              }
-            },
-            list: {
-              columns: {
-                publicId: true,
-              },
-              with: {
-                board: {
-                  columns: {
-                    publicId: true,
-                    name: true,
-                  },
-                  with: {
-                    labels: {
-                      columns: {
-                        publicId: true,
-                        colourCode: true,
-                        name: true,
-                      }
-                    },
-                    lists: {
-                      columns: {
-                        publicId: true,
-                        name: true,
-                      },
-                      where: isNull(lists.deletedAt)
-                    },
-                    workspace: {
-                      columns: {
-                        publicId: true,
-                      },
-                      with: {
-                        members: {
-                          columns: {
-                            publicId: true,
-                          },
-                          with: {
-                            user: {
-                              columns: {
-                                id: true,
-                                name: true,
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  },
-                }
-              }
-            },
-            members: {
-              columns: {
-                workspaceMemberId: false,
-                cardId: false,
-              },
-              with: {
-                member: {
-                  columns: {
-                    publicId: true,
-                  },
-                  with: {
-                    user: {
-                      columns: {
-                        id: true,
-                        name: true,
-                      }
-                    }
-                  }
-                },
-              }
-            },
-          },
-          where: and(eq(cards.publicId, input.id), isNull(cards.deletedAt)),
-        })
-      ),
+      .query(async ({ ctx, input }) => {
+        const { data } = await ctx.supabase
+          .from('card')
+          .select(`
+            publicId,
+            title,
+            description,
+            labels:label (
+              publicId,
+              name,
+              colourCode
+            ),
+            list (
+              publicId,
+              name,
+              board (
+                publicId,
+                name,
+                labels:label (
+                  publicId,
+                  colourCode,
+                  name
+                ),
+                lists:list (
+                  publicId,
+                  name
+                ),
+                workspace (
+                  publicId,
+                  members:workspace_members (
+                    publicId,
+                    user (
+                      id,
+                      name
+                    )
+                  )
+                )
+              )
+            ),
+            members:workspace_members (
+              publicId,
+              user (
+                id,
+                name
+              )
+            )
+          `)
+          .eq('publicId', input.id)
+          .is('deletedAt', null)
+          .is('list.board.lists.deletedAt', null)
+          .limit(1)
+          .single();
+
+        return data;
+      }),
     update: publicProcedure
       .input(
         z.object({ 
@@ -258,12 +257,18 @@ export const cardRouter = createTRPCRouter({
           title: z.string().min(1),
           description: z.string(),
         }))
-      .mutation(({ ctx, input }) => {
+      .mutation(async ({ ctx, input }) => {
         const userId = ctx.user?.id;
 
         if (!userId) return;
 
-        return ctx.db.update(cards).set({ title: input.title, description: input.description }).where(and(eq(cards.publicId, input.cardId), isNull(cards.deletedAt)));
+        const { data } = await ctx.supabase
+          .from('card')
+          .update({ title: input.title, description: input.description })
+          .eq('publicId', input.cardId)
+          .is('deletedAt', null);
+
+        return data;
       }),
     delete: publicProcedure
       .input(
