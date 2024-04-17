@@ -10,7 +10,7 @@ export const boardRouter = createTRPCRouter({
   all: publicProcedure
     .input(z.object({ workspacePublicId: z.string().min(12) }))
     .query(async ({ ctx, input }) => {
-      const workspace = await ctx.supabase
+      const workspace = await ctx.db
         .from('workspace')
         .select(`id`)
         .eq('publicId', input.workspacePublicId)
@@ -19,7 +19,7 @@ export const boardRouter = createTRPCRouter({
 
       if (!workspace.data) return;
 
-      const { data } = await ctx.supabase
+      const { data } = await ctx.db
         .from('board')
         .select(`
           publicId,
@@ -33,7 +33,7 @@ export const boardRouter = createTRPCRouter({
   byId: publicProcedure
     .input(z.object({ id: z.string().min(12) }))
     .query(async ({ ctx, input }) => {
-      const { data } = await ctx.supabase
+      const { data } = await ctx.db
         .from('board')
         .select(`
           publicId,
@@ -100,7 +100,7 @@ export const boardRouter = createTRPCRouter({
 
       if (!userId) return;
 
-      const workspace = await ctx.supabase
+      const workspace = await ctx.db
         .from('workspace')
         .select(`id`)
         .eq('publicId', input.workspacePublicId)
@@ -109,7 +109,7 @@ export const boardRouter = createTRPCRouter({
 
       if (!workspace.data) return;
 
-      const { data } = await ctx.supabase
+      const { data } = await ctx.db
         .from('board')
         .insert({
           publicId: generateUID(),
@@ -135,7 +135,7 @@ export const boardRouter = createTRPCRouter({
 
         if (!userId) return;
 
-        const { data } = await ctx.supabase
+        const { data } = await ctx.db
           .from('board')
           .update({ name: input.name })
           .eq('publicId', input.boardId);
@@ -152,7 +152,7 @@ export const boardRouter = createTRPCRouter({
   
         if (!userId) return;
 
-        const board = await ctx.supabase
+        const board = await ctx.db
           .from('board')
           .select(`
             id,
@@ -168,20 +168,20 @@ export const boardRouter = createTRPCRouter({
 
         const deletedAt = new Date().toISOString();
 
-        await ctx.supabase
+        await ctx.db
           .from('board')
           .update({ deletedAt, deletedBy: userId })
           .eq('id', board.data.id)
           .is('deletedAt', null);
 
         if (listIds.length) {
-          await ctx.supabase
+          await ctx.db
             .from('list')
             .update({ deletedAt, deletedBy: userId })
             .eq('boardId', board.data.id)
             .is('deletedAt', null);
           
-          await ctx.supabase
+          await ctx.db
             .from('card')
             .update({ deletedAt, deletedBy: userId })
             .in('listId', listIds)

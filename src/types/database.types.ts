@@ -600,12 +600,29 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      reorder_list: {
+      reorder_cards: {
+        Args: {
+          card_id: number
+          current_list_id: number
+          new_list_id: number
+          current_index: number
+          new_index: number
+        }
+        Returns: undefined
+      }
+      reorder_lists: {
         Args: {
           board_id: number
           list_id: number
           current_index: number
           new_index: number
+        }
+        Returns: undefined
+      }
+      shift_card_index: {
+        Args: {
+          list_id: number
+          card_index: number
         }
         Returns: undefined
       }

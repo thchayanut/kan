@@ -1,7 +1,4 @@
 import { z } from "zod";
-import { and, desc, eq, isNull, inArray, sql } from "drizzle-orm";
-
-import { cards, cardsToLabels, cardToWorkspaceMembers, labels, lists, workspaceMembers } from "~/server/db/schema";
 import { generateUID } from "~/utils/generateUID";
 
 import {
@@ -24,7 +21,7 @@ export const cardRouter = createTRPCRouter({
 
       if (!userId) return;
 
-      const list = await ctx.supabase
+      const list = await ctx.db
         .from('list')
         .select(`id, cards:card (index)`)
         .eq('publicId', input.listPublicId)
@@ -36,7 +33,7 @@ export const cardRouter = createTRPCRouter({
 
       const latestCard = list.data.cards.length && list.data.cards[0]
 
-      const newCard = await ctx.supabase
+      const newCard = await ctx.db
         .from('card')
         .insert({
           publicId: generateUID(),
@@ -52,7 +49,7 @@ export const cardRouter = createTRPCRouter({
       const newCardId = newCard.data?.id;
 
       if (newCardId && input.labelsPublicIds.length) {
-          const labels = await ctx.supabase
+          const labels = await ctx.db
             .from('label')
             .select(`id`)
             .eq('publicId', input.labelsPublicIds);
@@ -61,13 +58,13 @@ export const cardRouter = createTRPCRouter({
 
         const labelsInsert = labels.data.map((label) => ({ cardId: newCardId, labelId: label.id }));
 
-        await ctx.supabase
+        await ctx.db
           .from('_card_labels')
           .insert(labelsInsert);
       }
 
       if (newCardId && input.memberPublicIds.length) {
-        const members = await ctx.supabase
+        const members = await ctx.db
           .from('workspace_members')
           .select(`id`)
           .eq('publicId', input.memberPublicIds);
@@ -76,7 +73,7 @@ export const cardRouter = createTRPCRouter({
 
         const membersInsert = members.data.map((member) => ({ cardId: newCardId, workspaceMemberId: member.id }));
 
-        await ctx.supabase
+        await ctx.db
           .from('_card_workspace_members')
           .insert(membersInsert);
       }
@@ -95,14 +92,14 @@ export const cardRouter = createTRPCRouter({
 
         if (!userId) return;
 
-        const card = await ctx.supabase
+        const card = await ctx.db
           .from('card')
           .select(`id`)
           .eq('publicId', input.cardPublicId)
           .limit(1)
           .single();
 
-        const label = await ctx.supabase
+        const label = await ctx.db
           .from('label')
           .select(`id`)
           .eq('publicId', input.labelPublicId)
@@ -111,7 +108,7 @@ export const cardRouter = createTRPCRouter({
 
         if (!card.data || !label.data) return;
 
-        const existingLabel = await ctx.supabase
+        const existingLabel = await ctx.db
           .from('_card_labels')
           .select()
           .eq('cardId', card.data.id)
@@ -120,7 +117,7 @@ export const cardRouter = createTRPCRouter({
           .single();
 
         if (existingLabel.data) {
-          await ctx.supabase
+          await ctx.db
             .from('_card_labels')
             .delete()
             .eq('cardId', card.data.id)
@@ -129,7 +126,7 @@ export const cardRouter = createTRPCRouter({
           return { newLabel: false };
         }
 
-        await ctx.supabase
+        await ctx.db
           .from('_card_labels')
           .insert({
             cardId: card.data.id,
@@ -150,14 +147,14 @@ export const cardRouter = createTRPCRouter({
 
         if (!userId) return;
 
-        const card = await ctx.supabase
+        const card = await ctx.db
           .from('card')
           .select(`id`)
           .eq('publicId', input.cardPublicId)
           .limit(1)
           .single();
 
-        const member = await ctx.supabase
+        const member = await ctx.db
           .from('workspace_members')
           .select(`id`)
           .eq('publicId', input.workspaceMemberPublicId)
@@ -166,7 +163,7 @@ export const cardRouter = createTRPCRouter({
         
         if (!card.data || !member.data) return;
 
-        const existingMember = await ctx.supabase
+        const existingMember = await ctx.db
           .from('_card_workspace_members')
           .select()
           .eq('cardId', card.data.id)
@@ -175,7 +172,7 @@ export const cardRouter = createTRPCRouter({
           .single();
 
         if (existingMember.data) {
-          await ctx.supabase
+          await ctx.db
             .from('_card_workspace_members')
             .delete()
             .eq('cardId', card.data.id)
@@ -184,7 +181,7 @@ export const cardRouter = createTRPCRouter({
           return { newMember: false };
         }
 
-        await ctx.supabase
+        await ctx.db
           .from('_card_workspace_members')
           .insert({
             cardId: card.data.id,
@@ -196,7 +193,7 @@ export const cardRouter = createTRPCRouter({
     byId: publicProcedure
       .input(z.object({ id: z.string().min(12) }))
       .query(async ({ ctx, input }) => {
-        const { data } = await ctx.supabase
+        const { data } = await ctx.db
           .from('card')
           .select(`
             publicId,
@@ -262,7 +259,7 @@ export const cardRouter = createTRPCRouter({
 
         if (!userId) return;
 
-        const { data } = await ctx.supabase
+        const { data } = await ctx.db
           .from('card')
           .update({ title: input.title, description: input.description })
           .eq('publicId', input.cardId)
@@ -275,22 +272,37 @@ export const cardRouter = createTRPCRouter({
         z.object({ 
           cardPublicId: z.string().min(12),
         }))
-      .mutation(({ ctx, input }) => {
+      .mutation(async ({ ctx, input }) => {
         const userId = ctx.user?.id;
 
         if (!userId) return;
 
-        return ctx.db.transaction(async (tx) => {
-          const card = await tx.query.cards.findFirst({
-            where: eq(cards.publicId, input.cardPublicId),
-          })
+        const card = await ctx.db
+          .from('card')
+          .select(`id, index, listId`)
+          .eq('publicId', input.cardPublicId)
+          .limit(1)
+          .single();
 
-          if (!card) return;
+        if (!card.data) return;
 
-          await tx.update(cards).set({ deletedAt: new Date(), deletedBy: userId}).where(eq(cards.publicId, input.cardPublicId));
+        const deletedAt = new Date().toISOString();
 
-          await tx.execute(sql`UPDATE ${cards} SET ${cards.index} = ${cards.index} - 1 WHERE ${cards.listId} = ${card.listId} AND ${cards.index} > ${card.index} AND ${cards.deletedAt} IS NULL;`);
-        })
+        await ctx.db
+          .from('card')
+          .update({ deletedAt, deletedBy: userId})
+          .eq('publicId', input.cardPublicId);
+
+        await ctx.db
+          .from('card')
+          .update({ deletedAt, deletedBy: userId})
+          .eq('publicId', input.cardPublicId);
+
+        await ctx.db
+          .rpc('shift_card_index', {
+            list_id: card.data.listId,
+            card_index: card.data.index,
+          });
       }),
     reorder: publicProcedure
       .input(
@@ -299,69 +311,54 @@ export const cardRouter = createTRPCRouter({
           newListId: z.string().min(12),
           newIndex: z.number().optional(),
         }))
-      .mutation(({ ctx, input }) => {
+      .mutation(async ({ ctx, input }) => {
         const userId = ctx.user?.id;
 
         if (!userId) return;
 
-        return ctx.db.transaction(async (tx) => {
-          const card = await tx.query.cards.findFirst({
-            with: {
-              list: true,
-            },
-            where: and(eq(cards.publicId, input.cardId), isNull(cards.deletedAt)),
+        const card = await ctx.db
+          .from('card')
+          .select(`id, index, list (id)`)
+          .eq('publicId', input.cardId)
+          .is('deletedAt', null)
+          .limit(1)
+          .single();
+
+        if (!card.data) return;
+
+        const currentList = card.data.list;
+        const currentIndex = card.data.index;
+
+        let newIndex = input.newIndex;
+
+        const newList = await ctx.db
+          .from('list')
+          .select(`id, cards:card (index)`)
+          .eq('publicId', input.newListId)
+          .is('deletedAt', null)
+          .order('index', { foreignTable: 'card', ascending: false })
+          .limit(1)
+          .single();
+
+        if (!newList.data) return;
+
+        if (newIndex === undefined) {
+          const lastCardIndex = newList.data.cards.length ? newList.data.cards[0]?.index : undefined;
+
+          newIndex = lastCardIndex !== undefined ? lastCardIndex + 1 : 0;
+        }
+
+        if (!currentList?.id || !newList?.data.id) return;
+
+        const { error } = await ctx.db
+          .rpc('reorder_cards', {
+            current_list_id: currentList.id,
+            new_list_id: newList.data.id,
+            current_index: currentIndex,
+            new_index: newIndex,
+            card_id: card.data.id,
           });
 
-          if (!card) return;
-
-          const currentList = card.list;
-          const currentIndex = card.index;
-          
-          let newIndex = input.newIndex;
-
-          const newList = await tx.query.lists.findFirst({
-            with: {
-              cards: {
-                orderBy: [desc(cards.index)],
-                limit: 1,
-              },
-            },
-            where: and(eq(lists.publicId, input.newListId), isNull(cards.deletedAt)),
-          });
-
-          if (!newList) return;
-
-          if (newIndex === undefined) {
-            const lastCardIndex = newList.cards.length ? newList.cards[0]?.index : undefined;
-
-            newIndex = lastCardIndex !== undefined ? lastCardIndex + 1 : 0;
-          }
-
-          if (!currentList?.id || !newList?.id) return;
-
-
-          if (currentList.id === newList.id) {
-            await tx.execute(sql`
-              UPDATE ${cards}
-              SET index =
-                CASE
-                  WHEN ${cards.index} = ${currentIndex} THEN ${newIndex}
-                  WHEN ${currentIndex} < ${newIndex} AND ${cards.index} > ${currentIndex} AND ${cards.index} <= ${newIndex} THEN ${cards.index} - 1
-                  WHEN ${currentIndex} > ${newIndex} AND ${cards.index} >= ${newIndex} AND ${cards.index} < ${currentIndex} THEN ${cards.index} + 1
-                  ELSE ${cards.index}
-                END
-              WHERE ${cards.listId} = ${currentList.id} AND ${cards.deletedAt} IS NULL;
-            `);
-          } else {
-            await tx.execute(sql`UPDATE ${cards} SET index = index + 1 WHERE ${cards.listId} = ${newList.id} AND ${cards.index} >= ${newIndex} AND ${cards.deletedAt} IS NULL;`)
-
-            await tx.execute(sql`UPDATE ${cards} SET index = index - 1 WHERE ${cards.listId} = ${currentList.id} AND ${cards.index} >= ${currentIndex} AND ${cards.deletedAt} IS NULL;`)
-
-            await tx
-              .update(cards)
-              .set({ listId: newList.id, index: newIndex })
-              .where(and(eq(cards.publicId, input.cardId), isNull(cards.deletedAt)));
-          }
-        })
+        return { success: !!error }
       })
 });

@@ -13,7 +13,7 @@ export const workspaceRouter = createTRPCRouter({
 
       if (!userId) return;
 
-      const { data } = await ctx.supabase
+      const { data } = await ctx.db
         .from('workspace_members')
         .select(`
           role,
@@ -34,7 +34,7 @@ export const workspaceRouter = createTRPCRouter({
 
       if (!userId) return;
 
-      const { data } = await ctx.supabase
+      const { data } = await ctx.db
         .from('workspace')
         .select(`
           publicId,
@@ -66,7 +66,7 @@ export const workspaceRouter = createTRPCRouter({
 
       if (!userId) return;
 
-      const workspace = await ctx.supabase
+      const workspace = await ctx.db
         .from('workspace')
         .insert({
           publicId: generateUID(),
@@ -86,7 +86,7 @@ export const workspaceRouter = createTRPCRouter({
 
       if (!newWorkspaceId) return;
 
-      await ctx.supabase
+      await ctx.db
         .from('workspace_members')
         .insert({
           publicId: generateUID(),

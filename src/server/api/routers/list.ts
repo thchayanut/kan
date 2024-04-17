@@ -19,7 +19,7 @@ export const listRouter = createTRPCRouter({
 
       if (!userId) return;
 
-      const board = await ctx.supabase
+      const board = await ctx.db
         .from('board')
         .select(`id, lists:list (index)`)
         .eq('publicId', input.boardPublicId)
@@ -32,7 +32,7 @@ export const listRouter = createTRPCRouter({
 
       const latestListIndex = board.data.lists[0]?.index
 
-      const { data } = await ctx.supabase
+      const { data } = await ctx.db
         .from('list')
         .insert({
           publicId: generateUID(),
@@ -61,7 +61,7 @@ export const listRouter = createTRPCRouter({
 
       if (!userId) return;
 
-      const list = await ctx.supabase
+      const list = await ctx.db
         .from('list')
         .select(`id, boardId`)
         .eq('publicId', input.listId)
@@ -70,7 +70,7 @@ export const listRouter = createTRPCRouter({
 
       if (!list?.data) return;
 
-      const { data } = await ctx.supabase
+      const { data } = await ctx.db
         .rpc('reorder_list', { 
           board_id: list.data.boardId, 
           list_id: list.data.id, 
@@ -90,7 +90,7 @@ export const listRouter = createTRPCRouter({
 
       if (!userId) return;
 
-      const list = await ctx.supabase
+      const list = await ctx.db
         .from('list')
         .select(`id, boardId, index`)
         .eq('publicId', input.listPublicId)
@@ -101,19 +101,19 @@ export const listRouter = createTRPCRouter({
 
       const deletedAt = new Date().toISOString();
 
-      await ctx.supabase
+      await ctx.db
         .from('list')
         .update({ deletedAt, deletedBy: userId })
         .eq('id', list.data.id)
         .is('deletedAt', null);
 
-      await ctx.supabase
+      await ctx.db
         .from('card')
         .update({ deletedAt, deletedBy: userId })
         .eq('listId', list.data.id)
         .is('deletedAt', null);
       
-      const { data } = await ctx.supabase
+      const { data } = await ctx.db
         .rpc('shift_list_index', { 
           board_id: list.data.boardId, 
           list_index: list.data.index
@@ -132,7 +132,7 @@ export const listRouter = createTRPCRouter({
 
       if (!userId) return;
 
-      const { data } = await ctx.supabase
+      const { data } = await ctx.db
         .from('list')
         .update({ name: input.name })
         .eq('publicId', input.listPublicId)

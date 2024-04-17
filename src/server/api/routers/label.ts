@@ -20,7 +20,7 @@ export const labelRouter = createTRPCRouter({
 
       if (!userId) return;
 
-      const card = await ctx.supabase
+      const card = await ctx.db
         .from('card')
         .select(`id, list (boardId)`)
         .eq('publicId', input.cardPublicId)
@@ -30,7 +30,7 @@ export const labelRouter = createTRPCRouter({
 
       if (!card.data?.list) return;
 
-      const newLabel = await ctx.supabase
+      const newLabel = await ctx.db
         .from('label')
         .insert({
           publicId: generateUID(),
@@ -45,7 +45,7 @@ export const labelRouter = createTRPCRouter({
 
       if (!newLabel.data) return;
 
-      await ctx.supabase
+      await ctx.db
         .from('_card_labels')
         .insert({
           cardId: card.data.id,

@@ -11,10 +11,9 @@ import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
-import { db } from "~/server/db";
 import createClient from "~/utils/supabase/api";
 import { type Database } from "~/types/database.types";
-import { SupabaseClient } from '@supabase/supabase-js';
+import { type SupabaseClient } from '@supabase/supabase-js';
 
 /**
  * 1. CONTEXT
@@ -30,8 +29,7 @@ type User = {
 
 interface CreateContextOptions {
   user: User | null;
-  supabase: SupabaseClient<Database>
-  db: any;
+  db: SupabaseClient<Database>
 }
 
 /**
@@ -48,8 +46,7 @@ interface CreateContextOptions {
 export const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     user: opts.user,
-    supabase: opts.supabase,
-    db,
+    db: opts.db,
   };
 };
 
@@ -60,11 +57,11 @@ export const createInnerTRPCContext = (opts: CreateContextOptions) => {
  * @see https://trpc.io/docs/context
  */
 export const createTRPCContext = async (_opts: CreateNextContextOptions) => {
-  const supabase = createClient(_opts.req, _opts.res);
+  const db = createClient(_opts.req, _opts.res);
 
-  const { data: { user } } = await supabase.auth.getUser()
+  const { data: { user } } = await db.auth.getUser()
 
-  return createInnerTRPCContext({ user, supabase });
+  return createInnerTRPCContext({ user, db });
 };
 
 /**

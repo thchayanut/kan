@@ -87,7 +87,7 @@ export const importRouter = createTRPCRouter({
   
         if (!userId) return;
 
-        const newImport = await ctx.supabase
+        const newImport = await ctx.db
           .from('import')
           .insert({
             publicId: generateUID(),
@@ -103,7 +103,7 @@ export const importRouter = createTRPCRouter({
 
         let boardsCreated = 0;
 
-        const workspace = await ctx.supabase
+        const workspace = await ctx.db
           .from('workspace')
           .select(`id`)
           .eq('publicId', input.workspacePublicId)
@@ -130,7 +130,7 @@ export const importRouter = createTRPCRouter({
             }))
           }
 
-          const newBoard = await ctx.supabase
+          const newBoard = await ctx.db
             .from('board')
             .insert({
               publicId: generateUID(),
@@ -150,7 +150,7 @@ export const importRouter = createTRPCRouter({
           let listIndex = 0;
 
           for (const list of formattedData.lists) {
-            const newList = await ctx.supabase
+            const newList = await ctx.db
               .from('list')
               .insert({
                 publicId: generateUID(),
@@ -177,7 +177,7 @@ export const importRouter = createTRPCRouter({
                 importId: newImportId
               }))
 
-              await ctx.supabase
+              await ctx.db
                 .from('card')
                 .insert(cardsInsert);
             }
@@ -188,7 +188,7 @@ export const importRouter = createTRPCRouter({
         }
 
         if (boardsCreated > 0 && newImportId) {
-          await ctx.supabase
+          await ctx.db
             .from('import')
             .update({ status: 'success' })
             .eq('importId', newImportId);
