@@ -1,9 +1,6 @@
 import { z } from "zod";
 
-import {
-  createTRPCRouter,
-  publicProcedure,
-} from "~/server/api/trpc";
+import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 export const authRouter = createTRPCRouter({
   login: publicProcedure
@@ -12,10 +9,10 @@ export const authRouter = createTRPCRouter({
       const { data } = await ctx.db.auth.signInWithOtp({
         email: input.email,
         options: {
-          emailRedirectTo: '/boards',
+          emailRedirectTo: "/boards",
         },
-      })
+      });
 
       return data;
-    })
+    }),
 });

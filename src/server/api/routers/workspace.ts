@@ -1,61 +1,57 @@
 import { z } from "zod";
 import { generateUID } from "~/utils/generateUID";
 
-import {
-  createTRPCRouter,
-  publicProcedure,
-} from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const workspaceRouter = createTRPCRouter({
-  all: publicProcedure
-    .query(async ({ ctx }) => {
-      const userId = ctx.user?.id;
+  all: protectedProcedure.query(async ({ ctx }) => {
+    const userId = ctx.user?.id;
 
-      if (!userId) return;
+    if (!userId) return;
 
-      const { data } = await ctx.db
-        .from('workspace_members')
-        .select(`
+    const { data } = await ctx.db
+      .from("workspace_members")
+      .select(
+        `
           role,
           workspace (
             publicId,
             name
           )
-        `)
-        .eq('userId', userId)
-        .is('deletedAt', null);
+        `,
+      )
+      .eq("userId", userId)
+      .is("deletedAt", null);
 
-      return data;
-    }),
-  byId: publicProcedure
+    return data;
+  }),
+  byId: protectedProcedure
     .input(z.object({ publicId: z.string().min(12) }))
     .query(async ({ ctx, input }) => {
-      const userId = ctx.user?.id;
-
-      if (!userId) return;
-
       const { data } = await ctx.db
-        .from('workspace')
-        .select(`
-          publicId,
-          members: workspace_members (
+        .from("workspace")
+        .select(
+          `
             publicId,
-            role,
-            user (
-              id,
-              name,
-              email
+            members: workspace_members (
+              publicId,
+              role,
+              user (
+                id,
+                name,
+                email
+              )
             )
-          )
-        `)
-        .eq('publicId', input.publicId)
-        .is('deletedAt', null)
+          `,
+        )
+        .eq("publicId", input.publicId)
+        .is("deletedAt", null)
         .limit(1)
         .single();
 
       return data;
     }),
-  create: publicProcedure
+  create: protectedProcedure
     .input(
       z.object({
         name: z.string().min(1),
@@ -67,34 +63,28 @@ export const workspaceRouter = createTRPCRouter({
       if (!userId) return;
 
       const workspace = await ctx.db
-        .from('workspace')
+        .from("workspace")
         .insert({
           publicId: generateUID(),
           name: input.name,
           slug: input.name.toLowerCase(),
           createdBy: userId,
         })
-        .select(`
-          id,
-          publicId,
-          name
-        `)
+        .select(`id, publicId, name`)
         .limit(1)
-        .single()
+        .single();
 
-      const newWorkspaceId = workspace.data?.id
+      const newWorkspaceId = workspace.data?.id;
 
       if (!newWorkspaceId) return;
 
-      await ctx.db
-        .from('workspace_members')
-        .insert({
-          publicId: generateUID(),
-          userId,
-          workspaceId: newWorkspaceId,
-          createdBy: userId,
-          role: 'admin'
-        })
+      await ctx.db.from("workspace_members").insert({
+        publicId: generateUID(),
+        userId,
+        workspaceId: newWorkspaceId,
+        createdBy: userId,
+        role: "admin",
+      });
 
       const newWorkspace = { ...workspace.data };
 

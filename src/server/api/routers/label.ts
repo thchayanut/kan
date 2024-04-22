@@ -1,13 +1,10 @@
 import { z } from "zod";
 import { generateUID } from "~/utils/generateUID";
 
-import {
-  createTRPCRouter,
-  publicProcedure,
-} from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const labelRouter = createTRPCRouter({
-  create: publicProcedure
+  create: protectedProcedure
     .input(
       z.object({
         name: z.string().min(1).max(36),
@@ -21,17 +18,17 @@ export const labelRouter = createTRPCRouter({
       if (!userId) return;
 
       const card = await ctx.db
-        .from('card')
+        .from("card")
         .select(`id, list (boardId)`)
-        .eq('publicId', input.cardPublicId)
-        .is('deletedAt', null)
+        .eq("publicId", input.cardPublicId)
+        .is("deletedAt", null)
         .limit(1)
         .single();
 
       if (!card.data?.list) return;
 
       const newLabel = await ctx.db
-        .from('label')
+        .from("label")
         .insert({
           publicId: generateUID(),
           name: input.name,
@@ -45,12 +42,10 @@ export const labelRouter = createTRPCRouter({
 
       if (!newLabel.data) return;
 
-      await ctx.db
-        .from('_card_labels')
-        .insert({
-          cardId: card.data.id,
-          labelId: newLabel.data.id,
-        })
+      await ctx.db.from("_card_labels").insert({
+        cardId: card.data.id,
+        labelId: newLabel.data.id,
+      });
 
       return newLabel.data;
     }),
