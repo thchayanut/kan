@@ -12,7 +12,6 @@ import { api } from "~/utils/api";
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-plus-jakarta-sans",
 });
 
 export const metadata = {
@@ -23,15 +22,22 @@ export const metadata = {
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
-    <main className={`${jakarta.variable} h-screen overflow-hidden font-sans`}>
-      <ThemeProvider>
-        <ModalProvider>
-          <BoardProvider>
-            <Component {...pageProps} />
-          </BoardProvider>
-        </ModalProvider>
-      </ThemeProvider>
-    </main>
+    <>
+      <style jsx global>{`
+        html {
+          font-family: ${jakarta.style.fontFamily};
+        }
+      `}</style>
+      <main className="h-screen overflow-hidden font-sans">
+        <ThemeProvider>
+          <ModalProvider>
+            <BoardProvider>
+              <Component {...pageProps} />
+            </BoardProvider>
+          </ModalProvider>
+        </ThemeProvider>
+      </main>
+    </>
   );
 };
 

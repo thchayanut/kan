@@ -1,12 +1,19 @@
 import { Formik, Form, Field } from "formik";
 import { api } from "~/utils/api";
+import { useRouter } from "next/navigation";
 
 interface FormValues {
   email: string;
 }
 
 export function Login() {
-  const login = api.auth.login.useMutation();
+  const router = useRouter();
+
+  const login = api.auth.login.useMutation({
+    onSuccess: () => {
+      router.push("/verify");
+    },
+  });
 
   return (
     <Formik

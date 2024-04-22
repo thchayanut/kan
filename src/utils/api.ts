@@ -4,12 +4,35 @@
  *
  * We also create a few inference helpers for input and output types.
  */
-import { httpBatchLink, loggerLink } from "@trpc/client";
+import { httpBatchLink, loggerLink, type TRPCLink } from "@trpc/client";
+import { observable } from "@trpc/server/observable";
 import { createTRPCNext } from "@trpc/next";
 import { type inferRouterInputs, type inferRouterOutputs } from "@trpc/server";
 import superjson from "superjson";
 
 import { type AppRouter } from "~/server/api/root";
+
+const authLink: TRPCLink<AppRouter> = () => {
+  return ({ next, op }) => {
+    return observable((observer) => {
+      const unsubscribe = next(op).subscribe({
+        next(value) {
+          observer.next(value);
+        },
+        error(err) {
+          if (typeof window !== "undefined" && err.message === "UNAUTHORIZED") {
+            window.location.href = "/login";
+          }
+          observer.error(err);
+        },
+        complete() {
+          observer.complete();
+        },
+      });
+      return unsubscribe;
+    });
+  };
+};
 
 const getBaseUrl = () => {
   if (typeof window !== "undefined") return ""; // browser should use relative url
@@ -32,6 +55,7 @@ export const api = createTRPCNext<AppRouter>({
             process.env.NODE_ENV === "development" ||
             (opts.direction === "down" && opts.result instanceof Error),
         }),
+        authLink,
         httpBatchLink({
           /**
            * Transformer used for data de-serialization from the server.
