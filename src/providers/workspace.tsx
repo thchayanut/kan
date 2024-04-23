@@ -58,21 +58,27 @@ export const WorkspaceProvider: React.FC<{ children: ReactNode }> = ({
       localStorage.getItem("workspacePublicId");
 
     if (data?.length) {
-      const workspaces = data.map(({ workspace }) => ({
-        publicId: workspace.publicId,
-        name: workspace.name,
-      }));
+      const workspaces = data
+        .map(({ workspace }) => {
+          if (!workspace) return;
 
-      setAvailableWorkspaces(workspaces);
+          return {
+            publicId: workspace.publicId,
+            name: workspace.name,
+          };
+        })
+        .filter((workspace) => workspace !== null) as Workspace[];
+
+      if (workspaces.length) setAvailableWorkspaces(workspaces);
     }
 
     if (storedWorkspaceId !== null) {
       const newData = data;
       const selectedWorkspace = newData?.find(
-        ({ workspace }) => workspace.publicId === storedWorkspaceId,
+        ({ workspace }) => workspace?.publicId === storedWorkspaceId,
       );
 
-      if (!selectedWorkspace) return;
+      if (!selectedWorkspace?.workspace) return;
 
       setWorkspace({
         publicId: selectedWorkspace.workspace.publicId,

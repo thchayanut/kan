@@ -4,7 +4,7 @@ import Modal from "~/components/modal";
 import { NewWorkspaceForm } from "~/components/NewWorkspaceForm";
 
 export default function SettingsPage() {
-  const { openModal, modalContentType } = useModal();
+  const { modalContentType } = useModal();
 
   return (
     <div className="px-28 py-12">

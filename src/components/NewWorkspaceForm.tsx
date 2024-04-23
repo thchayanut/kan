@@ -19,7 +19,7 @@ export function NewWorkspaceForm() {
   const createWorkspace = api.workspace.create.useMutation({
     onSuccess: (values) => {
       try {
-        if (values?.publicId) {
+        if (values?.publicId && values.name) {
           switchWorkspace({ publicId: values.publicId, name: values.name });
           closeModal();
         }

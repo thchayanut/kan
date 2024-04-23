@@ -8,7 +8,7 @@ import { NewWorkspaceForm } from "~/components/NewWorkspaceForm";
 import { api } from "~/utils/api";
 
 export default function MembersPage() {
-  const { openModal, modalContentType } = useModal();
+  const { modalContentType } = useModal();
   const { workspace } = useWorkspace();
 
   const { data } = api.workspace.byId.useQuery(
@@ -68,7 +68,7 @@ export default function MembersPage() {
                           <div className="flex-shrink-0">
                             <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-light-1000 dark:bg-dark-400">
                               <span className="text-sm font-medium leading-none text-white">
-                                {member.user.name
+                                {member.user?.name
                                   ?.split(" ")
                                   .map((namePart) =>
                                     namePart.charAt(0).toUpperCase(),
@@ -81,11 +81,11 @@ export default function MembersPage() {
                             <div>
                               <div className="flex items-center">
                                 <p className="mr-2 text-sm font-medium text-neutral-900 dark:text-dark-1000">
-                                  {member.user.name}
+                                  {member.user?.name}
                                 </p>
                               </div>
                               <p className="truncate text-sm text-dark-900">
-                                {member.user.email}
+                                {member.user?.email}
                               </p>
                             </div>
                           </div>

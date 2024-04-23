@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { api } from "~/utils/api";
 
@@ -88,7 +88,7 @@ export function NewCardForm({ listPublicId }: NewCardFormProps) {
   const formattedMembers =
     boardData?.workspace?.members?.map((member) => ({
       key: member.publicId,
-      value: member.user.name,
+      value: member.user?.name ?? "",
       selected: memberPublicIds.includes(member.publicId),
     })) ?? [];
 
