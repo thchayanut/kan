@@ -1,7 +1,7 @@
 import { type EmailOtpType } from "@supabase/supabase-js";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import createClient from "~/utils/supabase/api";
+import { createNextClient } from "~/utils/supabase/api";
 
 function stringOrFirstString(item: string | string[] | undefined) {
   return Array.isArray(item) ? item[0] : item;
@@ -23,7 +23,7 @@ export default async function handler(
   let next = "/error";
 
   if (token_hash && type) {
-    const supabase = createClient(req, res);
+    const supabase = createNextClient(req, res);
     const { error } = await supabase.auth.verifyOtp({
       type: type as EmailOtpType,
       token_hash,
@@ -37,3 +37,7 @@ export default async function handler(
 
   res.redirect(next);
 }
+
+// export const runtime = "edge";
+// export const preferredRegion = "lhr1";
+// export const dynamic = "force-dynamic";

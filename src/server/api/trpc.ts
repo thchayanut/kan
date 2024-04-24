@@ -7,11 +7,11 @@
  * need to use are documented accordingly near the end.
  */
 import { initTRPC, TRPCError } from "@trpc/server";
-import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
+import { type FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 import superjson from "superjson";
 import { ZodError } from "zod";
 
-import createClient from "~/utils/supabase/api";
+import { createTRPCClient } from "~/utils/supabase/api";
 import { type Database } from "~/types/database.types";
 import { type SupabaseClient } from "@supabase/supabase-js";
 
@@ -56,8 +56,11 @@ export const createInnerTRPCContext = (opts: CreateContextOptions) => {
  *
  * @see https://trpc.io/docs/context
  */
-export const createTRPCContext = async (_opts: CreateNextContextOptions) => {
-  const db = createClient(_opts.req, _opts.res);
+export const createTRPCContext = async ({
+  req,
+  resHeaders,
+}: FetchCreateContextFnOptions) => {
+  const db = createTRPCClient(req, resHeaders);
 
   const {
     data: { user },

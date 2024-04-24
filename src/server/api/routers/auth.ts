@@ -9,7 +9,7 @@ export const authRouter = createTRPCRouter({
       const { data } = await ctx.db.auth.signInWithOtp({
         email: input.email,
         options: {
-          emailRedirectTo: "/boards",
+          emailRedirectTo: `${process.env.WEBSITE_URL}/boards`,
         },
       });
 
