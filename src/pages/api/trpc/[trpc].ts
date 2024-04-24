@@ -22,6 +22,7 @@ export default async function handler(req: NextRequest) {
   });
 }
 
-export const runtime = "edge";
-export const preferredRegion = "lhr1";
-export const dynamic = "force-dynamic";
+export const config = {
+  runtime: "edge",
+  regions: ["lhr1"],
+};
