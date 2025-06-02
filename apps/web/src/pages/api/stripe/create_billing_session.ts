@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { env } from "next-runtime-env";
 
 import { createNextApiContext } from "@kan/api/trpc";
 import { createStripeClient } from "@kan/stripe";
@@ -22,7 +23,7 @@ export default async function handler(
 
     const session = await stripe.billingPortal.sessions.create({
       customer: user.stripeCustomerId,
-      return_url: `${process.env.NEXT_PUBLIC_BASE_URL}/settings`,
+      return_url: `${env("NEXT_PUBLIC_BASE_URL")}/settings`,
     });
 
     return res.status(200).json({ url: session.url });

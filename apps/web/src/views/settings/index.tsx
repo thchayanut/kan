@@ -1,3 +1,4 @@
+import { env } from "next-runtime-env";
 import { HiMiniArrowTopRightOnSquare } from "react-icons/hi2";
 
 import Button from "~/components/Button";
@@ -95,7 +96,7 @@ export default function SettingsPage() {
               />
             </div>
 
-            {process.env.NEXT_PUBLIC_KAN_ENV === "cloud" && (
+            {env("NEXT_PUBLIC_KAN_ENV") === "cloud" && (
               <div className="mb-8 border-t border-light-300 dark:border-dark-300">
                 <h2 className="mb-4 mt-8 text-[14px] text-neutral-900 dark:text-dark-1000">
                   Billing

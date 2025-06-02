@@ -138,6 +138,9 @@ importers:
       next-logger:
         specifier: ^5.0.1
         version: 5.0.1(next@14.2.20(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(pino@9.6.0)
+      next-runtime-env:
+        specifier: ^1.7.2
+        version: 1.8.0
       nextjs-cors:
         specifier: ^2.2.0
         version: 2.2.0(next@14.2.20(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
@@ -4460,6 +4463,9 @@ packages:
         optional: true
       winston:
         optional: true
+
+  next-runtime-env@1.8.0:
+    resolution: {integrity: sha512-QJVxzmr2gTao/vZKFgcrByFrifl0YOMTvuUVxcI/X7ratlW+9zMvMmA9AGU9cFsumXJtohWkCvwPdBNdkTCYfw==}
 
   next@14.2.20:
     resolution: {integrity: sha512-yPvIiWsiyVYqJlSQxwmzMIReXn5HxFNq4+tlVQ812N1FbvhmE+fDpIAD7bcS2mGYQwPJ5vAsQouyme2eKsxaug==}
@@ -10664,6 +10670,10 @@ snapshots:
       next: 14.2.20(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     optionalDependencies:
       pino: 9.6.0
+
+  next-runtime-env@1.8.0:
+    dependencies:
+      chalk: 4.1.2
 
   next@14.2.20(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:

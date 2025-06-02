@@ -1,7 +1,7 @@
 import Image from "next/image";
+import { env } from "next-runtime-env";
 import { useState } from "react";
 
-import { env } from "~/env";
 import { usePopup } from "~/providers/popup";
 import { api } from "~/utils/api";
 import { getAvatarUrl } from "~/utils/helpers";
@@ -62,7 +62,7 @@ export default function Avatar({
       setUploading(true);
 
       const response = await fetch(
-        env.NEXT_PUBLIC_BASE_URL + "/api/upload/image",
+        env("NEXT_PUBLIC_BASE_URL") + "/api/upload/image",
         {
           method: "POST",
           headers: {

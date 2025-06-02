@@ -42,13 +42,6 @@ ENV CI=true
 
 WORKDIR /app
 
-ARG NEXT_PUBLIC_KAN_ENV=${NEXT_PUBLIC_KAN_ENV}
-ARG NEXT_PUBLIC_UMAMI_ID=${NEXT_PUBLIC_UMAMI_ID}
-ARG NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL}
-ARG NEXT_PUBLIC_STORAGE_URL=${NEXT_PUBLIC_STORAGE_URL}
-ARG NEXT_PUBLIC_STORAGE_DOMAIN=${NEXT_PUBLIC_STORAGE_DOMAIN}
-ARG NEXT_PUBLIC_AVATAR_BUCKET_NAME=${NEXT_PUBLIC_AVATAR_BUCKET_NAME}
-
 # Copy lockfile and package.json's of isolated subworkspace
 COPY --from=pruner /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
 COPY --from=pruner /app/out/pnpm-workspace.yaml ./pnpm-workspace.yaml

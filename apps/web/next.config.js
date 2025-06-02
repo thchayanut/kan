@@ -1,8 +1,12 @@
 import { fileURLToPath } from "url";
 import createJiti from "jiti";
+import { env } from "next-runtime-env";
+import { configureRuntimeEnv } from "next-runtime-env/build/configure.js";
 
 // Import env files to validate at build time. Use jiti so we can load .ts files in here.
 createJiti(fileURLToPath(import.meta.url))("./src/env");
+
+configureRuntimeEnv();
 
 /** @type {import("next").NextConfig} */
 const config = {
@@ -22,7 +26,7 @@ const config = {
   typescript: { ignoreBuildErrors: true },
 
   images: {
-    domains: [process.env.NEXT_PUBLIC_STORAGE_DOMAIN ?? ""],
+    domains: [env("NEXT_PUBLIC_STORAGE_DOMAIN") ?? ""],
   },
   experimental: {
     instrumentationHook: true,

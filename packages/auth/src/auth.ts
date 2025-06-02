@@ -3,6 +3,7 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { createAuthMiddleware } from "better-auth/api";
 import { apiKey } from "better-auth/plugins";
 import { magicLink } from "better-auth/plugins/magic-link";
+import { env } from "next-runtime-env";
 
 import type { dbClient } from "@kan/db/client";
 import * as memberRepo from "@kan/db/repository/member.repo";
@@ -70,7 +71,7 @@ export const initAuth = (db: dbClient) => {
           const user = ctx.context.session?.user;
 
           if (
-            process.env.NEXT_PUBLIC_KAN_ENV === "cloud" &&
+            env("NEXT_PUBLIC_KAN_ENV") === "cloud" &&
             user &&
             !user.stripeCustomerId
           ) {
