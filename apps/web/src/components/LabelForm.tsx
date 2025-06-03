@@ -111,6 +111,7 @@ export function LabelForm({
             {isEdit ? "Edit label" : "New label"}
           </h2>
           <button
+            type="button"
             className="rounded p-1 hover:bg-light-300 focus:outline-none dark:hover:bg-dark-300"
             onClick={(e) => {
               e.preventDefault();

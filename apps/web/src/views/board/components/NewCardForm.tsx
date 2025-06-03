@@ -226,6 +226,7 @@ export function NewCardForm({
             New card
           </h2>
           <button
+            type="button"
             className="rounded p-1 hover:bg-light-200 focus:outline-none dark:hover:bg-dark-300"
             onClick={(e) => {
               closeModal();

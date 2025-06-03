@@ -40,6 +40,7 @@ export function InviteMemberForm() {
         <div className="text-neutral-9000 flex w-full items-center justify-between pb-4 dark:text-dark-1000">
           <h2 className="text-sm font-bold">Add member</h2>
           <button
+            type="button"
             className="hover:bg-li ght-300 rounded p-1 focus:outline-none dark:hover:bg-dark-300"
             onClick={(e) => {
               e.preventDefault();
