@@ -1,5 +1,5 @@
 import { Listbox, Transition } from "@headlessui/react";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { HiChevronUpDown, HiXMark } from "react-icons/hi2";
 
@@ -103,6 +103,12 @@ export function LabelForm({
     }
   };
 
+  useEffect(() => {
+    const nameElement: HTMLElement | null =
+      document.querySelector<HTMLElement>("#label-name");
+    if (nameElement) nameElement.focus();
+  }, []);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="px-5 pt-5">
@@ -122,7 +128,17 @@ export function LabelForm({
           </button>
         </div>
 
-        <Input id="label-name" placeholder="Name" {...register("name")} />
+        <Input
+          id="label-name"
+          placeholder="Name"
+          {...register("name")}
+          onKeyDown={async (e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              await handleSubmit(onSubmit)();
+            }
+          }}
+        />
         <Controller
           name="colour"
           control={control}

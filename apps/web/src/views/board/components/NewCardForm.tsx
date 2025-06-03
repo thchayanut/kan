@@ -238,7 +238,17 @@ export function NewCardForm({
         </div>
 
         <div>
-          <Input id="title" placeholder="Card title" {...register("title")} />
+          <Input
+            id="title"
+            placeholder="Card title"
+            {...register("title")}
+            onKeyDown={async (e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                await handleSubmit(onSubmit)();
+              }
+            }}
+          />
         </div>
         <div className="mt-2">
           <Input
@@ -246,6 +256,12 @@ export function NewCardForm({
             onChange={(e) => setValue("description", e.target.value)}
             value={watch("description")}
             contentEditable
+            onKeyDown={async (e) => {
+              if (e.key === "Enter" && e.shiftKey) {
+                e.preventDefault();
+                await handleSubmit(onSubmit)();
+              }
+            }}
           />
         </div>
         <div className="mt-2 flex space-x-1">

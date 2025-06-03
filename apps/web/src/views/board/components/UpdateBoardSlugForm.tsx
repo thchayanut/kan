@@ -108,6 +108,12 @@ export function UpdateBoardSlugForm({
           {...register("slug")}
           errorMessage={errors.slug?.message}
           prefix={`kan.bn/${workspaceSlug}/`}
+          onKeyDown={async (e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              await handleSubmit(onSubmit)();
+            }
+          }}
         />
       </div>
       <div className="mt-12 flex items-center justify-end border-t border-light-600 px-5 pb-5 pt-5 dark:border-dark-600">

@@ -69,6 +69,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               prefix && "rounded-l-none",
               className && className,
             )}
+            onKeyDown={onKeyDown}
             {...props}
           />
           {type === "password" && (

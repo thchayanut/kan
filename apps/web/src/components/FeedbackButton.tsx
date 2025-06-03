@@ -98,12 +98,16 @@ const FeedbackButton: React.FC = () => {
                 onChange={(e) => {
                   setValue("feedback", e.target.value);
                 }}
-                onKeyDown={(e) => {
-                  e.stopPropagation();
-                }}
                 value={watch("feedback")}
                 contentEditable
                 className="max-h-[300px] min-h-[100px]"
+                onKeyDown={async (e) => {
+                  e.stopPropagation();
+                  if (e.key === "Enter" && e.shiftKey) {
+                    e.preventDefault();
+                    await handleSubmit(onSubmit)();
+                  }
+                }}
               />
               <div className="flex flex-row items-center justify-between pt-2">
                 <div>
