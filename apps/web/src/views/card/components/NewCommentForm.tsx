@@ -58,6 +58,12 @@ const NewCommentForm = ({ cardPublicId }: { cardPublicId: string }) => {
         disabled={false}
         onChange={(e) => setValue("comment", e.target.value)}
         className="block w-full border-0 bg-transparent py-1.5 text-light-900 focus-visible:outline-none dark:text-dark-1000 sm:text-sm sm:leading-6"
+        onKeyDown={async (e) => {
+          if (e.key === "Enter" && e.shiftKey) {
+            e.preventDefault();
+            await handleSubmit(onSubmit)();
+          }
+        }}
       />
       <div className="flex justify-end">
         <button

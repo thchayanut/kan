@@ -32,6 +32,10 @@
 
 See our [roadmap](https://kan.bn/kan/roadmap) for upcoming features.
 
+## Screenshot 👁️
+
+<img width="1507" alt="hero-dark" src="https://github.com/user-attachments/assets/5f7b6ad3-f31d-4b45-93dc-0132b3f2afd4" />
+
 ## Made With 🛠️
 
 - [Next.js](https://nextjs.org/?ref=kan.bn)
@@ -41,7 +45,7 @@ See our [roadmap](https://kan.bn/kan/roadmap) for upcoming features.
 - [Drizzle ORM](https://orm.drizzle.team/?ref=kan.bn)
 - [React Email](https://react.email/?ref=kan.bn)
 
-## Local Development 🛠️
+## Local Development 🧑‍💻
 
 1. Clone the repository (or fork)
 
@@ -61,6 +65,30 @@ pnpm install
 ```bash
 pnpm dev
 ```
+
+## Environment Variables 🔐
+
+| Variable                         | Description                   | Required         | Example                                       |
+| -------------------------------- | ----------------------------- | ---------------- | --------------------------------------------- |
+| `POSTGRES_URL`                   | PostgreSQL connection URL     | Yes              | `postgres://user:pass@localhost:5432/db`      |
+| `EMAIL_FROM`                     | Sender email address          | Yes              | `"Kan <hello@mail.kan.bn>"`                   |
+| `EMAIL_URL`                      | Email service API URL         | Yes              | `https://api.resend.com/emails`               |
+| `EMAIL_TOKEN`                    | Email service API token       | Yes              | `re_xxxx`                                     |
+| `NEXT_PUBLIC_BASE_URL`           | Base URL of your installation | Yes              | `http://localhost:3000`                       |
+| `BETTER_AUTH_SECRET`             | Auth encryption secret        | Yes              | Random 32+ char string                        |
+| `BETTER_AUTH_URL`                | Auth callback URL             | Yes              | Same as `NEXT_PUBLIC_BASE_URL`                |
+| `BETTER_AUTH_TRUSTED_ORIGINS`    | Allowed callback origins      | For Google login | `http://localhost:3000,http://localhost:3001` |
+| `GOOGLE_CLIENT_ID`               | Google OAuth client ID        | For Google login | `xxx.apps.googleusercontent.com`              |
+| `GOOGLE_CLIENT_SECRET`           | Google OAuth client secret    | For Google login | `xxx`                                         |
+| `S3_REGION`                      | S3 storage region             | For file uploads | `WEUR`                                        |
+| `S3_ENDPOINT`                    | S3 endpoint URL               | For file uploads | `https://xxx.r2.cloudflarestorage.com`        |
+| `S3_ACCESS_KEY_ID`               | S3 access key                 | For file uploads | `xxx`                                         |
+| `S3_SECRET_ACCESS_KEY`           | S3 secret key                 | For file uploads | `xxx`                                         |
+| `NEXT_PUBLIC_STORAGE_URL`        | Storage service URL           | For file uploads | `https://storage.kanbn.com`                   |
+| `NEXT_PUBLIC_STORAGE_DOMAIN`     | Storage domain name           | For file uploads | `storage.kanbn.com`                           |
+| `NEXT_PUBLIC_AVATAR_BUCKET_NAME` | S3 bucket name for avatars    | For file uploads | `avatars`                                     |
+
+See `.env.example` for a complete list of supported environment variables.
 
 ## Contributing 🤝
 

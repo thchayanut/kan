@@ -2,6 +2,10 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { env } from "next-runtime-env";
+import { createNextApiContext } from "@kan/api/trpc";
+
+
+const allowedContentTypes = ["image/jpeg", "image/png"];
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,14 +16,37 @@ export default async function handler(
   }
 
   try {
-    const { filename, contentType } = req.body;
+    const { user } = await createNextApiContext(req);
+
+    if (!user) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const { filename, contentType } = req.body as {
+      filename: string;
+      contentType: string;
+    };
+
+    // Specific to avatar uploads for now
+    const filenameRegex = /^[a-f0-9\-]+\/[a-zA-Z0-9_\-]+(\.jpg|\.jpeg|\.png)$/;
+
+    if (!filenameRegex.test(filename)) {
+      return res.status(400).json({ error: "Invalid filename" });
+    }
+
+    if (
+      typeof contentType !== "string" ||
+      !allowedContentTypes.includes(contentType)
+    ) {
+      return res.status(400).json({ error: "Invalid content type" });
+    }
 
     const client = new S3Client({
-      region: env.S3_REGION,
-      endpoint: env.S3_ENDPOINT,
+      region: env.S3_REGION ?? "",
+      endpoint: env.S3_ENDPOINT ?? "",
       credentials: {
-        accessKeyId: env.S3_ACCESS_KEY_ID,
-        secretAccessKey: env.S3_SECRET_ACCESS_KEY,
+        accessKeyId: env.S3_ACCESS_KEY_ID ?? "",
+        secretAccessKey: env.S3_SECRET_ACCESS_KEY ?? "",
       },
     });
 

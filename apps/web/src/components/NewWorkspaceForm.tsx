@@ -61,6 +61,7 @@ export function NewWorkspaceForm() {
             New workspace
           </h2>
           <button
+            type="button"
             className="rounded p-1 hover:bg-light-200 focus:outline-none dark:hover:bg-dark-300"
             onClick={(e) => {
               e.preventDefault();
@@ -75,6 +76,12 @@ export function NewWorkspaceForm() {
           id="workspace-name"
           placeholder="Workspace name"
           {...register("name")}
+          onKeyDown={async (e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              await handleSubmit(onSubmit)();
+            }
+          }}
         />
       </div>
       <div className="mt-12 flex items-center justify-end border-t border-light-600 px-5 pb-5 pt-5 dark:border-dark-600">

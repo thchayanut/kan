@@ -251,6 +251,7 @@ export function ImportBoardsForm() {
         </div>
 
         <button
+          type="button"
           className="rounded p-1 hover:bg-light-200 dark:hover:bg-dark-300"
           onClick={() => closeModal()}
         >
