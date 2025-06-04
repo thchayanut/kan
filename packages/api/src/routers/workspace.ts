@@ -1,4 +1,5 @@
 import { TRPCError } from "@trpc/server";
+import { env } from "next-runtime-env";
 import { z } from "zod";
 
 import * as workspaceRepo from "@kan/db/repository/workspace.repo";
@@ -225,9 +226,18 @@ export const workspaceRouter = createTRPCRouter({
           await workspaceRepo.isWorkspaceSlugAvailable(ctx.db, input.slug);
 
         if (
+          env("NEXT_PUBLIC_KAN_ENV") === "cloud" &&
+          workspace.plan !== "pro" &&
+          input.slug !== workspace.publicId
+        ) {
+          throw new TRPCError({
+            message: `Workspace slug cannot be changed in cloud without upgrading to a paid plan`,
+            code: "CONFLICT",
+          });
+        }
+
+        if (
           reservedOrPremiumWorkspaceSlug?.type === "reserved" ||
-          (workspace.plan !== "pro" &&
-            reservedOrPremiumWorkspaceSlug?.type === "premium") ||
           !isWorkspaceSlugAvailable
         ) {
           throw new TRPCError({

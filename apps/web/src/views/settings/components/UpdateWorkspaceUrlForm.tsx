@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { env } from "next-runtime-env";
 import { useForm } from "react-hook-form";
 import { HiCheck, HiMiniStar } from "react-icons/hi2";
 import { z } from "zod";
@@ -92,7 +93,9 @@ const UpdateWorkspaceUrlForm = ({
   const isWorkspaceSlugAvailable = checkWorkspaceSlugAvailability.data;
 
   const onSubmit = (data: FormValues) => {
-    if (isWorkspaceSlugAvailable?.isAvailable && workspacePlan !== "pro")
+    if (!isWorkspaceSlugAvailable?.isAvailable) return;
+
+    if (workspacePlan !== "pro" && env("NEXT_PUBLIC_KAN_ENV") === "cloud")
       return openModal("UPDATE_WORKSPACE_URL", data.slug);
 
     updateWorkspaceSlug.mutate({
@@ -118,7 +121,11 @@ const UpdateWorkspaceUrlForm = ({
               ? "This workspace username has already been taken"
               : undefined)
           }
-          prefix="kan.bn/"
+          prefix={
+            env("NEXT_PUBLIC_KAN_ENV") === "cloud"
+              ? "kan.bn/"
+              : `${env("NEXT_PUBLIC_BASE_URL")}/`
+          }
           iconRight={
             isWorkspaceSlugAvailable?.isAvailable ||
             (workspacePlan === "pro" && slug === workspaceUrl) ? (
