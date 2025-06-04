@@ -1,4 +1,5 @@
 import { render } from "@react-email/render";
+import nodemailer from "nodemailer";
 
 import JoinWorkspaceTemplate from "./templates/join-workspace";
 import MagicLinkTemplate from "./templates/magic-link";
@@ -10,6 +11,16 @@ const emailTemplates: Record<Templates, React.FC> = {
   JOIN_WORKSPACE: JoinWorkspaceTemplate,
 };
 
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT),
+  secure: true,
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASSWORD,
+  },
+});
+
 export const sendEmail = async (
   to: string,
   subject: string,
@@ -20,22 +31,17 @@ export const sendEmail = async (
 
   const html = await render(<EmailTemplate {...data} />, { pretty: true });
 
-  const response = await fetch(process.env.EMAIL_URL!, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.EMAIL_TOKEN}`,
-    },
-    body: JSON.stringify({
-      from: process.env.EMAIL_FROM,
-      to,
-      subject,
-      html,
-    }),
-  });
+  const options = {
+    from: process.env.EMAIL_FROM,
+    to,
+    subject,
+    html,
+  };
 
-  if (!response.ok) {
-    throw new Error(`Failed to send email: ${response.statusText}`);
+  const response = await transporter.sendMail(options);
+
+  if (!response.accepted.length) {
+    throw new Error(`Failed to send email: ${response.response}`);
   }
 
   return response;

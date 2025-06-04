@@ -4,7 +4,15 @@
   "version": "0.1.0",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./client": {
+      "types": "./src/client.ts",
+      "default": "./src/client.ts"
+    },
+    "./server": {
+      "types": "./src/server.ts",
+      "default": "./src/server.ts"
+    }
   },
   "license": "GPL-3.0",
   "scripts": {

@@ -1,7 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
-import { authClient } from "@kan/auth";
+import { authClient } from "@kan/auth/client";
 import * as memberRepo from "@kan/db/repository/member.repo";
 import * as userRepo from "@kan/db/repository/user.repo";
 import * as workspaceRepo from "@kan/db/repository/workspace.repo";

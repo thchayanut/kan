@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 
-import { authClient } from "@kan/auth";
+import { authClient } from "@kan/auth/client";
 
 import { useTheme } from "~/providers/theme";
 import { getAvatarUrl } from "~/utils/helpers";

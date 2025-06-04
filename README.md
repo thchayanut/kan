@@ -78,8 +78,10 @@ pnpm dev
 | -------------------------------- | ----------------------------- | ---------------- | --------------------------------------------- |
 | `POSTGRES_URL`                   | PostgreSQL connection URL     | Yes              | `postgres://user:pass@localhost:5432/db`      |
 | `EMAIL_FROM`                     | Sender email address          | Yes              | `"Kan <hello@mail.kan.bn>"`                   |
-| `EMAIL_URL`                      | Email service API URL         | Yes              | `https://api.resend.com/emails`               |
-| `EMAIL_TOKEN`                    | Email service API token       | Yes              | `re_xxxx`                                     |
+| `SMTP_HOST`                      | SMTP server hostname          | Yes              | `smtp.resend.com`                             |
+| `SMTP_PORT`                      | SMTP server port              | Yes              | `465`                                         |
+| `SMTP_USER`                      | SMTP username/email           | Yes              | `resend`                                      |
+| `SMTP_PASSWORD`                  | SMTP password/token           | Yes              | `re_xxxx`                                     |
 | `NEXT_PUBLIC_BASE_URL`           | Base URL of your installation | Yes              | `http://localhost:3000`                       |
 | `BETTER_AUTH_SECRET`             | Auth encryption secret        | Yes              | Random 32+ char string                        |
 | `BETTER_AUTH_URL`                | Auth callback URL             | Yes              | Same as `NEXT_PUBLIC_BASE_URL`                |

@@ -6,7 +6,7 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 
 import type { dbClient } from "@kan/db/client";
-import { initAuth } from "@kan/auth";
+import { initAuth } from "@kan/auth/server";
 import { createDrizzleClient } from "@kan/db/client";
 
 export interface User {
