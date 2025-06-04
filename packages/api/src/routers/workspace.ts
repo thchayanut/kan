@@ -232,7 +232,7 @@ export const workspaceRouter = createTRPCRouter({
         ) {
           throw new TRPCError({
             message: `Workspace slug cannot be changed in cloud without upgrading to a paid plan`,
-            code: "CONFLICT",
+            code: "FORBIDDEN",
           });
         }
 
