@@ -93,7 +93,7 @@ pnpm dev
 | `S3_ACCESS_KEY_ID`               | S3 access key                 | For file uploads | `xxx`                                         |
 | `S3_SECRET_ACCESS_KEY`           | S3 secret key                 | For file uploads | `xxx`                                         |
 | `NEXT_PUBLIC_STORAGE_URL`        | Storage service URL           | For file uploads | `https://storage.kanbn.com`                   |
-| `NEXT_PUBLIC_STORAGE_DOMAIN`     | Storage domain name           | For file uploads | `storage.kanbn.com`                           |
+| `NEXT_PUBLIC_STORAGE_DOMAIN`     | Storage domain name           | For file uploads | `kanbn.com`                                   |
 | `NEXT_PUBLIC_AVATAR_BUCKET_NAME` | S3 bucket name for avatars    | For file uploads | `avatars`                                     |
 
 See `.env.example` for a complete list of supported environment variables.
