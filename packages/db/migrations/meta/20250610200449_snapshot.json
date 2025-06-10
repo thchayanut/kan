@@ -1,6 +1,6 @@
 {
-  "id": "058e8521-2814-46f0-a33f-1bbd86f450ce",
-  "prevId": "1a07a776-0481-49f9-9098-02d530b37cf5",
+  "id": "91f9a2fa-31e2-4f3a-bdb9-852292fd7501",
+  "prevId": "058e8521-2814-46f0-a33f-1bbd86f450ce",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -92,11 +92,15 @@
         "account_userId_user_id_fk": {
           "name": "account_userId_user_id_fk",
           "tableFrom": "account",
+          "columnsFrom": [
+            "userId"
+          ],
           "tableTo": "user",
-          "columnsFrom": ["userId"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -241,11 +245,15 @@
         "apiKey_userId_user_id_fk": {
           "name": "apiKey_userId_user_id_fk",
           "tableFrom": "apiKey",
+          "columnsFrom": [
+            "userId"
+          ],
           "tableTo": "user",
-          "columnsFrom": ["userId"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -312,19 +320,25 @@
         "session_userId_user_id_fk": {
           "name": "session_userId_user_id_fk",
           "tableFrom": "session",
+          "columnsFrom": [
+            "userId"
+          ],
           "tableTo": "user",
-          "columnsFrom": ["userId"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "session_token_unique": {
           "name": "session_token_unique",
-          "nullsNotDistinct": false,
-          "columns": ["token"]
+          "columns": [
+            "token"
+          ],
+          "nullsNotDistinct": false
         }
       },
       "policies": {},
@@ -478,9 +492,9 @@
             }
           ],
           "isUnique": false,
-          "concurrently": false,
+          "with": {},
           "method": "btree",
-          "with": {}
+          "concurrently": false
         },
         "unique_slug_per_workspace": {
           "name": "unique_slug_per_workspace",
@@ -499,56 +513,74 @@
             }
           ],
           "isUnique": true,
-          "where": "\"board\".\"deletedAt\" IS NULL",
-          "concurrently": false,
+          "with": {},
           "method": "btree",
-          "with": {}
+          "where": "\"board\".\"deletedAt\" IS NULL",
+          "concurrently": false
         }
       },
       "foreignKeys": {
         "board_createdBy_user_id_fk": {
           "name": "board_createdBy_user_id_fk",
           "tableFrom": "board",
+          "columnsFrom": [
+            "createdBy"
+          ],
           "tableTo": "user",
-          "columnsFrom": ["createdBy"],
-          "columnsTo": ["id"],
-          "onDelete": "set null",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
         },
         "board_deletedBy_user_id_fk": {
           "name": "board_deletedBy_user_id_fk",
           "tableFrom": "board",
+          "columnsFrom": [
+            "deletedBy"
+          ],
           "tableTo": "user",
-          "columnsFrom": ["deletedBy"],
-          "columnsTo": ["id"],
-          "onDelete": "set null",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
         },
         "board_importId_import_id_fk": {
           "name": "board_importId_import_id_fk",
           "tableFrom": "board",
+          "columnsFrom": [
+            "importId"
+          ],
           "tableTo": "import",
-          "columnsFrom": ["importId"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "board_workspaceId_workspace_id_fk": {
           "name": "board_workspaceId_workspace_id_fk",
           "tableFrom": "board",
+          "columnsFrom": [
+            "workspaceId"
+          ],
           "tableTo": "workspace",
-          "columnsFrom": ["workspaceId"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "board_publicId_unique": {
           "name": "board_publicId_unique",
-          "nullsNotDistinct": false,
-          "columns": ["publicId"]
+          "columns": [
+            "publicId"
+          ],
+          "nullsNotDistinct": false
         }
       },
       "policies": {},
@@ -681,73 +713,103 @@
         "card_activity_cardId_card_id_fk": {
           "name": "card_activity_cardId_card_id_fk",
           "tableFrom": "card_activity",
+          "columnsFrom": [
+            "cardId"
+          ],
           "tableTo": "card",
-          "columnsFrom": ["cardId"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "card_activity_fromListId_list_id_fk": {
           "name": "card_activity_fromListId_list_id_fk",
           "tableFrom": "card_activity",
+          "columnsFrom": [
+            "fromListId"
+          ],
           "tableTo": "list",
-          "columnsFrom": ["fromListId"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "card_activity_toListId_list_id_fk": {
           "name": "card_activity_toListId_list_id_fk",
           "tableFrom": "card_activity",
+          "columnsFrom": [
+            "toListId"
+          ],
           "tableTo": "list",
-          "columnsFrom": ["toListId"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "card_activity_labelId_label_id_fk": {
           "name": "card_activity_labelId_label_id_fk",
           "tableFrom": "card_activity",
+          "columnsFrom": [
+            "labelId"
+          ],
           "tableTo": "label",
-          "columnsFrom": ["labelId"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "card_activity_workspaceMemberId_workspace_members_id_fk": {
           "name": "card_activity_workspaceMemberId_workspace_members_id_fk",
           "tableFrom": "card_activity",
+          "columnsFrom": [
+            "workspaceMemberId"
+          ],
           "tableTo": "workspace_members",
-          "columnsFrom": ["workspaceMemberId"],
-          "columnsTo": ["id"],
-          "onDelete": "set null",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
         },
         "card_activity_createdBy_user_id_fk": {
           "name": "card_activity_createdBy_user_id_fk",
           "tableFrom": "card_activity",
+          "columnsFrom": [
+            "createdBy"
+          ],
           "tableTo": "user",
-          "columnsFrom": ["createdBy"],
-          "columnsTo": ["id"],
-          "onDelete": "set null",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
         },
         "card_activity_commentId_card_comments_id_fk": {
           "name": "card_activity_commentId_card_comments_id_fk",
           "tableFrom": "card_activity",
+          "columnsFrom": [
+            "commentId"
+          ],
           "tableTo": "card_comments",
-          "columnsFrom": ["commentId"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "card_activity_publicId_unique": {
           "name": "card_activity_publicId_unique",
-          "nullsNotDistinct": false,
-          "columns": ["publicId"]
+          "columns": [
+            "publicId"
+          ],
+          "nullsNotDistinct": false
         }
       },
       "policies": {},
@@ -776,26 +838,37 @@
         "_card_workspace_members_cardId_card_id_fk": {
           "name": "_card_workspace_members_cardId_card_id_fk",
           "tableFrom": "_card_workspace_members",
+          "columnsFrom": [
+            "cardId"
+          ],
           "tableTo": "card",
-          "columnsFrom": ["cardId"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "_card_workspace_members_workspaceMemberId_workspace_members_id_fk": {
           "name": "_card_workspace_members_workspaceMemberId_workspace_members_id_fk",
           "tableFrom": "_card_workspace_members",
+          "columnsFrom": [
+            "workspaceMemberId"
+          ],
           "tableTo": "workspace_members",
-          "columnsFrom": ["workspaceMemberId"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
         "_card_workspace_members_cardId_workspaceMemberId_pk": {
           "name": "_card_workspace_members_cardId_workspaceMemberId_pk",
-          "columns": ["cardId", "workspaceMemberId"]
+          "columns": [
+            "cardId",
+            "workspaceMemberId"
+          ]
         }
       },
       "uniqueConstraints": {},
@@ -886,46 +959,64 @@
         "card_createdBy_user_id_fk": {
           "name": "card_createdBy_user_id_fk",
           "tableFrom": "card",
+          "columnsFrom": [
+            "createdBy"
+          ],
           "tableTo": "user",
-          "columnsFrom": ["createdBy"],
-          "columnsTo": ["id"],
-          "onDelete": "set null",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
         },
         "card_deletedBy_user_id_fk": {
           "name": "card_deletedBy_user_id_fk",
           "tableFrom": "card",
+          "columnsFrom": [
+            "deletedBy"
+          ],
           "tableTo": "user",
-          "columnsFrom": ["deletedBy"],
-          "columnsTo": ["id"],
-          "onDelete": "set null",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
         },
         "card_listId_list_id_fk": {
           "name": "card_listId_list_id_fk",
           "tableFrom": "card",
+          "columnsFrom": [
+            "listId"
+          ],
           "tableTo": "list",
-          "columnsFrom": ["listId"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "card_importId_import_id_fk": {
           "name": "card_importId_import_id_fk",
           "tableFrom": "card",
+          "columnsFrom": [
+            "importId"
+          ],
           "tableTo": "import",
-          "columnsFrom": ["importId"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "card_publicId_unique": {
           "name": "card_publicId_unique",
-          "nullsNotDistinct": false,
-          "columns": ["publicId"]
+          "columns": [
+            "publicId"
+          ],
+          "nullsNotDistinct": false
         }
       },
       "policies": {},
@@ -954,26 +1045,37 @@
         "_card_labels_cardId_card_id_fk": {
           "name": "_card_labels_cardId_card_id_fk",
           "tableFrom": "_card_labels",
+          "columnsFrom": [
+            "cardId"
+          ],
           "tableTo": "card",
-          "columnsFrom": ["cardId"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "_card_labels_labelId_label_id_fk": {
           "name": "_card_labels_labelId_label_id_fk",
           "tableFrom": "_card_labels",
+          "columnsFrom": [
+            "labelId"
+          ],
           "tableTo": "label",
-          "columnsFrom": ["labelId"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
         "_card_labels_cardId_labelId_pk": {
           "name": "_card_labels_cardId_labelId_pk",
-          "columns": ["cardId", "labelId"]
+          "columns": [
+            "cardId",
+            "labelId"
+          ]
         }
       },
       "uniqueConstraints": {},
@@ -1046,37 +1148,51 @@
         "card_comments_cardId_card_id_fk": {
           "name": "card_comments_cardId_card_id_fk",
           "tableFrom": "card_comments",
+          "columnsFrom": [
+            "cardId"
+          ],
           "tableTo": "card",
-          "columnsFrom": ["cardId"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "card_comments_createdBy_user_id_fk": {
           "name": "card_comments_createdBy_user_id_fk",
           "tableFrom": "card_comments",
+          "columnsFrom": [
+            "createdBy"
+          ],
           "tableTo": "user",
-          "columnsFrom": ["createdBy"],
-          "columnsTo": ["id"],
-          "onDelete": "set null",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
         },
         "card_comments_deletedBy_user_id_fk": {
           "name": "card_comments_deletedBy_user_id_fk",
           "tableFrom": "card_comments",
+          "columnsFrom": [
+            "deletedBy"
+          ],
           "tableTo": "user",
-          "columnsFrom": ["deletedBy"],
-          "columnsTo": ["id"],
-          "onDelete": "set null",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "card_comments_publicId_unique": {
           "name": "card_comments_publicId_unique",
-          "nullsNotDistinct": false,
-          "columns": ["publicId"]
+          "columns": [
+            "publicId"
+          ],
+          "nullsNotDistinct": false
         }
       },
       "policies": {},
@@ -1137,11 +1253,15 @@
         "feedback_createdBy_user_id_fk": {
           "name": "feedback_createdBy_user_id_fk",
           "tableFrom": "feedback",
+          "columnsFrom": [
+            "createdBy"
+          ],
           "tableTo": "user",
-          "columnsFrom": ["createdBy"],
-          "columnsTo": ["id"],
-          "onDelete": "set null",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
         }
       },
       "compositePrimaryKeys": {},
@@ -1199,19 +1319,25 @@
         "import_createdBy_user_id_fk": {
           "name": "import_createdBy_user_id_fk",
           "tableFrom": "import",
+          "columnsFrom": [
+            "createdBy"
+          ],
           "tableTo": "user",
-          "columnsFrom": ["createdBy"],
-          "columnsTo": ["id"],
-          "onDelete": "set null",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "import_publicId_unique": {
           "name": "import_publicId_unique",
-          "nullsNotDistinct": false,
-          "columns": ["publicId"]
+          "columns": [
+            "publicId"
+          ],
+          "nullsNotDistinct": false
         }
       },
       "policies": {},
@@ -1295,46 +1421,64 @@
         "label_createdBy_user_id_fk": {
           "name": "label_createdBy_user_id_fk",
           "tableFrom": "label",
+          "columnsFrom": [
+            "createdBy"
+          ],
           "tableTo": "user",
-          "columnsFrom": ["createdBy"],
-          "columnsTo": ["id"],
-          "onDelete": "set null",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
         },
         "label_boardId_board_id_fk": {
           "name": "label_boardId_board_id_fk",
           "tableFrom": "label",
+          "columnsFrom": [
+            "boardId"
+          ],
           "tableTo": "board",
-          "columnsFrom": ["boardId"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "label_importId_import_id_fk": {
           "name": "label_importId_import_id_fk",
           "tableFrom": "label",
+          "columnsFrom": [
+            "importId"
+          ],
           "tableTo": "import",
-          "columnsFrom": ["importId"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "label_deletedBy_user_id_fk": {
           "name": "label_deletedBy_user_id_fk",
           "tableFrom": "label",
+          "columnsFrom": [
+            "deletedBy"
+          ],
           "tableTo": "user",
-          "columnsFrom": ["deletedBy"],
-          "columnsTo": ["id"],
-          "onDelete": "set null",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "label_publicId_unique": {
           "name": "label_publicId_unique",
-          "nullsNotDistinct": false,
-          "columns": ["publicId"]
+          "columns": [
+            "publicId"
+          ],
+          "nullsNotDistinct": false
         }
       },
       "policies": {},
@@ -1418,46 +1562,64 @@
         "list_createdBy_user_id_fk": {
           "name": "list_createdBy_user_id_fk",
           "tableFrom": "list",
+          "columnsFrom": [
+            "createdBy"
+          ],
           "tableTo": "user",
-          "columnsFrom": ["createdBy"],
-          "columnsTo": ["id"],
-          "onDelete": "set null",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
         },
         "list_deletedBy_user_id_fk": {
           "name": "list_deletedBy_user_id_fk",
           "tableFrom": "list",
+          "columnsFrom": [
+            "deletedBy"
+          ],
           "tableTo": "user",
-          "columnsFrom": ["deletedBy"],
-          "columnsTo": ["id"],
-          "onDelete": "set null",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
         },
         "list_boardId_board_id_fk": {
           "name": "list_boardId_board_id_fk",
           "tableFrom": "list",
+          "columnsFrom": [
+            "boardId"
+          ],
           "tableTo": "board",
-          "columnsFrom": ["boardId"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "list_importId_import_id_fk": {
           "name": "list_importId_import_id_fk",
           "tableFrom": "list",
+          "columnsFrom": [
+            "importId"
+          ],
           "tableTo": "import",
-          "columnsFrom": ["importId"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "list_publicId_unique": {
           "name": "list_publicId_unique",
-          "nullsNotDistinct": false,
-          "columns": ["publicId"]
+          "columns": [
+            "publicId"
+          ],
+          "nullsNotDistinct": false
         }
       },
       "policies": {},
@@ -1526,8 +1688,10 @@
       "uniqueConstraints": {
         "user_email_unique": {
           "name": "user_email_unique",
-          "nullsNotDistinct": false,
-          "columns": ["email"]
+          "columns": [
+            "email"
+          ],
+          "nullsNotDistinct": false
         }
       },
       "policies": {},
@@ -1558,8 +1722,10 @@
       "uniqueConstraints": {
         "workspace_slugs_slug_unique": {
           "name": "workspace_slugs_slug_unique",
-          "nullsNotDistinct": false,
-          "columns": ["slug"]
+          "columns": [
+            "slug"
+          ],
+          "nullsNotDistinct": false
         }
       },
       "policies": {},
@@ -1652,37 +1818,51 @@
         "workspace_members_userId_user_id_fk": {
           "name": "workspace_members_userId_user_id_fk",
           "tableFrom": "workspace_members",
+          "columnsFrom": [
+            "userId"
+          ],
           "tableTo": "user",
-          "columnsFrom": ["userId"],
-          "columnsTo": ["id"],
-          "onDelete": "set null",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
         },
         "workspace_members_workspaceId_workspace_id_fk": {
           "name": "workspace_members_workspaceId_workspace_id_fk",
           "tableFrom": "workspace_members",
+          "columnsFrom": [
+            "workspaceId"
+          ],
           "tableTo": "workspace",
-          "columnsFrom": ["workspaceId"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "workspace_members_deletedBy_user_id_fk": {
           "name": "workspace_members_deletedBy_user_id_fk",
           "tableFrom": "workspace_members",
+          "columnsFrom": [
+            "deletedBy"
+          ],
           "tableTo": "user",
-          "columnsFrom": ["deletedBy"],
-          "columnsTo": ["id"],
-          "onDelete": "set null",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "workspace_members_publicId_unique": {
           "name": "workspace_members_publicId_unique",
-          "nullsNotDistinct": false,
-          "columns": ["publicId"]
+          "columns": [
+            "publicId"
+          ],
+          "nullsNotDistinct": false
         }
       },
       "policies": {},
@@ -1768,33 +1948,45 @@
         "workspace_createdBy_user_id_fk": {
           "name": "workspace_createdBy_user_id_fk",
           "tableFrom": "workspace",
+          "columnsFrom": [
+            "createdBy"
+          ],
           "tableTo": "user",
-          "columnsFrom": ["createdBy"],
-          "columnsTo": ["id"],
-          "onDelete": "set null",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
         },
         "workspace_deletedBy_user_id_fk": {
           "name": "workspace_deletedBy_user_id_fk",
           "tableFrom": "workspace",
+          "columnsFrom": [
+            "deletedBy"
+          ],
           "tableTo": "user",
-          "columnsFrom": ["deletedBy"],
-          "columnsTo": ["id"],
-          "onDelete": "set null",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "set null"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "workspace_publicId_unique": {
           "name": "workspace_publicId_unique",
-          "nullsNotDistinct": false,
-          "columns": ["publicId"]
+          "columns": [
+            "publicId"
+          ],
+          "nullsNotDistinct": false
         },
         "workspace_slug_unique": {
           "name": "workspace_slug_unique",
-          "nullsNotDistinct": false,
-          "columns": ["slug"]
+          "columns": [
+            "slug"
+          ],
+          "nullsNotDistinct": false
         }
       },
       "policies": {},
@@ -1806,7 +1998,10 @@
     "public.board_visibility": {
       "name": "board_visibility",
       "schema": "public",
-      "values": ["private", "public"]
+      "values": [
+        "private",
+        "public"
+      ]
     },
     "public.card_activity_type": {
       "name": "card_activity_type",
@@ -1830,39 +2025,60 @@
     "public.source": {
       "name": "source",
       "schema": "public",
-      "values": ["trello"]
+      "values": [
+        "trello"
+      ]
     },
     "public.status": {
       "name": "status",
       "schema": "public",
-      "values": ["started", "success", "failed"]
+      "values": [
+        "started",
+        "success",
+        "failed"
+      ]
     },
     "public.role": {
       "name": "role",
       "schema": "public",
-      "values": ["admin", "member", "guest"]
+      "values": [
+        "admin",
+        "member",
+        "guest"
+      ]
     },
     "public.member_status": {
       "name": "member_status",
       "schema": "public",
-      "values": ["invited", "active", "removed"]
+      "values": [
+        "invited",
+        "active",
+        "removed"
+      ]
     },
     "public.slug_type": {
       "name": "slug_type",
       "schema": "public",
-      "values": ["reserved", "premium"]
+      "values": [
+        "reserved",
+        "premium"
+      ]
     },
     "public.workspace_plan": {
       "name": "workspace_plan",
       "schema": "public",
-      "values": ["free", "pro", "enterprise"]
+      "values": [
+        "free",
+        "pro",
+        "enterprise"
+      ]
     }
   },
   "schemas": {},
+  "views": {},
   "sequences": {},
   "roles": {},
   "policies": {},
-  "views": {},
   "_meta": {
     "columns": {},
     "schemas": {},
