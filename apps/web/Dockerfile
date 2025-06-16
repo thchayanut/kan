@@ -57,11 +57,7 @@ COPY --from=pruner /app/out/full/ .
 RUN pnpm build --filter=${PROJECT}
 
 # Copy static files to standalone directory
-RUN pwd && ls -la && \
-    echo "=== Contents of .next ===" && \
-    ls -la .next || true && \
-    echo "=== Contents of .next/standalone ===" && \
-    ls -la .next/standalone || true
+
 
 RUN mkdir -p apps/web/.next/standalone/.next && \
 mv apps/web/public apps/web/.next/standalone/ && \
