@@ -53,7 +53,6 @@ RUN --mount=type=cache,id=pnpm,target=~/.pnpm-store pnpm install --frozen-lockfi
 # Copy source code of isolated subworkspace
 COPY --from=pruner /app/out/full/ .
 
-WORKDIR /app/apps/web
 RUN pnpm build --filter=${PROJECT}
 
 # Copy static files to standalone directory
