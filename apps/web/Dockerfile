@@ -53,10 +53,13 @@ RUN --mount=type=cache,id=pnpm,target=~/.pnpm-store pnpm install --frozen-lockfi
 # Copy source code of isolated subworkspace
 COPY --from=pruner /app/out/full/ .
 
+WORKDIR /app/apps/web
 RUN pnpm build --filter=${PROJECT}
 
 # Copy static files to standalone directory
-RUN cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/
+RUN ls -la && \
+    cp -r /app/apps/web/public .next/standalone/ && \
+    cp -r .next/static .next/standalone/.next/
 
 # 4. Final image - runner stage to run the application
 FROM base AS runner
