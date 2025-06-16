@@ -56,10 +56,11 @@ COPY --from=pruner /app/out/full/ .
 RUN pnpm build --filter=${PROJECT}
 
 # Copy static files to standalone directory
-RUN ls -la && \
-    cp -r /app/apps/web/public .next/standalone/ && \
-    cp -r .next/static .next/standalone/.next/
-
+RUN pwd && ls -la && \
+    echo "=== Contents of .next ===" && \
+    ls -la .next || true && \
+    echo "=== Contents of .next/standalone ===" && \
+    ls -la .next/standalone || true
 # 4. Final image - runner stage to run the application
 FROM base AS runner
 ARG APP_DIRNAME
