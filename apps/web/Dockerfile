@@ -57,8 +57,6 @@ COPY --from=pruner /app/out/full/ .
 RUN pnpm build --filter=${PROJECT}
 
 # Copy static files to standalone directory
-
-
 RUN mkdir -p apps/web/.next/standalone/.next && \
 mv apps/web/public apps/web/.next/standalone/ && \
 mv apps/web/.next/static apps/web/.next/standalone/.next/
