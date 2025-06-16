@@ -56,8 +56,8 @@ COPY --from=pruner /app/out/full/ .
 RUN pnpm build --filter=${PROJECT}
 
 # Copy static files to standalone directory
-COPY public .next/standalone/
-COPY .next/static .next/standalone/.next/
+COPY apps/web/public .next/standalone/
+COPY apps/web/.next/static .next/standalone/.next/
 
 # 4. Final image - runner stage to run the application
 FROM base AS runner
