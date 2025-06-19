@@ -144,8 +144,8 @@ pnpm dev
 | `EMAIL_FROM`                     | Sender email address                                     | For Email          | `"Kan <hello@mail.kan.bn>"`                   |
 | `SMTP_HOST`                      | SMTP server hostname                                     | For Email          | `smtp.resend.com`                             |
 | `SMTP_PORT`                      | SMTP server port                                         | For Email          | `465`                                         |
-| `SMTP_USER`                      | SMTP username/email                                      | For Email          | `resend`                                      |
-| `SMTP_PASSWORD`                  | SMTP password/token                                      | For Email          | `re_xxxx`                                     |
+| `SMTP_USER`                      | SMTP username/email                                      | No                 | `resend`                                      |
+| `SMTP_PASSWORD`                  | SMTP password/token                                      | No                 | `re_xxxx`                                     |
 | `SMTP_SECURE`                    | Use secure SMTP connection (defaults to true if not set) | For Email          | `true`                                        |
 | `NEXT_PUBLIC_BASE_URL`           | Base URL of your installation                            | Yes                | `http://localhost:3000`                       |
 | `BETTER_AUTH_SECRET`             | Auth encryption secret                                   | Yes                | Random 32+ char string                        |
