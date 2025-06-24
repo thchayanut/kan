@@ -72,6 +72,7 @@ const FeatureItem = ({
 
 const Features = ({ theme }: { theme: "light" | "dark" }) => {
   const isDark = theme === "dark";
+
   const features = [
     {
       title: t`Board visibility`,

@@ -68,8 +68,7 @@ export default function HomeView() {
             </p>
 
             <p className="text-md mt-3 max-w-[450px] text-center text-dark-900 lg:max-w-[600px] lg:text-lg">
-              {t`A powerful, flexible kanban app that helps you organise work,
-              track progress, and deliver results—all in one place.`}
+              {t`A powerful, flexible kanban app that helps you organise work, track progress, and deliver results—all in one place.`}
             </p>
 
             <div className="mt-6 flex gap-2">

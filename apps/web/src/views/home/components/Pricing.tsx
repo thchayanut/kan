@@ -7,77 +7,76 @@ import { twMerge } from "tailwind-merge";
 
 type Frequency = "monthly" | "annually";
 
-const frequencies = [
-  {
-    value: "monthly" as Frequency,
-    label: t`Monthly`,
-    priceSuffix: t`per user/month`,
-  },
-  {
-    value: "annually" as Frequency,
-    label: t`Yearly`,
-    priceSuffix: t`per user/month`,
-  },
-];
-
-const tiers = [
-  {
-    name: t`Individuals`,
-    id: "tier-individuals",
-    href: "signup",
-    buttonText: t`Get Started`,
-    price: { monthly: t`Free`, annually: t`Free` },
-    description: t`Everything you need, free forever. Unlimited boards, unlimited lists, unlimited cards. Upgrade any time.`,
-    featureHeader: t`Free, forever`,
-    features: [
-      t`1 user`,
-      t`Unlimited boards`,
-      t`Unlimited lists`,
-      t`Unlimited cards`,
-      t`Unlimited comments`,
-      t`Unlimited activity log`,
-    ],
-    showPrice: true,
-  },
-  {
-    name: t`Teams`,
-    id: "tier-teams",
-    href: "signup",
-    buttonText: t`Get Started`,
-    price: { monthly: "$10.00", annually: "$8.00" },
-    description: t`Kanban is better with a team. Perfect for small and growing teams looking to collaborate.`,
-    featureHeader: t`Everything in the free plan, plus:`,
-    features: [
-      t`Workspace members`,
-      t`Admin roles`,
-      t`Priority email support`,
-      t`Support the development of the project`,
-    ],
-    highlighted: true,
-    showPrice: true,
-    showPriceSuffix: true,
-  },
-  {
-    name: t`Self Host`,
-    id: "tier-self-host",
-    href: "https://github.com/kanbn/kan",
-    buttonText: t`View docs`,
-    price: { monthly: "-", annually: "-" },
-    description: t`Host Kan on your own infrastructure. Ideal for organisations that need complete control over their data.`,
-    featureHeader: t`Complete control and ownership:`,
-    features: [
-      t`Run on your own infrastructure`,
-      t`Own your data`,
-      t`Custom domain`,
-    ],
-    mostPopular: false,
-    showPrice: false,
-  },
-];
-
 const Pricing = () => {
-  const initialFrequency = frequencies[1]!;
-  const [frequency, setFrequency] = useState(initialFrequency);
+  const frequencies = [
+    {
+      value: "monthly" as Frequency,
+      label: t`Monthly`,
+      priceSuffix: t`per user/month`,
+    },
+    {
+      value: "annually" as Frequency,
+      label: t`Yearly`,
+      priceSuffix: t`per user/month`,
+    },
+  ];
+
+  const [frequency, setFrequency] = useState(frequencies[1]);
+
+  const tiers = [
+    {
+      name: t`Individuals`,
+      id: "tier-individuals",
+      href: "signup",
+      buttonText: t`Get Started`,
+      price: { monthly: t`Free`, annually: t`Free` },
+      description: t`Everything you need, free forever. Unlimited boards, unlimited lists, unlimited cards. Upgrade any time.`,
+      featureHeader: t`Free, forever`,
+      features: [
+        t`1 user`,
+        t`Unlimited boards`,
+        t`Unlimited lists`,
+        t`Unlimited cards`,
+        t`Unlimited comments`,
+        t`Unlimited activity log`,
+      ],
+      showPrice: true,
+    },
+    {
+      name: t`Teams`,
+      id: "tier-teams",
+      href: "signup",
+      buttonText: t`Get Started`,
+      price: { monthly: "$10.00", annually: "$8.00" },
+      description: t`Kanban is better with a team. Perfect for small and growing teams looking to collaborate.`,
+      featureHeader: t`Everything in the free plan, plus:`,
+      features: [
+        t`Workspace members`,
+        t`Admin roles`,
+        t`Priority email support`,
+        t`Support the development of the project`,
+      ],
+      highlighted: true,
+      showPrice: true,
+      showPriceSuffix: true,
+    },
+    {
+      name: t`Self Host`,
+      id: "tier-self-host",
+      href: "https://github.com/kanbn/kan",
+      buttonText: t`View docs`,
+      price: { monthly: "-", annually: "-" },
+      description: t`Host Kan on your own infrastructure. Ideal for organisations that need complete control over their data.`,
+      featureHeader: t`Complete control and ownership:`,
+      features: [
+        t`Run on your own infrastructure`,
+        t`Own your data`,
+        t`Custom domain`,
+      ],
+      mostPopular: false,
+      showPrice: false,
+    },
+  ];
 
   return (
     <>

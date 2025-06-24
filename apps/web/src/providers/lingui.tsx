@@ -5,7 +5,6 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 import type { Locale } from "~/locales";
 import { defaultLocale, locales } from "~/locales";
-// Import compiled messages
 import { messages as enMessages } from "~/locales/en/messages";
 import { messages as frMessages } from "~/locales/fr/messages";
 
@@ -39,37 +38,39 @@ export function LinguiProviderWrapper({
   children,
   initialLocale = defaultLocale,
 }: LinguiProviderProps) {
-  const getInitialLocale = (): Locale => {
-    if (typeof window !== "undefined") {
-      const savedLocale = localStorage.getItem("locale") as Locale;
-      if (savedLocale && locales.includes(savedLocale)) {
-        return savedLocale;
-      }
+  const [locale, setLocale] = useState<Locale>(defaultLocale);
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  i18n.load(defaultLocale, messages[defaultLocale]);
+  i18n.activate(defaultLocale);
+
+  useEffect(() => {
+    const savedLocale = localStorage.getItem("locale") as Locale;
+
+    if (savedLocale && locales.includes(savedLocale)) {
+      setLocale(savedLocale);
+    } else {
+      setLocale(initialLocale);
     }
-    return initialLocale;
-  };
-
-  const [locale, setLocale] = useState<Locale>(getInitialLocale);
+    setIsHydrated(true);
+  }, [initialLocale]);
 
   useEffect(() => {
-    const initialLocale = getInitialLocale();
-    i18n.load(initialLocale, messages[initialLocale]);
-    i18n.activate(initialLocale);
-  }, [getInitialLocale]);
+    if (isHydrated && locale !== i18n.locale) {
+      i18n.load(locale, messages[locale]);
+      i18n.activate(locale);
 
-  // Save locale to localStorage and activate it when it changes
-  useEffect(() => {
-    localStorage.setItem("locale", locale);
-
-    i18n.load(locale, messages[locale]);
-    i18n.activate(locale);
-  }, [locale]);
+      localStorage.setItem("locale", locale);
+    }
+  }, [locale, isHydrated]);
 
   return (
     <LinguiContext.Provider
-      value={{ locale, setLocale, availableLocales: locales }}
+      value={{ locale, setLocale, availableLocales: [...locales] }}
     >
-      <I18nProvider i18n={i18n}>{children}</I18nProvider>
+      <I18nProvider i18n={i18n} key={locale}>
+        {children}
+      </I18nProvider>
     </LinguiContext.Provider>
   );
 }
