@@ -2,7 +2,7 @@
   "version": 0,
   "locale": {
     "source": "en",
-    "targets": ["fr"]
+    "targets": ["fr", "de", "es", "it", "nl"]
   },
   "buckets": {
     "po": {

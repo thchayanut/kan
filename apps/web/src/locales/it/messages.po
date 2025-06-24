@@ -1,0 +1,425 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2025-06-24 22:31+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: it\n"
+
+#: src/views/home/index.tsx:51
+msgid "#1 Hacker News"
+msgstr "#1 Hacker News"
+
+#: src/views/home/components/Pricing.tsx:36
+msgid "1 user"
+msgstr "1 utente"
+
+#: src/views/home/index.tsx:71
+msgid "A powerful, flexible kanban app that helps you organise work, track progress, and deliver results—all in one place."
+msgstr "Un'app kanban potente e flessibile che ti aiuta a organizzare il lavoro, monitorare i progressi e ottenere risultati, tutto in un unico posto."
+
+#: src/views/home/components/Features.tsx:103
+msgid "Activity logs"
+msgstr "Registri attività"
+
+#: src/views/home/components/Pricing.tsx:55
+msgid "Admin roles"
+msgstr "Ruoli amministratore"
+
+#: src/views/home/components/Pricing.tsx:97
+msgid "All seats are free during the beta until Sept 1st!"
+msgstr "Tutti i posti sono gratuiti durante la beta fino al 1° settembre!"
+
+#: src/views/home/components/Footer.tsx:18
+msgid "All systems operational"
+msgstr "Tutti i sistemi operativi"
+
+#: src/views/home/components/Footer.tsx:31
+msgid "API Reference"
+msgstr "Riferimento API"
+
+#: src/views/home/components/Features.tsx:78
+msgid "Board visibility"
+msgstr "Visibilità bacheca"
+
+#: src/views/home/components/Features.tsx:84
+msgid "Collaborate seamlessly with your team."
+msgstr "Collabora senza problemi con il tuo team."
+
+#: src/views/home/components/Features.tsx:66
+msgid "Coming soon"
+msgstr "Prossimamente"
+
+#: src/views/home/components/Features.tsx:98
+msgid "Comments"
+msgstr "Commenti"
+
+#: src/views/home/components/Footer.tsx:94
+msgid "Company"
+msgstr "Azienda"
+
+#: src/views/home/components/Pricing.tsx:70
+msgid "Complete control and ownership:"
+msgstr "Controllo e proprietà completi:"
+
+#: src/views/home/components/Features.tsx:115
+msgid "Connect your favorite tools to streamline your workflow."
+msgstr "Connetti i tuoi strumenti preferiti per semplificare il tuo flusso di lavoro."
+
+#: src/views/home/components/Footer.tsx:38
+msgid "Contact"
+msgstr "Contatti"
+
+#: src/views/home/components/Features.tsx:79
+msgid "Control who can view and edit your boards."
+msgstr "Controlla chi può visualizzare e modificare le tue bacheche."
+
+#: src/views/home/components/Pricing.tsx:74
+msgid "Custom domain"
+msgstr "Dominio personalizzato"
+
+#: src/views/home/components/Features.tsx:99
+msgid "Discuss and collaborate on cards."
+msgstr "Discuti e collabora sulle schede."
+
+#: src/views/home/components/Faqs.tsx:83
+msgid "Do you offer a free plan?"
+msgstr "Offrite un piano gratuito?"
+
+#: src/views/home/components/Header.tsx:16
+msgid "Docs"
+msgstr "Documenti"
+
+#: src/views/home/components/Footer.tsx:77
+msgid "Documentation"
+msgstr "Documentazione"
+
+#: src/views/home/components/Pricing.tsx:52
+msgid "Everything in the free plan, plus:"
+msgstr "Tutto ciò che è incluso nel piano gratuito, più:"
+
+#: src/views/home/components/Pricing.tsx:33
+msgid "Everything you need, free forever. Unlimited boards, unlimited lists, unlimited cards. Upgrade any time."
+msgstr "Tutto ciò di cui hai bisogno, gratis per sempre. Bacheche illimitate, liste illimitate, schede illimitate. Aggiorna in qualsiasi momento."
+
+#: src/views/home/components/Footer.tsx:51
+#: src/views/home/components/Faqs.tsx:143
+msgid "FAQs"
+msgstr "FAQ"
+
+#: src/views/home/components/Header.tsx:14
+#: src/views/home/components/Footer.tsx:49
+#: src/views/home/components/Features.tsx:125
+msgid "Features"
+msgstr "Funzionalità"
+
+#: src/views/home/components/Faqs.tsx:150
+msgid "Find answers to common questions about the project. Can't find what you're looking for? Feel free to <0>contact us</0>."
+msgstr "Trova risposte alle domande comuni sul progetto. Non trovi quello che stai cercando? Non esitare a <0>contattarci</0>."
+
+#: src/views/home/components/Faqs.tsx:41
+msgid "For long-term sustainability, we recognise all good open source projects need a source of revenue. Ours comes from the paid cloud offering for workspaces with multiple users (free during the beta) and for custom workspace slugs. There's no obligation to use it, and you can self-host the software on your own infrastructure free of charge."
+msgstr "Per la sostenibilità a lungo termine, riconosciamo che tutti i buoni progetti open source necessitano di una fonte di entrate. La nostra proviene dall'offerta cloud a pagamento per workspace con più utenti (gratuita durante la beta) e per slug di workspace personalizzati. Non c'è alcun obbligo di utilizzarla, e puoi ospitare autonomamente il software sulla tua infrastruttura gratuitamente."
+
+#: src/views/home/components/Pricing.tsx:32
+msgid "Free"
+msgstr "Gratuito"
+
+#: src/views/home/components/Pricing.tsx:34
+msgid "Free, forever"
+msgstr "Gratuito, per sempre"
+
+#: src/views/home/components/Header.tsx:102
+#: src/views/home/components/Header.tsx:141
+#: src/views/home/components/Cta.tsx:61
+msgid "Get started"
+msgstr "Inizia ora"
+
+#: src/views/home/components/Pricing.tsx:31
+#: src/views/home/components/Pricing.tsx:49
+msgid "Get Started"
+msgstr "Inizia ora"
+
+#: src/views/home/components/Cta.tsx:54
+msgid "Get started for free today"
+msgstr "Inizia gratuitamente oggi"
+
+#: src/views/home/components/Pricing.tsx:92
+msgid "Get started for free, with no usage limits. For collaboration, upgrade to a plan that fits the size of your team."
+msgstr "Inizia gratuitamente, senza limiti di utilizzo. Per la collaborazione, passa a un piano adatto alle dimensioni del tuo team."
+
+#: src/views/home/index.tsx:75
+msgid "Get started on Cloud"
+msgstr "Inizia su Cloud"
+
+#: src/views/home/components/Footer.tsx:25
+msgid "Getting started"
+msgstr "Primi passi"
+
+#: src/views/home/components/Footer.tsx:37
+msgid "GitHub"
+msgstr "GitHub"
+
+#: src/views/home/components/Header.tsx:96
+#: src/views/home/components/Header.tsx:133
+msgid "Go to app"
+msgstr "Vai all'app"
+
+#: src/views/home/components/Pricing.tsx:69
+msgid "Host Kan on your own infrastructure. Ideal for organisations that need complete control over their data."
+msgstr "Ospita Kan sulla tua infrastruttura. Ideale per organizzazioni che necessitano di controllo completo sui propri dati."
+
+#: src/views/home/components/Faqs.tsx:64
+msgid "How do I get a custom URL?"
+msgstr "Come posso ottenere un URL personalizzato?"
+
+#: src/views/home/components/Faqs.tsx:46
+msgid "How do I import my Trello boards?"
+msgstr "Come posso importare le mie bacheche Trello?"
+
+#: src/views/home/components/Faqs.tsx:108
+msgid "How do I invite team members?"
+msgstr "Come posso invitare i membri del team?"
+
+#: src/views/home/components/Faqs.tsx:124
+msgid "How do I self-host?"
+msgstr "Come posso effettuare il self-hosting?"
+
+#: src/views/home/components/Faqs.tsx:38
+msgid "How is the project funded?"
+msgstr "Come viene finanziato il progetto?"
+
+#: src/views/home/components/Features.tsx:89
+msgid "Import your Trello boards and hit the ground running."
+msgstr "Importa le tue bacheche Trello e parti subito."
+
+#: src/views/home/components/Footer.tsx:27
+msgid "Importing from Trello"
+msgstr "Importazione da Trello"
+
+#: src/views/home/components/Faqs.tsx:49
+msgid "Importing your Trello boards into Kan is easy. You can follow our step-by-step guide <0>here</0>."
+msgstr "Importare le tue bacheche Trello in Kan è facile. Puoi seguire la nostra guida passo-passo <0>qui</0>."
+
+#: src/views/home/components/Pricing.tsx:28
+msgid "Individuals"
+msgstr "Privati"
+
+#: src/views/home/components/Features.tsx:114
+msgid "Integrations"
+msgstr "Integrazioni"
+
+#: src/views/home/components/Pricing.tsx:51
+msgid "Kanban is better with a team. Perfect for small and growing teams looking to collaborate."
+msgstr "Kanban è migliore con un team. Perfetto per piccoli team in crescita che cercano di collaborare."
+
+#: src/views/home/components/Features.tsx:129
+msgid "Kanban reimagined"
+msgstr "Kanban reinventato"
+
+#: src/views/home/components/Features.tsx:93
+msgid "Labels & Filters"
+msgstr "Etichette & Filtri"
+
+#: src/views/home/components/Footer.tsx:130
+msgid "Legal"
+msgstr "Legale"
+
+#: src/views/home/components/Footer.tsx:44
+msgid "License"
+msgstr "Licenza"
+
+#: src/views/home/components/Pricing.tsx:14
+msgid "Monthly"
+msgstr "Mensile"
+
+#: src/views/home/index.tsx:85
+msgid "No credit card required"
+msgstr "Nessuna carta di credito richiesta"
+
+#: src/views/home/components/Features.tsx:94
+msgid "Organize and find cards quickly with powerful filtering tools."
+msgstr "Organizza e trova le schede rapidamente con potenti strumenti di filtraggio."
+
+#: src/views/home/components/Pricing.tsx:73
+msgid "Own your data"
+msgstr "Possiedi i tuoi dati"
+
+#: src/views/home/components/Pricing.tsx:15
+#: src/views/home/components/Pricing.tsx:20
+msgid "per user/month"
+msgstr "per utente/mese"
+
+#: src/views/home/components/Pricing.tsx:85
+#: src/views/home/components/Header.tsx:15
+#: src/views/home/components/Footer.tsx:50
+msgid "Pricing"
+msgstr "Prezzi"
+
+#: src/views/home/components/Pricing.tsx:56
+msgid "Priority email support"
+msgstr "Supporto email prioritario"
+
+#: src/views/home/components/Footer.tsx:42
+msgid "Privacy policy"
+msgstr "Informativa sulla privacy"
+
+#: src/views/home/components/Faqs.tsx:147
+msgid "Questions?"
+msgstr "Domande?"
+
+#: src/views/home/components/Footer.tsx:113
+msgid "Resources"
+msgstr "Risorse"
+
+#: src/views/home/components/Header.tsx:13
+#: src/views/home/components/Footer.tsx:36
+msgid "Roadmap"
+msgstr "Roadmap"
+
+#: src/views/home/components/Pricing.tsx:72
+msgid "Run on your own infrastructure"
+msgstr "Esegui sulla tua infrastruttura"
+
+#: src/views/home/components/Features.tsx:109
+msgid "Save time with reusable board templates."
+msgstr "Risparmia tempo con modelli di bacheca riutilizzabili."
+
+#: src/views/home/components/Pricing.tsx:64
+msgid "Self Host"
+msgstr "Self Host"
+
+#: src/views/home/index.tsx:81
+msgid "Self host with Github"
+msgstr "Self host con Github"
+
+#: src/views/home/components/Header.tsx:100
+#: src/views/home/components/Header.tsx:138
+msgid "Sign in"
+msgstr "Accedi"
+
+#: src/views/home/components/Pricing.tsx:89
+msgid "Simple pricing"
+msgstr "Prezzi semplici"
+
+#: src/views/home/components/Features.tsx:132
+msgid "Simple, visual task management that just works. Drag and drop cards, collaborate with your team, and get more done."
+msgstr "Gestione delle attività semplice e visuale che funziona. Trascina e rilascia le schede, collabora con il tuo team e ottieni di più."
+
+#: src/views/home/index.tsx:37
+msgid "Star on Github"
+msgstr "Metti una stella su Github"
+
+#: src/views/home/components/Pricing.tsx:57
+msgid "Support the development of the project"
+msgstr "Sostieni lo sviluppo del progetto"
+
+#: src/views/home/components/Pricing.tsx:46
+msgid "Teams"
+msgstr "Team"
+
+#: src/views/home/components/Features.tsx:108
+msgid "Templates"
+msgstr "Template"
+
+#: src/views/home/components/Footer.tsx:41
+msgid "Terms of service"
+msgstr "Termini di servizio"
+
+#: src/views/home/components/Faqs.tsx:33
+msgid "The main difference between Kan and Trello is that Kan is open source, allowing anyone to view, modify, and contribute to our code. Our cloud offering also offers no restrictions on features for individual use, whereas Trello locks basic features such as the number of boards you can create behind a paywall."
+msgstr "La principale differenza tra Kan e Trello è che Kan è open source, permettendo a chiunque di visualizzare, modificare e contribuire al nostro codice. La nostra offerta cloud non impone inoltre alcuna restrizione sulle funzionalità per uso individuale, mentre Trello blocca funzionalità di base come il numero di bacheche che puoi creare dietro un paywall."
+
+#: src/views/home/index.tsx:65
+msgid "The open source <0/> alternative to Trello"
+msgstr "L'alternativa open source <0/> a Trello"
+
+#: src/views/home/components/Features.tsx:104
+msgid "Track all card changes with detailed activity history."
+msgstr "Tieni traccia di tutte le modifiche alle schede con una cronologia dettagliata delle attività."
+
+#: src/views/home/components/Features.tsx:88
+msgid "Trello imports"
+msgstr "Importazioni da Trello"
+
+#: src/views/home/components/Pricing.tsx:41
+msgid "Unlimited activity log"
+msgstr "Registro attività illimitato"
+
+#: src/views/home/components/Pricing.tsx:37
+msgid "Unlimited boards"
+msgstr "Bacheche illimitate"
+
+#: src/views/home/components/Cta.tsx:57
+msgid "Unlimited boards, unlimited lists, unlimited cards. No credit card required."
+msgstr "Bacheche illimitate, liste illimitate, schede illimitate. Nessuna carta di credito richiesta."
+
+#: src/views/home/components/Pricing.tsx:39
+msgid "Unlimited cards"
+msgstr "Schede illimitate"
+
+#: src/views/home/components/Pricing.tsx:40
+msgid "Unlimited comments"
+msgstr "Commenti illimitati"
+
+#: src/views/home/components/Pricing.tsx:38
+msgid "Unlimited lists"
+msgstr "Liste illimitate"
+
+#: src/views/home/components/Pricing.tsx:67
+msgid "View docs"
+msgstr "Visualizza documenti"
+
+#: src/views/home/components/Features.tsx:147
+msgid "View our roadmap."
+msgstr "Visualizza la nostra roadmap."
+
+#: src/views/home/components/Faqs.tsx:94
+msgid "We are using the <0>AGPL-3.0 license</0>."
+msgstr "Utilizziamo la <0>licenza AGPL-3.0</0>."
+
+#: src/views/home/components/Features.tsx:145
+msgid "We're just getting started. "
+msgstr "Siamo solo all'inizio. "
+
+#: src/views/home/components/Faqs.tsx:91
+msgid "What license are you using?"
+msgstr "Quale licenza state utilizzando?"
+
+#: src/views/home/components/Faqs.tsx:30
+msgid "What's the difference between Kan and Trello?"
+msgstr "Qual è la differenza tra Kan e Trello?"
+
+#: src/views/home/components/Faqs.tsx:25
+msgid "When Trello launched in 2011, it blew everyone away with its carefully designed simplicity, but over time (and atlassification) it lost its magic and grew into something closer to \"Jira Lite\". This project is our attempt to recapture the original magic of Trello's simplicity, in open source."
+msgstr "Quando Trello fu lanciato nel 2011, stupì tutti con la sua semplicità attentamente progettata, ma col tempo (e con l'atlassificazione) ha perso la sua magia trasformandosi in qualcosa di più simile a \"Jira Lite\". Questo progetto è il nostro tentativo di recuperare la magia originale della semplicità di Trello, in versione open source."
+
+#: src/views/home/components/Faqs.tsx:22
+msgid "Why make an open source Trello?"
+msgstr "Perché creare un Trello open source?"
+
+#: src/views/home/components/Pricing.tsx:54
+#: src/views/home/components/Features.tsx:83
+msgid "Workspace members"
+msgstr "Membri del workspace"
+
+#: src/views/home/components/Pricing.tsx:19
+msgid "Yearly"
+msgstr "Annuale"
+
+#: src/views/home/components/Faqs.tsx:86
+msgid "Yes, we offer an forever free plan for individual use. No restrictions, no paywalls, no limits."
+msgstr "Sì, offriamo un piano gratuito per sempre per uso individuale. Nessuna restrizione, nessun paywall, nessun limite."
+
+#: src/views/home/components/Faqs.tsx:67
+msgid "You can get a custom workspace URL, like <0>kan.bn/kan</0>, by going into your <1>workspace settings</1> and purchasing a pro workspace subscription. All subscriptions help fund the development of the project!"
+msgstr "Puoi ottenere un URL personalizzato per il tuo workspace, come <0>kan.bn/kan</0>, accedendo alle tue <1>impostazioni del workspace</1> e acquistando un abbonamento pro. Tutti gli abbonamenti contribuiscono a finanziare lo sviluppo del progetto!"
+
+#: src/views/home/components/Faqs.tsx:111
+msgid "You can invite team members by clicking the \"Invite\" button in the top right corner of the <0>members page</0> and entering their email address. They will receive an email with a link to join the workspace."
+msgstr "Puoi invitare i membri del team cliccando sul pulsante \"Invita\" nell'angolo in alto a destra della <0>pagina dei membri</0> e inserendo il loro indirizzo email. Riceveranno un'email con un link per unirsi al workspace."
+
+#: src/views/home/components/Faqs.tsx:127
+msgid "You can self-host by following the instructions in our <0>repo</0>."
+msgstr "Puoi effettuare il self-hosting seguendo le istruzioni nel nostro <0>repo</0>."

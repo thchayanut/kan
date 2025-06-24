@@ -5,12 +5,20 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 import type { Locale } from "~/locales";
 import { defaultLocale, locales } from "~/locales";
+import { messages as deMessages } from "~/locales/de/messages";
 import { messages as enMessages } from "~/locales/en/messages";
+import { messages as esMessages } from "~/locales/es/messages";
 import { messages as frMessages } from "~/locales/fr/messages";
+import { messages as itMessages } from "~/locales/it/messages";
+import { messages as nlMessages } from "~/locales/nl/messages";
 
 const messages = {
   en: enMessages,
   fr: frMessages,
+  de: deMessages,
+  es: esMessages,
+  it: itMessages,
+  nl: nlMessages,
 };
 
 interface LinguiContextType {
