@@ -56,10 +56,9 @@ export function LinguiProviderWrapper({
   }, [initialLocale]);
 
   useEffect(() => {
-    if (isHydrated && locale !== i18n.locale) {
+    if (isHydrated) {
       i18n.load(locale, messages[locale]);
       i18n.activate(locale);
-
       localStorage.setItem("locale", locale);
     }
   }, [locale, isHydrated]);

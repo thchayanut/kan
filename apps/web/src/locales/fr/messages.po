@@ -17,7 +17,7 @@ msgstr ""
 msgid "#1 Hacker News"
 msgstr "#1 Hacker News"
 
-#: src/views/home/components/Pricing.tsx:41
+#: src/views/home/components/Pricing.tsx:36
 msgid "1 user"
 msgstr "1 utilisateur"
 
@@ -29,13 +29,21 @@ msgstr "Une application kanban puissante et flexible qui vous aide à organiser 
 msgid "Activity logs"
 msgstr "Journaux d'activité"
 
-#: src/views/home/components/Pricing.tsx:60
+#: src/views/home/components/Pricing.tsx:55
 msgid "Admin roles"
 msgstr "Rôles d'administrateur"
 
-#: src/views/home/components/Pricing.tsx:102
+#: src/views/home/components/Pricing.tsx:97
 msgid "All seats are free during the beta until Sept 1st!"
 msgstr "Tous les sièges sont gratuits pendant la bêta jusqu'au 1er sept. !"
+
+#: src/views/home/components/Footer.tsx:18
+msgid "All systems operational"
+msgstr "Tous les systèmes opérationnels"
+
+#: src/views/home/components/Footer.tsx:31
+msgid "API Reference"
+msgstr "Référence API"
 
 #: src/views/home/components/Features.tsx:78
 msgid "Board visibility"
@@ -53,7 +61,11 @@ msgstr "Bientôt disponible"
 msgid "Comments"
 msgstr "Commentaires"
 
-#: src/views/home/components/Pricing.tsx:75
+#: src/views/home/components/Footer.tsx:94
+msgid "Company"
+msgstr "Entreprise"
+
+#: src/views/home/components/Pricing.tsx:70
 msgid "Complete control and ownership:"
 msgstr "Contrôle et propriété complets :"
 
@@ -61,11 +73,15 @@ msgstr "Contrôle et propriété complets :"
 msgid "Connect your favorite tools to streamline your workflow."
 msgstr "Connectez vos outils favoris pour simplifier votre flux de travail."
 
+#: src/views/home/components/Footer.tsx:38
+msgid "Contact"
+msgstr "Contact"
+
 #: src/views/home/components/Features.tsx:79
 msgid "Control who can view and edit your boards."
 msgstr "Contrôlez qui peut voir et modifier vos tableaux."
 
-#: src/views/home/components/Pricing.tsx:79
+#: src/views/home/components/Pricing.tsx:74
 msgid "Custom domain"
 msgstr "Domaine personnalisé"
 
@@ -77,23 +93,29 @@ msgstr "Discutez et collaborez sur les cartes."
 msgid "Do you offer a free plan?"
 msgstr "Proposez-vous un plan gratuit ?"
 
-#: src/views/home/components/Header.tsx:17
+#: src/views/home/components/Header.tsx:16
 msgid "Docs"
 msgstr "Documentation"
 
-#: src/views/home/components/Pricing.tsx:57
+#: src/views/home/components/Footer.tsx:77
+msgid "Documentation"
+msgstr "Documentation"
+
+#: src/views/home/components/Pricing.tsx:52
 msgid "Everything in the free plan, plus:"
 msgstr "Tout ce qui est inclus dans le plan gratuit, plus :"
 
-#: src/views/home/components/Pricing.tsx:38
+#: src/views/home/components/Pricing.tsx:33
 msgid "Everything you need, free forever. Unlimited boards, unlimited lists, unlimited cards. Upgrade any time."
 msgstr "Tout ce dont vous avez besoin, gratuit pour toujours. Tableaux illimités, listes illimitées, cartes illimitées. Possibilité de mise à niveau à tout moment."
 
+#: src/views/home/components/Footer.tsx:51
 #: src/views/home/components/Faqs.tsx:143
 msgid "FAQs"
 msgstr "FAQ"
 
-#: src/views/home/components/Header.tsx:15
+#: src/views/home/components/Header.tsx:14
+#: src/views/home/components/Footer.tsx:49
 #: src/views/home/components/Features.tsx:125
 msgid "Features"
 msgstr "Fonctionnalités"
@@ -106,22 +128,22 @@ msgstr "Trouvez des réponses aux questions fréquentes sur le projet. Vous ne t
 msgid "For long-term sustainability, we recognise all good open source projects need a source of revenue. Ours comes from the paid cloud offering for workspaces with multiple users (free during the beta) and for custom workspace slugs. There's no obligation to use it, and you can self-host the software on your own infrastructure free of charge."
 msgstr "Pour une durabilité à long terme, nous reconnaissons que tous les bons projets open source ont besoin d'une source de revenus. La nôtre provient de l'offre cloud payante pour les espaces de travail avec plusieurs utilisateurs (gratuite pendant la bêta) et pour les slugs d'espace de travail personnalisés. Il n'y a aucune obligation de l'utiliser, et vous pouvez auto-héberger le logiciel sur votre propre infrastructure gratuitement."
 
-#: src/views/home/components/Pricing.tsx:37
+#: src/views/home/components/Pricing.tsx:32
 msgid "Free"
 msgstr "Gratuit"
 
-#: src/views/home/components/Pricing.tsx:39
+#: src/views/home/components/Pricing.tsx:34
 msgid "Free, forever"
 msgstr "Gratuit, pour toujours"
 
-#: src/views/home/components/Header.tsx:103
-#: src/views/home/components/Header.tsx:142
+#: src/views/home/components/Header.tsx:102
+#: src/views/home/components/Header.tsx:141
 #: src/views/home/components/Cta.tsx:61
 msgid "Get started"
 msgstr "Commencer"
 
-#: src/views/home/components/Pricing.tsx:36
-#: src/views/home/components/Pricing.tsx:54
+#: src/views/home/components/Pricing.tsx:31
+#: src/views/home/components/Pricing.tsx:49
 msgid "Get Started"
 msgstr "Commencer"
 
@@ -129,7 +151,7 @@ msgstr "Commencer"
 msgid "Get started for free today"
 msgstr "Commencez gratuitement aujourd'hui"
 
-#: src/views/home/components/Pricing.tsx:97
+#: src/views/home/components/Pricing.tsx:92
 msgid "Get started for free, with no usage limits. For collaboration, upgrade to a plan that fits the size of your team."
 msgstr "Commencez gratuitement, sans limites d'utilisation. Pour la collaboration, passez à un forfait adapté à la taille de votre équipe."
 
@@ -137,12 +159,20 @@ msgstr "Commencez gratuitement, sans limites d'utilisation. Pour la collaboratio
 msgid "Get started on Cloud"
 msgstr "Commencer sur le Cloud"
 
-#: src/views/home/components/Header.tsx:97
-#: src/views/home/components/Header.tsx:134
+#: src/views/home/components/Footer.tsx:25
+msgid "Getting started"
+msgstr "Premiers pas"
+
+#: src/views/home/components/Footer.tsx:37
+msgid "GitHub"
+msgstr "GitHub"
+
+#: src/views/home/components/Header.tsx:96
+#: src/views/home/components/Header.tsx:133
 msgid "Go to app"
 msgstr "Accéder à l'application"
 
-#: src/views/home/components/Pricing.tsx:74
+#: src/views/home/components/Pricing.tsx:69
 msgid "Host Kan on your own infrastructure. Ideal for organisations that need complete control over their data."
 msgstr "Hébergez Kan sur votre propre infrastructure. Idéal pour les organisations qui ont besoin d'un contrôle total sur leurs données."
 
@@ -170,11 +200,15 @@ msgstr "Comment le projet est-il financé ?"
 msgid "Import your Trello boards and hit the ground running."
 msgstr "Importez vos tableaux Trello et commencez immédiatement."
 
+#: src/views/home/components/Footer.tsx:27
+msgid "Importing from Trello"
+msgstr "Importation depuis Trello"
+
 #: src/views/home/components/Faqs.tsx:49
 msgid "Importing your Trello boards into Kan is easy. You can follow our step-by-step guide <0>here</0>."
 msgstr "L'importation de vos tableaux Trello dans Kan est simple. Vous pouvez suivre notre guide étape par étape <0>ici</0>."
 
-#: src/views/home/components/Pricing.tsx:33
+#: src/views/home/components/Pricing.tsx:28
 msgid "Individuals"
 msgstr "Particuliers"
 
@@ -182,7 +216,7 @@ msgstr "Particuliers"
 msgid "Integrations"
 msgstr "Intégrations"
 
-#: src/views/home/components/Pricing.tsx:56
+#: src/views/home/components/Pricing.tsx:51
 msgid "Kanban is better with a team. Perfect for small and growing teams looking to collaborate."
 msgstr "Kanban est meilleur en équipe. Parfait pour les petites équipes et celles en croissance qui cherchent à collaborer."
 
@@ -194,7 +228,15 @@ msgstr "Kanban réinventé"
 msgid "Labels & Filters"
 msgstr "Étiquettes & filtres"
 
-#: src/views/home/components/Pricing.tsx:21
+#: src/views/home/components/Footer.tsx:130
+msgid "Legal"
+msgstr "Mentions légales"
+
+#: src/views/home/components/Footer.tsx:44
+msgid "License"
+msgstr "Licence"
+
+#: src/views/home/components/Pricing.tsx:14
 msgid "Monthly"
 msgstr "Mensuel"
 
@@ -206,34 +248,43 @@ msgstr "Aucune carte de crédit requise"
 msgid "Organize and find cards quickly with powerful filtering tools."
 msgstr "Organisez et trouvez rapidement des cartes avec des outils de filtrage puissants."
 
-#: src/views/home/components/Pricing.tsx:78
+#: src/views/home/components/Pricing.tsx:73
 msgid "Own your data"
 msgstr "Maîtrisez vos données"
 
-#: src/views/home/components/Pricing.tsx:14
-#: src/views/home/components/Pricing.tsx:22
-#: src/views/home/components/Pricing.tsx:27
+#: src/views/home/components/Pricing.tsx:15
+#: src/views/home/components/Pricing.tsx:20
 msgid "per user/month"
 msgstr "par utilisateur/mois"
 
-#: src/views/home/components/Pricing.tsx:90
-#: src/views/home/components/Header.tsx:16
+#: src/views/home/components/Pricing.tsx:85
+#: src/views/home/components/Header.tsx:15
+#: src/views/home/components/Footer.tsx:50
 msgid "Pricing"
 msgstr "Tarifs"
 
-#: src/views/home/components/Pricing.tsx:61
+#: src/views/home/components/Pricing.tsx:56
 msgid "Priority email support"
 msgstr "Support par e-mail prioritaire"
+
+#: src/views/home/components/Footer.tsx:42
+msgid "Privacy policy"
+msgstr "Politique de confidentialité"
 
 #: src/views/home/components/Faqs.tsx:147
 msgid "Questions?"
 msgstr "Des questions ?"
 
-#: src/views/home/components/Header.tsx:14
+#: src/views/home/components/Footer.tsx:113
+msgid "Resources"
+msgstr "Ressources"
+
+#: src/views/home/components/Header.tsx:13
+#: src/views/home/components/Footer.tsx:36
 msgid "Roadmap"
 msgstr "Feuille de route"
 
-#: src/views/home/components/Pricing.tsx:77
+#: src/views/home/components/Pricing.tsx:72
 msgid "Run on your own infrastructure"
 msgstr "Exécutez sur votre propre infrastructure"
 
@@ -241,7 +292,7 @@ msgstr "Exécutez sur votre propre infrastructure"
 msgid "Save time with reusable board templates."
 msgstr "Gagnez du temps avec des modèles de tableaux réutilisables."
 
-#: src/views/home/components/Pricing.tsx:69
+#: src/views/home/components/Pricing.tsx:64
 msgid "Self Host"
 msgstr "Auto-hébergement"
 
@@ -249,12 +300,12 @@ msgstr "Auto-hébergement"
 msgid "Self host with Github"
 msgstr "Auto-hébergement avec Github"
 
-#: src/views/home/components/Header.tsx:101
-#: src/views/home/components/Header.tsx:139
+#: src/views/home/components/Header.tsx:100
+#: src/views/home/components/Header.tsx:138
 msgid "Sign in"
 msgstr "Se connecter"
 
-#: src/views/home/components/Pricing.tsx:94
+#: src/views/home/components/Pricing.tsx:89
 msgid "Simple pricing"
 msgstr "Tarification simple"
 
@@ -266,17 +317,21 @@ msgstr "Gestion de tâches visuelle et simple qui fonctionne parfaitement. Gliss
 msgid "Star on Github"
 msgstr "Étoile sur Github"
 
-#: src/views/home/components/Pricing.tsx:62
+#: src/views/home/components/Pricing.tsx:57
 msgid "Support the development of the project"
 msgstr "Soutenir le développement du projet"
 
-#: src/views/home/components/Pricing.tsx:51
+#: src/views/home/components/Pricing.tsx:46
 msgid "Teams"
 msgstr "Équipes"
 
 #: src/views/home/components/Features.tsx:108
 msgid "Templates"
 msgstr "Modèles"
+
+#: src/views/home/components/Footer.tsx:41
+msgid "Terms of service"
+msgstr "Conditions d'utilisation"
 
 #: src/views/home/components/Faqs.tsx:33
 msgid "The main difference between Kan and Trello is that Kan is open source, allowing anyone to view, modify, and contribute to our code. Our cloud offering also offers no restrictions on features for individual use, whereas Trello locks basic features such as the number of boards you can create behind a paywall."
@@ -294,11 +349,11 @@ msgstr "Suivez tous les changements de cartes avec un historique d'activité dé
 msgid "Trello imports"
 msgstr "Importations Trello"
 
-#: src/views/home/components/Pricing.tsx:46
+#: src/views/home/components/Pricing.tsx:41
 msgid "Unlimited activity log"
 msgstr "Journal d'activité illimité"
 
-#: src/views/home/components/Pricing.tsx:42
+#: src/views/home/components/Pricing.tsx:37
 msgid "Unlimited boards"
 msgstr "Tableaux illimités"
 
@@ -306,19 +361,19 @@ msgstr "Tableaux illimités"
 msgid "Unlimited boards, unlimited lists, unlimited cards. No credit card required."
 msgstr "Tableaux illimités, listes illimitées, cartes illimitées. Aucune carte de crédit requise."
 
-#: src/views/home/components/Pricing.tsx:44
+#: src/views/home/components/Pricing.tsx:39
 msgid "Unlimited cards"
 msgstr "Cartes illimitées"
 
-#: src/views/home/components/Pricing.tsx:45
+#: src/views/home/components/Pricing.tsx:40
 msgid "Unlimited comments"
 msgstr "Commentaires illimités"
 
-#: src/views/home/components/Pricing.tsx:43
+#: src/views/home/components/Pricing.tsx:38
 msgid "Unlimited lists"
 msgstr "Listes illimitées"
 
-#: src/views/home/components/Pricing.tsx:72
+#: src/views/home/components/Pricing.tsx:67
 msgid "View docs"
 msgstr "Voir la documentation"
 
@@ -343,20 +398,19 @@ msgid "What's the difference between Kan and Trello?"
 msgstr "Quelle est la différence entre Kan et Trello ?"
 
 #: src/views/home/components/Faqs.tsx:25
-msgid "When Trello launched in 2011, it blew everyone away with its carefully designed simplicity, but over time (and atlassification) it lost its magic and grew into something closer to \"Jira Lite\". This project is our attempt to recapture the original magic of Trello’s simplicity, in open source."
-msgstr "Quand Trello a été lancé en 2011, il a impressionné tout le monde par sa simplicité soigneusement conçue, mais au fil du temps (et de l'\"atlassification\"), il a perdu sa magie et s'est transformé en quelque chose de plus proche d'un \"Jira Lite\". Ce projet est notre tentative de retrouver la magie originelle de la simplicité de Trello, en open source."
+msgid "When Trello launched in 2011, it blew everyone away with its carefully designed simplicity, but over time (and atlassification) it lost its magic and grew into something closer to \"Jira Lite\". This project is our attempt to recapture the original magic of Trello's simplicity, in open source."
+msgstr "Quand Trello a été lancé en 2011, il a impressionné tout le monde par sa simplicité soigneusement conçue, mais au fil du temps (et de l'\"atlassification\"), il a perdu sa magie et s'est transformé en quelque chose qui ressemble davantage à \"Jira Lite\". Ce projet est notre tentative de retrouver la magie originelle de la simplicité de Trello, en open source."
 
 #: src/views/home/components/Faqs.tsx:22
 msgid "Why make an open source Trello?"
 msgstr "Pourquoi créer un Trello open source ?"
 
-#: src/views/home/components/Pricing.tsx:59
+#: src/views/home/components/Pricing.tsx:54
 #: src/views/home/components/Features.tsx:83
 msgid "Workspace members"
 msgstr "Membres de l'espace de travail"
 
-#: src/views/home/components/Pricing.tsx:13
-#: src/views/home/components/Pricing.tsx:26
+#: src/views/home/components/Pricing.tsx:19
 msgid "Yearly"
 msgstr "Annuel"
 
