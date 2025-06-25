@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { HiMiniArrowTopRightOnSquare } from "react-icons/hi2";
 
 import Button from "~/components/Button";
+import { LanguageSelector } from "~/components/LanguageSelector";
 import Modal from "~/components/modal";
 import { NewWorkspaceForm } from "~/components/NewWorkspaceForm";
 import { PageHead } from "~/components/PageHead";
@@ -35,12 +36,17 @@ export default function SettingsPage() {
   } = api.integration.providers.useQuery();
 
   const { data: trelloUrl, refetch: refetchTrelloUrl } =
-    api.integration.getAuthorizationUrl.useQuery({ provider: "trello" }, {
-      enabled:
-        !integrationsLoading &&
-        !integrations?.some((integration) => integration.provider === "trello"),
-      refetchOnWindowFocus: true,
-    });
+    api.integration.getAuthorizationUrl.useQuery(
+      { provider: "trello" },
+      {
+        enabled:
+          !integrationsLoading &&
+          !integrations?.some(
+            (integration) => integration.provider === "trello",
+          ),
+        refetchOnWindowFocus: true,
+      },
+    );
 
   useEffect(() => {
     const handleFocus = () => {
@@ -52,25 +58,26 @@ export default function SettingsPage() {
     };
   }, [refetchIntegrations]);
 
-  const { mutateAsync: disconnectTrello } = api.integration.disconnect.useMutation({
-    onSuccess: () => {
-      refetchUser();
-      refetchIntegrations();
-      refetchTrelloUrl();
-      showPopup({
-        header: "Trello disconnected",
-        message: "Your Trello account has been disconnected.",
-        icon: "success",
-      });
-    },
-    onError: () => {
-      showPopup({
-        header: "Error disconnecting Trello",
-        message: "An error occurred while disconnecting your Trello account.",
-        icon: "error",
-      });
-    },
-  });
+  const { mutateAsync: disconnectTrello } =
+    api.integration.disconnect.useMutation({
+      onSuccess: () => {
+        refetchUser();
+        refetchIntegrations();
+        refetchTrelloUrl();
+        showPopup({
+          header: "Trello disconnected",
+          message: "Your Trello account has been disconnected.",
+          icon: "success",
+        });
+      },
+      onError: () => {
+        showPopup({
+          header: "Error disconnecting Trello",
+          message: "An error occurred while disconnecting your Trello account.",
+          icon: "error",
+        });
+      },
+    });
 
   const refetchUser = () => utils.user.getUser.refetch();
 
@@ -142,6 +149,16 @@ export default function SettingsPage() {
                 workspacePublicId={workspace.publicId}
                 workspaceDescription={workspace.description ?? ""}
               />
+            </div>
+
+            <div className="mb-8 border-t border-light-300 dark:border-dark-300">
+              <h2 className="mb-4 mt-8 text-[14px] text-neutral-900 dark:text-dark-1000">
+                Language
+              </h2>
+              <p className="mb-8 text-sm text-neutral-500 dark:text-dark-900">
+                Change the language of the app.
+              </p>
+              <LanguageSelector />
             </div>
 
             {env("NEXT_PUBLIC_KAN_ENV") === "cloud" && (

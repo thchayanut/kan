@@ -13,6 +13,19 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/components/FeedbackButton.tsx:123
+msgid ", or see our"
+msgstr ", or see our"
+
+#. placeholder {0}: labelPublicIds.length
+#: src/views/board/components/NewCardForm.tsx:359
+msgid "{0} labels"
+msgstr "{0} labels"
+
+#: src/views/boards/components/ImportBoardsForm.tsx:299
+msgid "{boardCount, plural, one {Import board (1)} other {Import boards ({boardCount})}}"
+msgstr "{boardCount, plural, one {Import board (1)} other {Import boards ({boardCount})}}"
+
 #: src/views/home/index.tsx:51
 msgid "#1 Hacker News"
 msgstr "#1 Hacker News"
@@ -37,6 +50,14 @@ msgstr "A powerful, flexible kanban app that helps you organise work, track prog
 msgid "Activity logs"
 msgstr "Activity logs"
 
+#: src/views/board/components/List.tsx:110
+msgid "Add a card"
+msgstr "Add a card"
+
+#: src/components/Editor.tsx:302
+msgid "Add description... (type '/' to open commands)"
+msgstr "Add description... (type '/' to open commands)"
+
 #: src/views/home/components/Pricing.tsx:55
 msgid "Admin roles"
 msgstr "Admin roles"
@@ -53,9 +74,35 @@ msgstr "All systems operational"
 msgid "API Reference"
 msgstr "API Reference"
 
+#: src/views/board/index.tsx:239
+msgid "Board"
+msgstr "Board"
+
+#: src/views/board/index.tsx:265
+msgid "Board not found"
+msgstr "Board not found"
+
 #: src/views/home/components/Features.tsx:78
 msgid "Board visibility"
 msgstr "Board visibility"
+
+#: src/views/board/components/VisibilityButton.tsx:45
+msgid "Board visibility updated"
+msgstr "Board visibility updated"
+
+#: src/views/boards/index.tsx:25
+#: src/components/SideNavigation.tsx:39
+msgid "Boards"
+msgstr "Boards"
+
+#. placeholder {0}: workspace.name ?? "Workspace"
+#: src/views/boards/index.tsx:21
+msgid "Boards | {0}"
+msgstr "Boards | {0}"
+
+#: src/views/board/components/NewCardForm.tsx:248
+msgid "Card title"
+msgstr "Card title"
 
 #: src/views/home/components/Features.tsx:84
 msgid "Collaborate seamlessly with your team."
@@ -77,6 +124,10 @@ msgstr "Company"
 msgid "Complete control and ownership:"
 msgstr "Complete control and ownership:"
 
+#: src/views/boards/components/ImportBoardsForm.tsx:157
+msgid "Connect Trello"
+msgstr "Connect Trello"
+
 #: src/views/home/components/Features.tsx:115
 msgid "Connect your favorite tools to streamline your workflow."
 msgstr "Connect your favorite tools to streamline your workflow."
@@ -85,13 +136,63 @@ msgstr "Connect your favorite tools to streamline your workflow."
 msgid "Contact"
 msgstr "Contact"
 
+#: src/components/FeedbackButton.tsx:121
+msgid "Contact us"
+msgstr "Contact us"
+
 #: src/views/home/components/Features.tsx:79
 msgid "Control who can view and edit your boards."
 msgstr "Control who can view and edit your boards."
 
+#: src/views/board/components/NewCardForm.tsx:385
+#: src/components/LabelForm.tsx:212
+msgid "Create another"
+msgstr "Create another"
+
+#: src/views/boards/components/NewBoardForm.tsx:77
+msgid "Create board"
+msgstr "Create board"
+
+#: src/views/board/components/NewCardForm.tsx:395
+msgid "Create card"
+msgstr "Create card"
+
+#: src/components/LabelForm.tsx:233
+msgid "Create label"
+msgstr "Create label"
+
+#: src/views/boards/components/BoardsList.tsx:42
+msgid "Create new board"
+msgstr "Create new board"
+
+#: src/views/board/components/NewCardForm.tsx:321
+msgid "Create new label"
+msgstr "Create new label"
+
+#: src/views/board/index.tsx:327
+msgid "Create new list"
+msgstr "Create new list"
+
+#: src/components/WorkspaceMenu.tsx:85
+#: src/components/NewWorkspaceForm.tsx:91
+msgid "Create workspace"
+msgstr "Create workspace"
+
 #: src/views/home/components/Pricing.tsx:74
 msgid "Custom domain"
 msgstr "Custom domain"
+
+#: src/components/UserMenu.tsx:112
+msgid "Dark"
+msgstr "Dark"
+
+#: src/components/LabelForm.tsx:226
+msgid "Delete"
+msgstr "Delete"
+
+#: src/views/board/components/List.tsx:117
+msgid "Delete list"
+msgstr "Delete list"
 
 #: src/views/home/components/Features.tsx:99
 msgid "Discuss and collaborate on cards."
@@ -101,6 +202,10 @@ msgstr "Discuss and collaborate on cards."
 msgid "Do you offer a free plan?"
 msgstr "Do you offer a free plan?"
 
+#: src/components/FeedbackButton.tsx:130
+msgid "docs"
+msgstr "docs"
+
 #: src/views/home/components/Header.tsx:16
 msgid "Docs"
 msgstr "Docs"
@@ -108,6 +213,10 @@ msgstr "Docs"
 #: src/views/home/components/Footer.tsx:77
 msgid "Documentation"
 msgstr "Documentation"
+
+#: src/components/LabelForm.tsx:118
+msgid "Edit label"
+msgstr "Edit label"
 
 #: src/views/home/components/Pricing.tsx:52
 msgid "Everything in the free plan, plus:"
@@ -127,6 +236,14 @@ msgstr "FAQs"
 #: src/views/home/components/Features.tsx:125
 msgid "Features"
 msgstr "Features"
+
+#: src/components/FeedbackButton.tsx:78
+msgid "Feedback"
+msgstr "Feedback"
+
+#: src/components/FeedbackButton.tsx:38
+msgid "Feedback sent"
+msgstr "Feedback sent"
 
 #: src/views/home/components/Faqs.tsx:150
 msgid "Find answers to common questions about the project. Can't find what you're looking for? Feel free to <0>contact us</0>."
@@ -155,6 +272,14 @@ msgstr "Get started"
 #: src/views/home/components/Pricing.tsx:49
 msgid "Get Started"
 msgstr "Get Started"
+
+#: src/views/boards/components/BoardsList.tsx:38
+msgid "Get started by creating a new board"
+msgstr "Get started by creating a new board"
+
+#: src/views/board/index.tsx:319
+msgid "Get started by creating a new list"
+msgstr "Get started by creating a new list"
 
 #: src/views/home/components/Cta.tsx:54
 msgid "Get started for free today"
@@ -205,6 +330,22 @@ msgstr "How do I self-host?"
 msgid "How is the project funded?"
 msgstr "How is the project funded?"
 
+#: src/components/FeedbackButton.tsx:98
+msgid "Ideas to improve this page..."
+msgstr "Ideas to improve this page..."
+
+#: src/views/boards/index.tsx:39
+msgid "Import"
+msgstr "Import"
+
+#: src/views/boards/components/ImportBoardsForm.tsx:191
+msgid "Import complete"
+msgstr "Import complete"
+
+#: src/views/boards/components/ImportBoardsForm.tsx:204
+msgid "Import failed"
+msgstr "Import failed"
+
 #: src/views/home/components/Features.tsx:89
 msgid "Import your Trello boards and hit the ground running."
 msgstr "Import your Trello boards and hit the ground running."
@@ -245,13 +386,74 @@ msgstr "Legal"
 msgid "License"
 msgstr "License"
 
+#: src/components/UserMenu.tsx:126
+msgid "Light"
+msgstr "Light"
+
+#: src/components/UserMenu.tsx:136
+msgid "Logout"
+msgstr "Logout"
+
+#: src/components/SideNavigation.tsx:44
+msgid "Members"
+msgstr "Members"
+
 #: src/views/home/components/Pricing.tsx:14
 msgid "Monthly"
 msgstr "Monthly"
 
+#: src/views/boards/components/NewBoardForm.tsx:63
+#: src/components/LabelForm.tsx:134
+msgid "Name"
+msgstr "Name"
+
+#: src/components/FeedbackButton.tsx:116
+msgid "Need help?"
+msgstr "Need help?"
+
+#: src/views/boards/index.tsx:52
+msgid "New"
+msgstr "New"
+
+#: src/views/boards/components/NewBoardForm.tsx:49
+msgid "New board"
+msgstr "New board"
+
+#: src/views/board/components/NewCardForm.tsx:231
+msgid "New card"
+msgstr "New card"
+
+#: src/views/boards/components/ImportBoardsForm.tsx:322
+msgid "New import"
+msgstr "New import"
+
+#: src/components/LabelForm.tsx:118
+msgid "New label"
+msgstr "New label"
+
+#: src/views/board/index.tsx:296
+msgid "New list"
+msgstr "New list"
+
+#: src/components/NewWorkspaceForm.tsx:62
+msgid "New workspace"
+msgstr "New workspace"
+
+#: src/views/boards/components/BoardsList.tsx:35
+msgid "No boards"
+msgstr "No boards"
+
+#: src/views/boards/components/ImportBoardsForm.tsx:242
+msgid "No boards found"
+msgstr "No boards found"
+
 #: src/views/home/index.tsx:85
 msgid "No credit card required"
 msgstr "No credit card required"
+
+#: src/views/board/index.tsx:316
+msgid "No lists"
+msgstr "No lists"
 
 #: src/views/home/components/Features.tsx:94
 msgid "Organize and find cards quickly with powerful filtering tools."
@@ -266,6 +468,16 @@ msgstr "Own your data"
 msgid "per user/month"
 msgstr "per user/month"
 
+#: src/views/boards/components/ImportBoardsForm.tsx:205
+#: src/views/board/index.tsx:133
+#: src/views/board/index.tsx:189
+#: src/views/board/components/VisibilityButton.tsx:53
+#: src/views/board/components/NewCardForm.tsx:123
+#: src/components/NewWorkspaceForm.tsx:39
+#: src/components/FeedbackButton.tsx:46
+msgid "Please try again later, or contact customer support."
+msgstr "Please try again later, or contact customer support."
+
 #: src/views/home/components/Pricing.tsx:85
 #: src/views/home/components/Header.tsx:15
 #: src/views/home/components/Footer.tsx:50
@@ -279,6 +491,14 @@ msgstr "Priority email support"
 #: src/views/home/components/Footer.tsx:42
 msgid "Privacy policy"
 msgstr "Privacy policy"
+
+#: src/views/board/components/VisibilityButton.tsx:73
+msgid "Private"
+msgstr "Private"
+
+#: src/views/board/components/VisibilityButton.tsx:68
+msgid "Public"
+msgstr "Public"
 
 #: src/views/home/components/Faqs.tsx:147
 msgid "Questions?"
@@ -301,6 +521,14 @@ msgstr "Run on your own infrastructure"
 msgid "Save time with reusable board templates."
 msgstr "Save time with reusable board templates."
 
+#: src/views/boards/components/ImportBoardsForm.tsx:274
+msgid "Select all"
+msgstr "Select all"
+
+#: src/views/boards/components/ImportBoardsForm.tsx:157
+msgid "Select source"
+msgstr "Select source"
+
 #: src/views/home/components/Pricing.tsx:64
 msgid "Self Host"
 msgstr "Self Host"
@@ -308,6 +536,14 @@ msgstr "Self Host"
 #: src/views/home/index.tsx:81
 msgid "Self host with Github"
 msgstr "Self host with Github"
+
+#: src/components/FeedbackButton.tsx:137
+msgid "Send"
+msgstr "Send"
+
+#: src/components/SideNavigation.tsx:49
+msgid "Settings"
+msgstr "Settings"
 
 #: src/views/home/components/Header.tsx:100
 #: src/views/home/components/Header.tsx:138
@@ -330,6 +566,10 @@ msgstr "Star on Github"
 msgid "Support the development of the project"
 msgstr "Support the development of the project"
 
+#: src/components/UserMenu.tsx:98
+msgid "System"
+msgstr "System"
+
 #: src/views/home/components/Pricing.tsx:46
 msgid "Teams"
 msgstr "Teams"
@@ -342,6 +582,10 @@ msgstr "Templates"
 msgid "Terms of service"
 msgstr "Terms of service"
 
+#: src/components/FeedbackButton.tsx:39
+msgid "Thank you for your feedback!"
+msgstr "Thank you for your feedback!"
+
 #: src/views/home/components/Faqs.tsx:33
 msgid "The main difference between Kan and Trello is that Kan is open source, allowing anyone to view, modify, and contribute to our code. Our cloud offering also offers no restrictions on features for individual use, whereas Trello locks basic features such as the number of boards you can create behind a paywall."
 msgstr "The main difference between Kan and Trello is that Kan is open source, allowing anyone to view, modify, and contribute to our code. Our cloud offering also offers no restrictions on features for individual use, whereas Trello locks basic features such as the number of boards you can create behind a paywall."
@@ -350,6 +594,15 @@ msgstr "The main difference between Kan and Trello is that Kan is open source, a
 msgid "The open source <0/> alternative to Trello"
 msgstr "The open source <0/> alternative to Trello"
 
+#. placeholder {0}: isPublic ? "public" : "private"
+#: src/views/board/components/VisibilityButton.tsx:46
+msgid "The visibility of your board has been set to {0}."
+msgstr "The visibility of your board has been set to {0}."
+
+#: src/components/UserMenu.tsx:85
+msgid "Theme"
+msgstr "Theme"
+
 #: src/views/home/components/Features.tsx:104
 msgid "Track all card changes with detailed activity history."
 msgstr "Track all card changes with detailed activity history."
@@ -357,6 +610,30 @@ msgstr "Track all card changes with detailed activity history."
 #: src/views/home/components/Features.tsx:88
 msgid "Trello imports"
 msgstr "Trello imports"
+
+#: src/views/board/components/NewCardForm.tsx:120
+msgid "Unable to create card"
+msgstr "Unable to create card"
+
+#: src/components/NewWorkspaceForm.tsx:38
+msgid "Unable to create workspace"
+msgstr "Unable to create workspace"
+
+#: src/components/FeedbackButton.tsx:45
+msgid "Unable to send feedback"
+msgstr "Unable to send feedback"
+
+#: src/views/board/components/VisibilityButton.tsx:52
+msgid "Unable to update board visibility"
+msgstr "Unable to update board visibility"
+
+#: src/views/board/index.tsx:188
+msgid "Unable to update card"
+msgstr "Unable to update card"
+
+#: src/views/board/index.tsx:132
+msgid "Unable to update list"
+msgstr "Unable to update list"
 
 #: src/views/home/components/Pricing.tsx:41
 msgid "Unlimited activity log"
@@ -382,6 +659,10 @@ msgstr "Unlimited comments"
 msgid "Unlimited lists"
 msgstr "Unlimited lists"
 
+#: src/components/LabelForm.tsx:233
+msgid "Update label"
+msgstr "Update label"
+
 #: src/views/home/components/Pricing.tsx:67
 msgid "View docs"
 msgstr "View docs"
@@ -389,6 +670,10 @@ msgstr "View docs"
 #: src/views/home/components/Features.tsx:147
 msgid "View our roadmap."
 msgstr "View our roadmap."
+
+#: src/views/board/components/VisibilityButton.tsx:91
+msgid "Visibility"
+msgstr "Visibility"
 
 #: src/views/home/components/Faqs.tsx:94
 msgid "We are using the <0>AGPL-3.0 license</0>."
@@ -418,10 +703,18 @@ msgstr "When Trello launched in 2011, it blew everyone away with its carefully d
 msgid "Why make an open source Trello?"
 msgstr "Why make an open source Trello?"
 
+#: src/views/board/index.tsx:239
+msgid "Workspace"
+msgstr "Workspace"
+
 #: src/views/home/components/Pricing.tsx:54
 #: src/views/home/components/Features.tsx:83
 msgid "Workspace members"
 msgstr "Workspace members"
+
+#: src/components/NewWorkspaceForm.tsx:78
+msgid "Workspace name"
+msgstr "Workspace name"
 
 #: src/views/home/components/Pricing.tsx:19
 msgid "Yearly"
@@ -442,3 +735,7 @@ msgstr "You can invite team members by clicking the \"Invite\" button in the top
 #: src/views/home/components/Faqs.tsx:127
 msgid "You can self-host by following the instructions in our <0>repo</0>."
 msgstr "You can self-host by following the instructions in our <0>repo</0>."
+
+#: src/views/boards/components/ImportBoardsForm.tsx:192
+msgid "Your boards have been imported."
+msgstr "Your boards have been imported."

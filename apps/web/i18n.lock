@@ -1,38 +1,68 @@
 version: 1
 checksums:
   8033ed03a24d7c4898c90a5365297c20:
+    "%2C%20or%20see%20our/singular": e8a8f2a078fcaea03481710dcaccce5d
+    "%7B0%7D%20labels/singular": 785f92bedf786ff3e285adfc07c69d18
+    "%7BboardCount%2C%20plural%2C%20one%20%7BImport%20board%20(1)%7D%20other%20%7BImport%20boards%20(%7BboardCount%7D)%7D%7D/singular": 72358c550bd1a99fcb6e8952f0f947ef
     "%231%20Hacker%20News/singular": de271b412c6c022d5c427d29fc70e0ba
     1%20user/singular: 3b547431ab12f0fba84307e6a81109d8
     A%20powerful%2C%20flexible%20kanban%20app%20that%20helps%20you%20organise%20work%2C%20track%20progress%2C%20and%20deliver%20results%E2%80%94all%20in%20one%20place./singular: d405b83b0d631cb72f4347c10bcbb643
     Activity%20logs/singular: 8b1f0bb96a905646ecfad1cfdfa42168
+    Add%20a%20card/singular: 9d80becc4fe65a74e0004e4fd290735d
+    Add%20description...%20(type%20'%2F'%20to%20open%20commands)/singular: df99ea599521682e9ad0a90716955dc6
     Admin%20roles/singular: 32a5d78073b9bb9a246773afba8831df
     All%20seats%20are%20free%20during%20the%20beta%20until%20Sept%201st!/singular: 015cec3899cf99e37c3cf231d432e31d
     All%20systems%20operational/singular: ee943a4046b09e6334cceeea9fda2bfc
     API%20Reference/singular: 7dcc877064bfdf889ec55dbc9e06a242
+    Board/singular: 101ff39aab674c033c15ab978d0d8bac
+    Board%20not%20found/singular: 5af9844595fa8aed5985066620435515
     Board%20visibility/singular: b4205f3058297833a626156057c24b26
+    Board%20visibility%20updated/singular: 8e2f5d622fa9c94481e7c1629a154ecf
+    Boards/singular: 8fff51c5872e051beb9b718336665e80
+    Boards%20%7C%20%7B0%7D/singular: 70c349df806f4b2d8bd28136a45496f0
+    Card%20title/singular: 7c34f59f4005e6cb3a6ff546ea0b96e3
     Collaborate%20seamlessly%20with%20your%20team./singular: c5f10e431aaf8b51519bc009a4a4080c
     Coming%20soon/singular: ee2b0671e00972773210c5be5a9ccb89
     Comments/singular: 502237cd1044491c48494aa60967a985
     Company/singular: 9e36d11fa82d1bd4563eef2abc4fcfba
     Complete%20control%20and%20ownership%3A/singular: 0d8b682ba873272217425ccfc96aa9cd
+    Connect%20Trello/singular: 4440a0b9e387ef7136e3958e7a089213
     Connect%20your%20favorite%20tools%20to%20streamline%20your%20workflow./singular: 033c5dcdb059ccb634aef7fe63f2f45d
     Contact/singular: 9afa39bc47019ee6dec6c74b6273967c
+    Contact%20us/singular: 694a45bc5c96f6f3a27873c1cf5a7707
     Control%20who%20can%20view%20and%20edit%20your%20boards./singular: 2a7e0bec29bac26280de707e2fe8bce5
+    Create%20another/singular: 2de8a82a416eb78c0462aa36278edc9a
+    Create%20board/singular: 155b62818bfab0e34f0089e1b34a32f3
+    Create%20card/singular: 32792935dd5837a9433909b04021c22b
+    Create%20label/singular: c64e8180fa956f005edc1fd9b8e65abb
+    Create%20new%20board/singular: cbb87b1f4cc46b336ad9510c9f19407c
+    Create%20new%20label/singular: 6be30980847b577847baa01bb5f29711
+    Create%20new%20list/singular: ce61ca8be7b3f6c26c32b684a42a2c26
+    Create%20workspace/singular: 2e6718e79964ea5ce22d76c2189c77ca
     Custom%20domain/singular: b09e7a9c187b7163b4a6cfc78042fe42
+    Dark/singular: 73e6e208ba628b26e90fcf6dce15e1b2
+    Delete/singular: 8bcf303dd10a645b5baacb02b47d72c9
+    Delete%20list/singular: b694f58e4c973d8797a78e746b550b1f
     Discuss%20and%20collaborate%20on%20cards./singular: f2e87816709f602130831ead50bba457
     Do%20you%20offer%20a%20free%20plan%3F/singular: 3ef16b0994f0d9ae17067782ca9bed1b
+    docs/singular: 307bff5678ada918da1f1ec3edc76cac
     Docs/singular: 55fea190a0c0fb32acd3dc986cd3cc91
     Documentation/singular: 1563fcb5ddb5037b0709ccd3dd384a92
+    Edit%20label/singular: 0309e0be1512b1e0b0ceb87c69a53d03
     Everything%20in%20the%20free%20plan%2C%20plus%3A/singular: 62b44c4973b92b806c69a4b15e0256dc
     Everything%20you%20need%2C%20free%20forever.%20Unlimited%20boards%2C%20unlimited%20lists%2C%20unlimited%20cards.%20Upgrade%20any%20time./singular: fa21632ab1468edf10acda2fe7b71323
     FAQs/singular: dc36d7992372ccd419b39ef51cf5b16c
     Features/singular: 341ff316a339b106a178f0b8d362951b
+    Feedback/singular: 6fac88806e0c269a30777b283988c61c
+    Feedback%20sent/singular: 38a490c7ad5f1aa6013dfa879d2c7818
     Find%20answers%20to%20common%20questions%20about%20the%20project.%20Can't%20find%20what%20you're%20looking%20for%3F%20Feel%20free%20to%20%3C0%3Econtact%20us%3C%2F0%3E./singular: 4d99230dad703bf2d71ba670c2f79d3d
     For%20long-term%20sustainability%2C%20we%20recognise%20all%20good%20open%20source%20projects%20need%20a%20source%20of%20revenue.%20Ours%20comes%20from%20the%20paid%20cloud%20offering%20for%20workspaces%20with%20multiple%20users%20(free%20during%20the%20beta)%20and%20for%20custom%20workspace%20slugs.%20There's%20no%20obligation%20to%20use%20it%2C%20and%20you%20can%20self-host%20the%20software%20on%20your%20own%20infrastructure%20free%20of%20charge./singular: 4eedacd4311ff69bf0fd87083c90a268
     Free/singular: 0326365539c004f6088656f692602078
     Free%2C%20forever/singular: ae4f2f81e88a50b5f250ef8e8e77e74b
     Get%20started/singular: 5c783951b0100a168bdd2161ff294833
     Get%20Started/singular: 1d5f030c4ec9c869e647ae060518b948
+    Get%20started%20by%20creating%20a%20new%20board/singular: 8fe63ba47e12bbf950f3eb33d1008993
+    Get%20started%20by%20creating%20a%20new%20list/singular: bd6bf0806c95788a15ab438e2b09f885
     Get%20started%20for%20free%20today/singular: 41e129eba0f6411337b54a7a08ea1709
     Get%20started%20for%20free%2C%20with%20no%20usage%20limits.%20For%20collaboration%2C%20upgrade%20to%20a%20plan%20that%20fits%20the%20size%20of%20your%20team./singular: ddea69fa5d7b4023724296e1287872b6
     Get%20started%20on%20Cloud/singular: ed926f526266ad2063283c58e6f4284a
@@ -45,6 +75,10 @@ checksums:
     How%20do%20I%20invite%20team%20members%3F/singular: e620622060a06288e86ccda35395db87
     How%20do%20I%20self-host%3F/singular: ec0b6afc8ad2f581b512c0fd82926b75
     How%20is%20the%20project%20funded%3F/singular: ba7e936f7b1b5faa47df59a0ef990092
+    Ideas%20to%20improve%20this%20page.../singular: 285decc2cc28403fae043d9b4de97a00
+    Import/singular: 348b8ab981de5b7f1fca6d7302263bbd
+    Import%20complete/singular: 7e749df6f068b9cdf1055ea38c9a80af
+    Import%20failed/singular: bcec1f271c82ddffc91ebc22021b03cb
     Import%20your%20Trello%20boards%20and%20hit%20the%20ground%20running./singular: d66d13649f81342f8b3a4f3b54370c20
     Importing%20from%20Trello/singular: 1e3a46fb9bd8ce8c7d632f9555b5bd7c
     Importing%20your%20Trello%20boards%20into%20Kan%20is%20easy.%20You%20can%20follow%20our%20step-by-step%20guide%20%3C0%3Ehere%3C%2F0%3E./singular: ca88dc22801fef08fee1ecfb1bf6914e
@@ -55,50 +89,87 @@ checksums:
     Labels%20%26%20Filters/singular: 8f0bdd6084516f8241cb613178114390
     Legal/singular: 00d3f08da61a21887009819cf93fb414
     License/singular: ac2bcac75151e2fcd9eb768cea275a77
+    Light/singular: bb78ea2c6edd8662676c81a8a13ecb93
+    Logout/singular: 07948fdf20705e04a7bf68ab197512bf
+    Members/singular: 0932e80cba1e3e0a7f52bb67ff31da32
     Monthly/singular: 818f1192e32bb855597f930d3e78806e
+    Name/singular: 9368b5a047572b6051f334af5aa76819
+    Need%20help%3F/singular: 04e7322f2d3ffb2d73ff2f64b71637c8
+    New/singular: 126d036fae5fb6b629728ecb97e6195b
+    New%20board/singular: 63f4e979e29a7fc2f5c09ff91fa75966
+    New%20card/singular: a33f6219a756127f91c2523cfe845a19
+    New%20import/singular: e8fddfe15dd170277df919e5d37efd47
+    New%20label/singular: 890040da52a88c16c249a4ac78980f81
+    New%20list/singular: 146c2e642b11056a0b07ed65733e4178
+    New%20workspace/singular: 8eecf05b4ce29aa880adfed2e11476af
+    No%20boards/singular: e4397619e69b105e4317dda4560ff4a6
+    No%20boards%20found/singular: e044088d2c51b6bdf660fafa86ee1e17
     No%20credit%20card%20required/singular: 2090aa4171dc0b60735069f89b592883
+    No%20lists/singular: cedf633d99c77ff4356e089f2d98c0a6
     Organize%20and%20find%20cards%20quickly%20with%20powerful%20filtering%20tools./singular: 1b9898c4b21e9dff413b4f76dc59db56
     Own%20your%20data/singular: cc2178dac4bdf6b07f030cfc2a7510e6
     per%20user%2Fmonth/singular: 72af182c1ba6df6732640f4d8a78d360
+    Please%20try%20again%20later%2C%20or%20contact%20customer%20support./singular: 21ffcf0b00e7cd7b64f7454a95762e1d
     Pricing/singular: ce27f1aeacccc542a174c4b2bce022b0
     Priority%20email%20support/singular: 678538c912a770b1e1416ecdb8e299b1
     Privacy%20policy/singular: 462c6a536b52873e4498785c66dd48c8
+    Private/singular: d740d0660e68c61db1853489356030ae
+    Public/singular: c834f11dab0881632aded3f01d4f8fa9
     Questions%3F/singular: c7c3a47f8b230ce7a43f3c090f21d683
     Resources/singular: ec7fb05ed963bb6781a35782b3475502
     Roadmap/singular: c60f4a1acf30e566861bf130f13b9ae7
     Run%20on%20your%20own%20infrastructure/singular: eba804911562b8dbf9d69c3e27f1d708
     Save%20time%20with%20reusable%20board%20templates./singular: d0f2d7d0fd682ceaf4ca12c6353fd75a
+    Select%20all/singular: eedc7cdb02de467c15dc418a066a77f2
+    Select%20source/singular: c7b0ec447415ff62856803a4d7838bd6
     Self%20Host/singular: 43fbce2027548b712002e489a20a621a
     Self%20host%20with%20Github/singular: 972155419bcc9f8f9bad9f5ad3538774
+    Send/singular: 76a8497d7b546628b03bb81d5c1ce995
+    Settings/singular: 8df6777277469c1fd88cc18dde2f1cc3
     Sign%20in/singular: cb8757c7450e17de1e226e82fb0fa4a2
     Simple%20pricing/singular: 5aa2bece93a71947b268498a58062937
     Simple%2C%20visual%20task%20management%20that%20just%20works.%20Drag%20and%20drop%20cards%2C%20collaborate%20with%20your%20team%2C%20and%20get%20more%20done./singular: f4f138f83017d43dab2882cc08e07bdb
     Star%20on%20Github/singular: e5cb0428f1ac6485688f120d78742875
     Support%20the%20development%20of%20the%20project/singular: c63bab228ab2b1be4370c668a99cd278
+    System/singular: 803281c327a02a2feba182f4a2b38311
     Teams/singular: b63448c05270497973ac4407047dae02
     Templates/singular: 8ed62f56c81fa96c0f3182acb331bf63
     Terms%20of%20service/singular: 0b8a8b23aff021a6cde79613fdb39c28
+    Thank%20you%20for%20your%20feedback!/singular: 07edd8c50685a52c0969d711df26d768
     The%20main%20difference%20between%20Kan%20and%20Trello%20is%20that%20Kan%20is%20open%20source%2C%20allowing%20anyone%20to%20view%2C%20modify%2C%20and%20contribute%20to%20our%20code.%20Our%20cloud%20offering%20also%20offers%20no%20restrictions%20on%20features%20for%20individual%20use%2C%20whereas%20Trello%20locks%20basic%20features%20such%20as%20the%20number%20of%20boards%20you%20can%20create%20behind%20a%20paywall./singular: db6e22cc955c5fbe547feedeb48f8719
     The%20open%20source%20%3C0%2F%3E%20alternative%20to%20Trello/singular: 692cb2e8a8e610953c996826beed45a2
+    The%20visibility%20of%20your%20board%20has%20been%20set%20to%20%7B0%7D./singular: 970e17a115f7374e60e0a8ded425db8f
+    Theme/singular: 21fe00b7a518089576fb83c08631107a
     Track%20all%20card%20changes%20with%20detailed%20activity%20history./singular: 0d3bac559c71ec4b8734f9f212320de5
     Trello%20imports/singular: 6827eca403faa8f89891d17827e72af9
+    Unable%20to%20create%20card/singular: 90112ea12ec6fa42097a6e022ae048a4
+    Unable%20to%20create%20workspace/singular: c1c949477e121d73ed6683eddf9cd874
+    Unable%20to%20send%20feedback/singular: 656c93265d7e2bef1245b17d85f85ae5
+    Unable%20to%20update%20board%20visibility/singular: a76a21d561b8943e9276e027a1e3f70d
+    Unable%20to%20update%20card/singular: eca6002e57af8ec97324eae64e3b5731
+    Unable%20to%20update%20list/singular: 14aa802f91b9b4c05236c8c75afb33da
     Unlimited%20activity%20log/singular: 8c993de94cda0deac19ba14ecafce6a5
     Unlimited%20boards/singular: cb4fd858137ce825c2f1904d142d8042
     Unlimited%20boards%2C%20unlimited%20lists%2C%20unlimited%20cards.%20No%20credit%20card%20required./singular: 8d9733137deb26664d76b55ad561c42c
     Unlimited%20cards/singular: f44c1050c4d6aa39c8cdf5f4a7d12577
     Unlimited%20comments/singular: 31dbcf487c49a9997142e96bb3ab0040
     Unlimited%20lists/singular: 5c418701b27b9acbc5dd199719007362
+    Update%20label/singular: 97880b503dfe956941c5f23025a1c102
     View%20docs/singular: 43ce54f27bb1e3f1880b56e03ab38871
     View%20our%20roadmap./singular: 1dd7ec80e1635951b1c90d592d1d07dc
+    Visibility/singular: 1ff412f8fcde0f460acbf11153649646
     We%20are%20using%20the%20%3C0%3EAGPL-3.0%20license%3C%2F0%3E./singular: 08c5ddd938a2a70f61d684e41e18697a
     We're%20just%20getting%20started.%20/singular: 2dfa121e0ff1914e08068308a81973c0
     What%20license%20are%20you%20using%3F/singular: 59d00e1bf28edc21b77fec94875f57ca
     What's%20the%20difference%20between%20Kan%20and%20Trello%3F/singular: 7a02f507dd6abbfab1fdae0b172d31b7
     When%20Trello%20launched%20in%202011%2C%20it%20blew%20everyone%20away%20with%20its%20carefully%20designed%20simplicity%2C%20but%20over%20time%20(and%20atlassification)%20it%20lost%20its%20magic%20and%20grew%20into%20something%20closer%20to%20%22Jira%20Lite%22.%20This%20project%20is%20our%20attempt%20to%20recapture%20the%20original%20magic%20of%20Trello's%20simplicity%2C%20in%20open%20source./singular: 60a55e9bd16c3d1beff1a6c7633c5911
     Why%20make%20an%20open%20source%20Trello%3F/singular: 090833338ba8c64ef7a75e0f2615b34b
+    Workspace/singular: b63ef0e99ee6f7fef6cbe4971ca6cf0f
     Workspace%20members/singular: 1857292f9567c556c781a23bd7e10544
+    Workspace%20name/singular: 855614bbf862fd6a9f6a3e76943f92d4
     Yearly/singular: 87f43e016c19cb25860f456549a2f431
     Yes%2C%20we%20offer%20an%20forever%20free%20plan%20for%20individual%20use.%20No%20restrictions%2C%20no%20paywalls%2C%20no%20limits./singular: 963cee303d0ff13c1719f4575e774fe3
     You%20can%20get%20a%20custom%20workspace%20URL%2C%20like%20%3C0%3Ekan.bn%2Fkan%3C%2F0%3E%2C%20by%20going%20into%20your%20%3C1%3Eworkspace%20settings%3C%2F1%3E%20and%20purchasing%20a%20pro%20workspace%20subscription.%20All%20subscriptions%20help%20fund%20the%20development%20of%20the%20project!/singular: 41dd145ef56f539e12dc064a9807c660
     You%20can%20invite%20team%20members%20by%20clicking%20the%20%22Invite%22%20button%20in%20the%20top%20right%20corner%20of%20the%20%3C0%3Emembers%20page%3C%2F0%3E%20and%20entering%20their%20email%20address.%20They%20will%20receive%20an%20email%20with%20a%20link%20to%20join%20the%20workspace./singular: 47e125eb9b4c11cab5a2f4b3ab08e883
     You%20can%20self-host%20by%20following%20the%20instructions%20in%20our%20%3C0%3Erepo%3C%2F0%3E./singular: a6152a41b2d8f64d5a657e5b8bc808a9
+    Your%20boards%20have%20been%20imported./singular: 403972e7a25afc2415762c1c2b1ec868

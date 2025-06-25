@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 
 import type { Locale } from "~/locales";
 import { defaultLocale, locales } from "~/locales";
@@ -48,9 +48,13 @@ export function LinguiProviderWrapper({
 }: LinguiProviderProps) {
   const [locale, setLocale] = useState<Locale>(defaultLocale);
   const [isHydrated, setIsHydrated] = useState(false);
+  const isInitialised = useRef(false);
 
-  i18n.load(defaultLocale, messages[defaultLocale]);
-  i18n.activate(defaultLocale);
+  if (!isInitialised.current) {
+    i18n.load(defaultLocale, messages[defaultLocale]);
+    i18n.activate(defaultLocale);
+    isInitialised.current = true;
+  }
 
   useEffect(() => {
     const savedLocale = localStorage.getItem("locale") as Locale;
