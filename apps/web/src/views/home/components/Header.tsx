@@ -70,7 +70,7 @@ const Header = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
             <button
               onClick={toggleMenu}
               className="z-50 p-2 lg:hidden"
-              aria-label="Toggle menu"
+              aria-label={t`Toggle menu`}
             >
               <div
                 className={twMerge(

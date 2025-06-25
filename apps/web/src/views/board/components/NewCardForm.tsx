@@ -92,9 +92,14 @@ export function NewCardForm({
                 args.labelPublicIds.includes(label.publicId),
               ),
               members:
-                oldBoard.workspace.members.filter((member) =>
-                  args.memberPublicIds.includes(member.publicId),
-                ) ?? [],
+                oldBoard.workspace.members
+                  .filter((member) =>
+                    args.memberPublicIds.includes(member.publicId),
+                  )
+                  .map((member) => ({
+                    ...member,
+                    deletedAt: null,
+                  })) ?? [],
               _filteredLabels: labelPublicIds.map((id) => ({ publicId: id })),
               _filteredMembers: memberPublicIds.map((id) => ({ publicId: id })),
               index: position === "start" ? 0 : list.cards.length,
@@ -168,6 +173,7 @@ export function NewCardForm({
         member.user?.name ?? null,
         member.user?.email ?? member.email,
       ),
+      selected: memberPublicIds.includes(member.publicId),
       leftIcon: (
         <Avatar
           size="xs"
@@ -281,7 +287,7 @@ export function NewCardForm({
             >
               <div className="flex h-full w-full items-center rounded-[5px] border-[1px] border-light-600 bg-light-200 px-2 py-1 text-left text-xs text-light-800 hover:bg-light-300 dark:border-dark-600 dark:bg-dark-400 dark:text-dark-1000 dark:hover:bg-dark-500">
                 {!memberPublicIds.length ? (
-                  "Members"
+                  t`Members`
                 ) : (
                   <div className="flex -space-x-1 overflow-hidden">
                     {memberPublicIds.map((memberPublicId) => {
@@ -322,7 +328,7 @@ export function NewCardForm({
             >
               <div className="flex h-full w-full items-center rounded-[5px] border-[1px] border-light-600 bg-light-200 px-2 py-1 text-left text-xs text-light-800 hover:bg-light-300 dark:border-dark-600 dark:bg-dark-400 dark:text-dark-1000 dark:hover:bg-dark-500">
                 {!labelPublicIds.length ? (
-                  "Labels"
+                  t`Labels`
                 ) : (
                   <>
                     <div
