@@ -8,22 +8,22 @@ import Input from "~/components/Input";
 import { usePopup } from "~/providers/popup";
 import { api } from "~/utils/api";
 
-const schema = z.object({
-  name: z
-    .string()
-    .min(3, {
-      message: t`Display name must be at least 3 characters long`,
-    })
-    .max(280, {
-      message: t`Display name cannot exceed 280 characters`,
-    }),
-});
-
-type FormValues = z.infer<typeof schema>;
-
 const UpdateDisplayNameForm = ({ displayName }: { displayName: string }) => {
   const utils = api.useUtils();
   const { showPopup } = usePopup();
+
+  const schema = z.object({
+    name: z
+      .string()
+      .min(3, {
+        message: t`Display name must be at least 3 characters long`,
+      })
+      .max(280, {
+        message: t`Display name cannot exceed 280 characters`,
+      }),
+  });
+
+  type FormValues = z.infer<typeof schema>;
   const {
     register,
     handleSubmit,

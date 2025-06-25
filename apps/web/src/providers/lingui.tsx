@@ -1,25 +1,10 @@
 import type { ReactNode } from "react";
-import { i18n } from "@lingui/core";
 import { I18nProvider } from "@lingui/react";
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 import type { Locale } from "~/locales";
 import { defaultLocale, locales } from "~/locales";
-import { messages as deMessages } from "~/locales/de/messages";
-import { messages as enMessages } from "~/locales/en/messages";
-import { messages as esMessages } from "~/locales/es/messages";
-import { messages as frMessages } from "~/locales/fr/messages";
-import { messages as itMessages } from "~/locales/it/messages";
-import { messages as nlMessages } from "~/locales/nl/messages";
-
-const messages = {
-  en: enMessages,
-  fr: frMessages,
-  de: deMessages,
-  es: esMessages,
-  it: itMessages,
-  nl: nlMessages,
-};
+import { activateLocale, i18n, initializeI18n } from "~/utils/i18n";
 
 interface LinguiContextType {
   locale: Locale;
@@ -42,19 +27,32 @@ interface LinguiProviderProps {
   initialLocale?: Locale;
 }
 
+function detectBrowserLocale(availableLocales: readonly string[]): Locale {
+  if (typeof navigator === "undefined") {
+    return defaultLocale;
+  }
+
+  const browserLanguages = navigator.languages || [navigator.language];
+
+  for (const browserLang of browserLanguages) {
+    const langCode = browserLang.split("-")[0];
+
+    if (langCode && availableLocales.includes(langCode.toLowerCase())) {
+      return langCode.toLowerCase() as Locale;
+    }
+  }
+
+  return defaultLocale;
+}
+
 export function LinguiProviderWrapper({
   children,
   initialLocale = defaultLocale,
 }: LinguiProviderProps) {
   const [locale, setLocale] = useState<Locale>(defaultLocale);
   const [isHydrated, setIsHydrated] = useState(false);
-  const isInitialised = useRef(false);
 
-  if (!isInitialised.current) {
-    i18n.load(defaultLocale, messages[defaultLocale]);
-    i18n.activate(defaultLocale);
-    isInitialised.current = true;
-  }
+  initializeI18n();
 
   useEffect(() => {
     const savedLocale = localStorage.getItem("locale") as Locale;
@@ -62,15 +60,18 @@ export function LinguiProviderWrapper({
     if (savedLocale && locales.includes(savedLocale)) {
       setLocale(savedLocale);
     } else {
-      setLocale(initialLocale);
+      const detectedLocale = detectBrowserLocale(locales);
+      setLocale(detectedLocale);
     }
     setIsHydrated(true);
   }, [initialLocale]);
 
   useEffect(() => {
-    if (isHydrated) {
-      i18n.load(locale, messages[locale]);
-      i18n.activate(locale);
+    if (isHydrated && locale !== defaultLocale) {
+      activateLocale(locale).then(() => {
+        localStorage.setItem("locale", locale);
+      });
+    } else if (isHydrated) {
       localStorage.setItem("locale", locale);
     }
   }, [locale, isHydrated]);

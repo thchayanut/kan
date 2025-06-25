@@ -415,11 +415,11 @@ msgstr "Discuss and collaborate on cards."
 msgid "Display name"
 msgstr "Display name"
 
-#: src/views/settings/components/UpdateDisplayNameForm.tsx:18
+#: src/views/settings/components/UpdateDisplayNameForm.tsx:22
 msgid "Display name cannot exceed 280 characters"
 msgstr "Display name cannot exceed 280 characters"
 
-#: src/views/settings/components/UpdateDisplayNameForm.tsx:15
+#: src/views/settings/components/UpdateDisplayNameForm.tsx:19
 msgid "Display name must be at least 3 characters long"
 msgstr "Display name must be at least 3 characters long"
 

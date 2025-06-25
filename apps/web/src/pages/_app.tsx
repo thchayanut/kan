@@ -1,4 +1,5 @@
 import "~/styles/globals.css";
+import "~/utils/i18n";
 
 import type { AppType } from "next/app";
 import { Plus_Jakarta_Sans } from "next/font/google";
