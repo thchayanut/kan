@@ -71,6 +71,7 @@ export default function Dashboard({
         html {
           height: 100vh;
           overflow: hidden;
+          min-width: 320px;
         }
       `}</style>
       <div className="h-screen flex-col items-center bg-light-100 dark:bg-dark-50 md:flex md:min-w-[800px]">
