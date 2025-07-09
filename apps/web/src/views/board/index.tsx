@@ -270,6 +270,7 @@ export default function BoardPage() {
           <div className="order-1 mb-4 flex items-center justify-end space-x-2 md:order-2 md:mb-0">
             <UpdateBoardSlugButton
               handleOnClick={() => openModal("UPDATE_BOARD_SLUG")}
+              isLoading={isLoading}
               workspaceSlug={workspace.slug ?? ""}
               boardSlug={boardData?.slug ?? ""}
             />

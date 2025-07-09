@@ -6,11 +6,21 @@ const UpdateBoardSlugButton = ({
   handleOnClick,
   workspaceSlug,
   boardSlug,
+  isLoading,
 }: {
   handleOnClick: () => void;
   workspaceSlug: string;
   boardSlug: string;
+  isLoading: boolean;
 }) => {
+  if (!isLoading && (!workspaceSlug || !boardSlug)) return <></>;
+
+  if (isLoading) {
+    return (
+      <div className="hidden h-[36px] w-[225px] animate-pulse rounded-full bg-light-200 dark:bg-dark-100 xl:flex" />
+    );
+  }
+
   return (
     <button
       onClick={handleOnClick}
