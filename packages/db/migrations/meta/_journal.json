@@ -50,6 +50,13 @@
       "when": 1749585889984,
       "tag": "20250610200449_ReaddIntegrationTable",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1752582887553,
+      "tag": "20250715123447_AddCardChecklists",
+      "breakpoints": true
     }
   ]
 }

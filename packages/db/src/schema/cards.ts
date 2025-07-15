@@ -12,6 +12,7 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 
+import { checklists } from "./checklists";
 import { imports } from "./imports";
 import { labels } from "./labels";
 import { lists } from "./lists";
@@ -84,6 +85,7 @@ export const cardsRelations = relations(cards, ({ one, many }) => ({
   }),
   comments: many(comments),
   activities: many(cardActivities),
+  checklists: many(checklists),
 }));
 
 export const cardActivities = pgTable("card_activity", {
