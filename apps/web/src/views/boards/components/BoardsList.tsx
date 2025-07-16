@@ -3,7 +3,6 @@ import { t } from "@lingui/core/macro";
 import { HiOutlineRectangleStack } from "react-icons/hi2";
 
 import Button from "~/components/Button";
-import PatternedBackground from "~/components/PatternedBackground";
 import { useModal } from "~/providers/modal";
 import { useWorkspace } from "~/providers/workspace";
 import { api } from "~/utils/api";
@@ -49,7 +48,6 @@ export function BoardsList() {
       {data?.map((board) => (
         <Link key={board.publicId} href={`boards/${board.publicId}`}>
           <div className="align-center relative mr-5 flex h-[150px] w-full items-center justify-center rounded-md border border-dashed border-light-400 bg-light-50 shadow-sm hover:bg-light-200 dark:border-dark-600 dark:bg-dark-50 dark:hover:bg-dark-100">
-            <PatternedBackground />
             <p className="text-md px-4 font-bold text-neutral-900 dark:text-dark-1000">
               {board.name}
             </p>

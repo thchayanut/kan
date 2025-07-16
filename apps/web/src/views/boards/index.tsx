@@ -5,6 +5,7 @@ import Button from "~/components/Button";
 import Modal from "~/components/modal";
 import { NewWorkspaceForm } from "~/components/NewWorkspaceForm";
 import { PageHead } from "~/components/PageHead";
+import PatternedBackground from "~/components/PatternedBackground";
 import { useModal } from "~/providers/modal";
 import { useWorkspace } from "~/providers/workspace";
 import { BoardsList } from "./components/BoardsList";
@@ -21,6 +22,7 @@ export default function BoardsPage() {
     <>
       <PageHead title={t`Boards | ${workspace.name ?? "Workspace"}`} />
       <div className="m-auto h-full max-w-[1600px] px-5 py-6 md:px-8 md:py-8">
+        <PatternedBackground />
         <div className="mb-8 flex w-full items-center justify-between">
           <h1 className="font-bold tracking-tight text-neutral-900 dark:text-dark-1000 sm:text-[1.2rem]">
             {t`Boards`}
