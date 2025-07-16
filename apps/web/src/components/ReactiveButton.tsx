@@ -12,7 +12,8 @@ const Button: React.FC<{
   current: boolean;
   name: string;
   json: object;
-}> = ({ href, current, name, json }) => {
+  isCollapsed?: boolean;
+}> = ({ href, current, name, json, isCollapsed = false }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [index, setIndex] = useState(0);
 
@@ -26,12 +27,16 @@ const Button: React.FC<{
       href={href}
       onMouseEnter={handleMouseEnter}
       className={classNames(
-        current ? "bg-light-200 dark:bg-dark-200" : "dark:bg-dark-50",
-        "group flex items-center gap-x-3 rounded-md p-1.5 text-sm font-normal leading-6 text-neutral-900 hover:bg-light-200 dark:text-dark-1000 dark:hover:bg-dark-200",
+        "group flex h-[34px] items-center rounded-md p-1.5 text-sm font-normal leading-6 text-neutral-900 hover:bg-light-200 dark:hover:bg-dark-200 dark:hover:text-dark-1000",
+        current
+          ? "bg-light-200 dark:bg-dark-200 dark:text-dark-1000"
+          : "dark:bg-dark-100 dark:text-dark-900",
+        isCollapsed ? "justify-center" : "gap-x-3",
       )}
+      title={isCollapsed ? name : undefined}
     >
       <LottieIcon index={index} json={json} isPlaying={isHovered} />
-      {name}
+      {!isCollapsed && name}
     </Link>
   );
 };

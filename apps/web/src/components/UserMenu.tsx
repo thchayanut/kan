@@ -13,6 +13,7 @@ interface UserMenuProps {
   imageUrl: string | undefined;
   email: string;
   isLoading: boolean;
+  isCollapsed?: boolean;
 }
 
 function classNames(...classes: string[]): string {
@@ -23,6 +24,7 @@ export default function UserMenu({
   imageUrl,
   email,
   isLoading,
+  isCollapsed = false,
 }: UserMenuProps) {
   const router = useRouter();
   const { themePreference, switchTheme } = useTheme();
@@ -39,12 +41,17 @@ export default function UserMenu({
     <Menu as="div" className="relative inline-block w-full text-left">
       <div>
         {isLoading ? (
-          <div className="flex">
+          <div className={classNames(isCollapsed ? "" : "flex")}>
             <div className="h-[30px] w-[30px] animate-pulse rounded-full bg-light-200 dark:bg-dark-200" />
-            <div className="mx-2 h-[30px] w-[175px] animate-pulse rounded-md bg-light-200 dark:bg-dark-200" />
+            {!isCollapsed && (
+              <div className="mx-2 h-[30px] w-[175px] animate-pulse rounded-md bg-light-200 dark:bg-dark-200" />
+            )}
           </div>
         ) : (
-          <Menu.Button className="flex w-full items-center rounded-md p-1.5 text-neutral-900 hover:bg-light-200 dark:text-dark-900 dark:hover:bg-dark-200 dark:hover:text-dark-1000">
+          <Menu.Button
+            className="flex w-full items-center rounded-md p-1.5 text-neutral-900 hover:bg-light-200 dark:text-dark-900 dark:hover:bg-dark-200 dark:hover:text-dark-1000"
+            title={isCollapsed ? email : undefined}
+          >
             {avatarUrl ? (
               <Image
                 src={avatarUrl}
@@ -64,7 +71,9 @@ export default function UserMenu({
                 </svg>
               </span>
             )}
-            <span className="mx-2 truncate text-sm">{email}</span>
+            {!isCollapsed && (
+              <span className="mx-2 truncate text-sm">{email}</span>
+            )}
           </Menu.Button>
         )}
       </div>
@@ -78,7 +87,12 @@ export default function UserMenu({
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute bottom-[40px] left-0 z-10 mt-2 w-full origin-top-left rounded-md border border-light-600 bg-light-50 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:border-dark-600 dark:bg-dark-300">
+        <Menu.Items
+          className={classNames(
+            "absolute bottom-[40px] z-10 mt-2 origin-top-left rounded-md border border-light-600 bg-light-50 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:border-dark-600 dark:bg-dark-300",
+            isCollapsed ? "left-0 w-48" : "left-0 w-full",
+          )}
+        >
           <div className="flex flex-col text-neutral-900 dark:text-dark-1000">
             <div className="p-1">
               <div className="flex w-full items-center px-3 py-2 text-left text-xs">
