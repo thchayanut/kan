@@ -21,9 +21,9 @@ export default function BoardsPage() {
   return (
     <>
       <PageHead title={t`Boards | ${workspace.name ?? "Workspace"}`} />
-      <div className="m-auto h-full max-w-[1600px] px-5 py-6 md:px-8 md:py-8">
+      <div className="relative m-auto h-full max-w-[1600px] px-5 py-6 md:px-8 md:py-8">
         <PatternedBackground />
-        <div className="mb-8 flex w-full items-center justify-between">
+        <div className="relative z-10 mb-8 flex w-full items-center justify-between">
           <h1 className="font-bold tracking-tight text-neutral-900 dark:text-dark-1000 sm:text-[1.2rem]">
             {t`Boards`}
           </h1>
