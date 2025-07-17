@@ -11,6 +11,7 @@ import LabelIcon from "~/components/LabelIcon";
 import Modal from "~/components/modal";
 import { NewWorkspaceForm } from "~/components/NewWorkspaceForm";
 import { PageHead } from "~/components/PageHead";
+import PatternedBackground from "~/components/PatternedBackground";
 import { useModal } from "~/providers/modal";
 import { usePopup } from "~/providers/popup";
 import { useWorkspace } from "~/providers/workspace";
@@ -99,7 +100,7 @@ export function CardRightPanel() {
     }) ?? [];
 
   return (
-    <div className="h-full w-[360px] border-l-[1px] border-light-600 bg-light-200 p-8 text-light-900 dark:border-dark-400 dark:bg-dark-100 dark:text-dark-900">
+    <div className="h-full w-[360px] border-l-[1px] border-light-600 bg-light-200 p-8 text-light-900 dark:border-dark-400 dark:bg-dark-50 dark:text-dark-900">
       <div className="mb-4 flex w-full flex-row">
         <p className="my-2 mb-2 w-[100px] text-sm font-medium">{t`List`}</p>
         <ListSelector
@@ -124,6 +125,7 @@ export function CardRightPanel() {
           isLoading={!card}
         />
       </div>
+      {/* <PatternedBackground /> */}
     </div>
   );
 }
@@ -188,7 +190,7 @@ export default function CardPage() {
         title={t`${card?.title ?? "Card"} | ${board?.name ?? "Board"}`}
       />
       <div className="flex h-full flex-1 flex-row">
-        <div className="flex h-full w-full flex-col overflow-hidden">
+        <div className="m-auto flex h-full w-full max-w-[800px] flex-col overflow-hidden">
           <div className="h-full max-h-[calc(100dvh-3rem)] overflow-y-auto p-6 md:max-h-[calc(100dvh-4rem)] md:p-8">
             <div className="mb-8 flex w-full items-center justify-between">
               {!card && isLoading && (
