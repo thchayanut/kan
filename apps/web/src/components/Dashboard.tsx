@@ -122,7 +122,7 @@ export default function Dashboard({
           </div>
         )} */}
 
-        <div className="flex h-[calc(100vh-1.5rem)] min-h-0 w-full">
+        <div className="flex h-[calc(100dvh-1.5rem)] min-h-0 w-full">
           <div
             ref={sideNavRef}
             className={`fixed left-3 top-3 z-40 h-[calc(100dvh-1.5rem)] transform transition-transform duration-300 ease-in-out md:relative md:left-0 md:top-0 md:h-full md:translate-x-0 ${isSideNavOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"} `}
@@ -133,7 +133,7 @@ export default function Dashboard({
             />
           </div>
 
-          <div className="relative h-full min-h-0 w-full overflow-hidden rounded-2xl border border-light-300 bg-light-50 dark:border-dark-200 dark:bg-dark-50">
+          <div className="relative h-full min-h-0 w-full overflow-hidden rounded-lg border border-light-300 bg-light-50 dark:border-dark-300 dark:bg-dark-50">
             <div className="relative flex h-full min-h-0 w-full overflow-hidden">
               <div className="h-full w-full overflow-y-auto">{children}</div>
 
