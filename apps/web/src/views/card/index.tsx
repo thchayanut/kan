@@ -100,7 +100,7 @@ export function CardRightPanel() {
     }) ?? [];
 
   return (
-    <div className="h-full w-[360px] border-l-[1px] border-light-600 bg-light-200 p-8 text-light-900 dark:border-dark-400 dark:bg-dark-50 dark:text-dark-900">
+    <div className="h-full w-[360px] border-l-[1px] border-light-300 bg-light-50 p-8 text-light-900 dark:border-dark-300 dark:bg-dark-50 dark:text-dark-900">
       <div className="mb-4 flex w-full flex-row">
         <p className="my-2 mb-2 w-[100px] text-sm font-medium">{t`List`}</p>
         <ListSelector
@@ -125,7 +125,6 @@ export function CardRightPanel() {
           isLoading={!card}
         />
       </div>
-      {/* <PatternedBackground /> */}
     </div>
   );
 }
@@ -192,7 +191,7 @@ export default function CardPage() {
       <div className="flex h-full flex-1 flex-row">
         <div className="m-auto flex h-full w-full max-w-[800px] flex-col overflow-hidden">
           <div className="h-full max-h-[calc(100dvh-3rem)] overflow-y-auto p-6 md:max-h-[calc(100dvh-4rem)] md:p-8">
-            <div className="mb-8 flex w-full items-center justify-between">
+            <div className="mb-8 mt-6 flex w-full items-center justify-between">
               {!card && isLoading && (
                 <div className="flex space-x-2">
                   <div className="h-[2.3rem] w-[150px] animate-pulse rounded-[5px] bg-light-300 dark:bg-dark-300" />
@@ -252,7 +251,7 @@ export default function CardPage() {
                     </div>
                   </form>
                 </div>
-                <div className="border-t-[1px] border-light-600 pt-12 dark:border-dark-400">
+                <div className="border-t-[1px] border-light-300 pt-12 dark:border-dark-300">
                   <h2 className="text-md pb-4 font-medium text-light-900 dark:text-dark-1000">
                     {t`Activity`}
                   </h2>
