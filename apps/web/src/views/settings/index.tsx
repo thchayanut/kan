@@ -5,6 +5,7 @@ import { useEffect, useRef } from "react";
 import { HiMiniArrowTopRightOnSquare } from "react-icons/hi2";
 
 import Button from "~/components/Button";
+import FeedbackModal from "~/components/FeedbackModal";
 import { LanguageSelector } from "~/components/LanguageSelector";
 import Modal from "~/components/modal";
 import { NewWorkspaceForm } from "~/components/NewWorkspaceForm";
@@ -300,7 +301,8 @@ export default function SettingsPage() {
             </div>
           </div>
 
-          <Modal>
+          <Modal modalSize={modalContentType === "NEW_FEEDBACK" ? "md" : "sm"}>
+            {modalContentType === "NEW_FEEDBACK" && <FeedbackModal />}
             {modalContentType === "NEW_WORKSPACE" && <NewWorkspaceForm />}
             {modalContentType === "DELETE_WORKSPACE" && (
               <DeleteWorkspaceConfirmation />

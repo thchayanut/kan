@@ -9,8 +9,11 @@ import {
 import { authClient } from "@kan/auth/client";
 
 import { useClickOutside } from "~/hooks/useClickOutside";
+import { useModal } from "~/providers/modal";
 import { useTheme } from "~/providers/theme";
 import { WorkspaceProvider } from "~/providers/workspace";
+import FeedbackModal from "./FeedbackModal";
+import Modal from "./modal";
 import SideNavigation from "./SideNavigation";
 
 interface DashboardProps {
@@ -39,6 +42,7 @@ export default function Dashboard({
   hasRightPanel = false,
 }: DashboardProps) {
   const theme = useTheme();
+  const { modalContentType } = useModal();
 
   const { data: session, isPending: sessionLoading } = authClient.useSession();
 

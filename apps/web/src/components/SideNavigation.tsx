@@ -19,7 +19,6 @@ import ReactiveButton from "~/components/ReactiveButton";
 import UserMenu from "~/components/UserMenu";
 import WorkspaceMenu from "~/components/WorkspaceMenu";
 import { useTheme } from "~/providers/theme";
-import FeedbackButton from "./FeedbackButton";
 
 interface SideNavigationProps {
   user: UserType;
@@ -140,11 +139,6 @@ export default function SideNavigation({
         </div>
 
         <div className="space-y-3">
-          {/* Feedback button above user menu */}
-          {/* <div className="flex justify-start">
-            <FeedbackButton />
-          </div> */}
-
           <UserMenu
             email={user.email ?? ""}
             imageUrl={user.image ?? undefined}

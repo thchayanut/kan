@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Menu, Transition } from "@headlessui/react";
 import { t } from "@lingui/core/macro";
@@ -6,6 +7,7 @@ import { Fragment } from "react";
 
 import { authClient } from "@kan/auth/client";
 
+import { useModal } from "~/providers/modal";
 import { useTheme } from "~/providers/theme";
 import { getAvatarUrl } from "~/utils/helpers";
 
@@ -28,10 +30,10 @@ export default function UserMenu({
 }: UserMenuProps) {
   const router = useRouter();
   const { themePreference, switchTheme } = useTheme();
+  const { openModal } = useModal();
 
   const handleLogout = async () => {
     await authClient.signOut();
-
     router.push("/login");
   };
 
@@ -138,6 +140,36 @@ export default function UserMenu({
                     )}
                   />
                   {t`Light`}
+                </button>
+              </Menu.Item>
+            </div>
+            <div className="light-border-600 border-t-[1px] p-1 dark:border-dark-600">
+              <Menu.Item>
+                <Link
+                  href="mailto:support@kan.bn"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex w-full items-center rounded-[5px] px-3 py-2 text-left text-xs hover:bg-light-200 dark:hover:bg-dark-400"
+                >
+                  {t`Support`}
+                </Link>
+              </Menu.Item>
+              <Menu.Item>
+                <Link
+                  href="https://docs.kan.bn"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex w-full items-center rounded-[5px] px-3 py-2 text-left text-xs hover:bg-light-200 dark:hover:bg-dark-400"
+                >
+                  {t`Documentation`}
+                </Link>
+              </Menu.Item>
+              <Menu.Item>
+                <button
+                  onClick={() => openModal("NEW_FEEDBACK")}
+                  className="flex w-full items-center rounded-[5px] px-3 py-2 text-left text-xs hover:bg-light-200 dark:hover:bg-dark-400"
+                >
+                  {t`Feedback`}
                 </button>
               </Menu.Item>
             </div>

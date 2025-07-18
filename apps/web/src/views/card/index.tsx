@@ -6,12 +6,12 @@ import { IoChevronForwardSharp } from "react-icons/io5";
 
 import Avatar from "~/components/Avatar";
 import Editor from "~/components/Editor";
+import FeedbackModal from "~/components/FeedbackModal";
 import { LabelForm } from "~/components/LabelForm";
 import LabelIcon from "~/components/LabelIcon";
 import Modal from "~/components/modal";
 import { NewWorkspaceForm } from "~/components/NewWorkspaceForm";
 import { PageHead } from "~/components/PageHead";
-import PatternedBackground from "~/components/PatternedBackground";
 import { useModal } from "~/providers/modal";
 import { usePopup } from "~/providers/popup";
 import { useWorkspace } from "~/providers/workspace";
@@ -272,7 +272,8 @@ export default function CardPage() {
           </div>
         </div>
 
-        <Modal>
+        <Modal modalSize={modalContentType === "NEW_FEEDBACK" ? "md" : "sm"}>
+          {modalContentType === "NEW_FEEDBACK" && <FeedbackModal />}
           {modalContentType === "NEW_LABEL" && (
             <LabelForm boardPublicId={boardId ?? ""} refetch={refetchCard} />
           )}

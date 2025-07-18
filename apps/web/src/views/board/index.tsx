@@ -13,6 +13,7 @@ import type { UpdateBoardInput } from "@kan/api/types";
 
 import Button from "~/components/Button";
 import { DeleteLabelConfirmation } from "~/components/DeleteLabelConfirmation";
+import FeedbackModal from "~/components/FeedbackModal";
 import { LabelForm } from "~/components/LabelForm";
 import Modal from "~/components/modal";
 import { NewWorkspaceForm } from "~/components/NewWorkspaceForm";
@@ -421,7 +422,15 @@ export default function BoardPage() {
             </>
           ) : null}
         </div>
-        <Modal modalSize={modalContentType === "NEW_CARD" ? "md" : "sm"}>
+        <Modal
+          modalSize={
+            modalContentType === "NEW_CARD" ||
+            modalContentType === "NEW_FEEDBACK"
+              ? "md"
+              : "sm"
+          }
+        >
+          {modalContentType === "NEW_FEEDBACK" && <FeedbackModal />}
           {modalContentType === "DELETE_BOARD" && (
             <DeleteBoardConfirmation boardPublicId={boardId ?? ""} />
           )}

@@ -7,6 +7,7 @@ import { authClient } from "@kan/auth/client";
 import Avatar from "~/components/Avatar";
 import Button from "~/components/Button";
 import Dropdown from "~/components/Dropdown";
+import FeedbackModal from "~/components/FeedbackModal";
 import Modal from "~/components/modal";
 import { NewWorkspaceForm } from "~/components/NewWorkspaceForm";
 import { PageHead } from "~/components/PageHead";
@@ -221,7 +222,8 @@ export default function MembersPage() {
           </div>
         </div>
 
-        <Modal>
+        <Modal modalSize={modalContentType === "NEW_FEEDBACK" ? "md" : "sm"}>
+          {modalContentType === "NEW_FEEDBACK" && <FeedbackModal />}
           {modalContentType === "NEW_WORKSPACE" && <NewWorkspaceForm />}
           {modalContentType === "INVITE_MEMBER" && <InviteMemberForm />}
           {modalContentType === "REMOVE_MEMBER" && <DeleteMemberConfirmation />}

@@ -2,6 +2,7 @@ import { t } from "@lingui/core/macro";
 import { HiArrowDownTray, HiOutlinePlusSmall } from "react-icons/hi2";
 
 import Button from "~/components/Button";
+import FeedbackModal from "~/components/FeedbackModal";
 import Modal from "~/components/modal";
 import { NewWorkspaceForm } from "~/components/NewWorkspaceForm";
 import { PageHead } from "~/components/PageHead";
@@ -51,7 +52,8 @@ export default function BoardsPage() {
           </div>
         </div>
 
-        <Modal>
+        <Modal modalSize={modalContentType === "NEW_FEEDBACK" ? "md" : "sm"}>
+          {modalContentType === "NEW_FEEDBACK" && <FeedbackModal />}
           {modalContentType === "NEW_BOARD" && <NewBoardForm />}
           {modalContentType === "IMPORT_BOARDS" && <ImportBoardsForm />}
           {modalContentType === "NEW_WORKSPACE" && <NewWorkspaceForm />}
