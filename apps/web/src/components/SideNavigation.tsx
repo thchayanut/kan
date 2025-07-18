@@ -88,7 +88,7 @@ export default function SideNavigation({
     <>
       <nav
         className={twMerge(
-          "flex h-full flex-col justify-between bg-light-100 pr-3 transition-all duration-300 dark:bg-dark-100",
+          "flex h-full flex-col justify-between bg-light-100 pr-3 dark:bg-dark-100",
           isCollapsed ? "w-auto" : "w-64",
         )}
       >
@@ -96,7 +96,7 @@ export default function SideNavigation({
           <div className="flex h-14 items-center justify-between pb-[18px] pt-1.5">
             {!isCollapsed && (
               <Link href="/" className="block">
-                <h1 className="pl-2 text-lg font-bold tracking-tight text-neutral-700 dark:text-dark-950">
+                <h1 className="pl-2 text-lg font-bold tracking-tight text-neutral-700 dark:text-dark-1000">
                   kan.bn
                 </h1>
               </Link>

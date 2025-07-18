@@ -10,12 +10,27 @@ import { authClient } from "@kan/auth/client";
 
 import { useClickOutside } from "~/hooks/useClickOutside";
 import { useTheme } from "~/providers/theme";
+import { WorkspaceProvider } from "~/providers/workspace";
 import SideNavigation from "./SideNavigation";
 
 interface DashboardProps {
   children: React.ReactNode;
   rightPanel?: React.ReactNode;
   hasRightPanel?: boolean;
+}
+
+export function getDashboardLayout(
+  page: React.ReactElement,
+  rightPanel?: React.ReactNode,
+  hasRightPanel = false,
+) {
+  return (
+    <WorkspaceProvider>
+      <Dashboard rightPanel={rightPanel} hasRightPanel={hasRightPanel}>
+        {page}
+      </Dashboard>
+    </WorkspaceProvider>
+  );
 }
 
 export default function Dashboard({
@@ -26,6 +41,7 @@ export default function Dashboard({
   const theme = useTheme();
 
   const { data: session, isPending: sessionLoading } = authClient.useSession();
+
   const [isSideNavOpen, setIsSideNavOpen] = useState(false);
   const [isRightPanelOpen, setIsRightPanelOpen] = useState(false);
 
