@@ -132,7 +132,7 @@ export default function SettingsPage() {
           className="h-full max-h-[calc(100vdh-3rem)] overflow-y-auto md:max-h-[calc(100vdh-4rem)]"
         >
           <PageHead title={t`Settings | ${workspace.name ?? "Workspace"}`} />
-          <div className="m-auto max-w-[1200px] px-5 py-6 md:px-28 md:py-12">
+          <div className="m-auto max-w-[1100px] px-5 py-6 md:px-28 md:py-12">
             <div className="mb-8 flex w-full justify-between">
               <h1 className="font-bold tracking-tight text-neutral-900 dark:text-dark-1000 sm:text-[1.2rem]">
                 {t`Settings`}

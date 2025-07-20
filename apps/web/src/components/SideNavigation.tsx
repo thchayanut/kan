@@ -95,7 +95,7 @@ export default function SideNavigation({
           <div className="flex h-14 items-center justify-between pb-[18px] pt-1.5">
             {!isCollapsed && (
               <Link href="/" className="block">
-                <h1 className="pl-2 text-lg font-bold tracking-tight text-neutral-700 dark:text-dark-1000">
+                <h1 className="pl-2 text-lg font-bold tracking-tight text-neutral-900 dark:text-dark-1000">
                   kan.bn
                 </h1>
               </Link>
