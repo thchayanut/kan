@@ -61,6 +61,10 @@ export default function Dashboard({
     }
   };
 
+  const closeSideNav = () => {
+    setIsSideNavOpen(false);
+  };
+
   const toggleRightPanel = () => {
     setIsRightPanelOpen(!isRightPanelOpen);
     if (!isRightPanelOpen) {
@@ -98,9 +102,9 @@ export default function Dashboard({
           background-color: ${!isDarkMode ? "hsl(0deg 0% 97.3%)" : "#1c1c1c"};
         }
       `}</style>
-      <div className="relative flex h-screen flex-col bg-light-100 px-3 py-3 dark:bg-dark-100">
-        {/* Mobile Navigation Controls - positioned absolutely over content */}
-        <div className="absolute left-8 top-8 z-50 flex items-center gap-2 md:hidden">
+      <div className="relative flex h-screen flex-col bg-light-50 dark:bg-dark-50 md:bg-light-100 md:p-3 md:dark:bg-dark-100">
+        {/* Mobile Header */}
+        <div className="flex h-12 items-center justify-between border-b border-light-300 bg-light-50 px-3 dark:border-dark-300 dark:bg-dark-50 md:hidden">
           <button
             ref={sideNavButtonRef}
             onClick={toggleSideNav}
@@ -118,10 +122,8 @@ export default function Dashboard({
               />
             )}
           </button>
-        </div>
 
-        {/* {hasRightPanel && (
-          <div className="absolute right-8 top-8 z-50 md:hidden">
+          {hasRightPanel && (
             <button
               ref={rightPanelButtonRef}
               onClick={toggleRightPanel}
@@ -139,21 +141,22 @@ export default function Dashboard({
                 />
               )}
             </button>
-          </div>
-        )} */}
+          )}
+        </div>
 
-        <div className="flex h-[calc(100dvh-1.5rem)] min-h-0 w-full">
+        <div className="flex h-[calc(100dvh-4.5rem)] min-h-0 w-full md:h-[calc(100dvh-1.5rem)]">
           <div
             ref={sideNavRef}
-            className={`fixed left-3 top-3 z-40 h-[calc(100dvh-1.5rem)] transform transition-transform duration-300 ease-in-out md:relative md:left-0 md:top-0 md:h-full md:translate-x-0 ${isSideNavOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"} `}
+            className={`fixed top-12 z-40 h-[calc(100dvh-3rem)] w-[calc(100vw-1.5rem)] transform transition-transform duration-300 ease-in-out md:relative md:top-0 md:h-full md:w-auto md:translate-x-0 ${isSideNavOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"} `}
           >
             <SideNavigation
               user={{ email: session?.user.email, image: session?.user.image }}
               isLoading={sessionLoading}
+              onCloseSideNav={closeSideNav}
             />
           </div>
 
-          <div className="relative h-full min-h-0 w-full overflow-hidden rounded-lg border border-light-300 bg-light-50 dark:border-dark-300 dark:bg-dark-50">
+          <div className="relative h-full min-h-0 w-full overflow-hidden md:rounded-lg md:border md:border-light-300 md:bg-light-50 md:dark:border-dark-300 md:dark:bg-dark-50">
             <div className="relative flex h-full min-h-0 w-full overflow-hidden">
               <div className="h-full w-full overflow-y-auto">{children}</div>
 
@@ -161,13 +164,11 @@ export default function Dashboard({
               {hasRightPanel && rightPanel && (
                 <div
                   ref={rightPanelRef}
-                  className={`fixed right-3 top-3 z-40 h-[calc(100dvh-1.5rem)] w-80 transform bg-light-200 transition-transform duration-300 ease-in-out dark:bg-dark-100 md:hidden ${
+                  className={`fixed right-0 top-12 z-40 h-[calc(100dvh-3rem)] w-80 transform border-l border-light-300 bg-light-200 transition-transform duration-300 ease-in-out dark:border-dark-300 dark:bg-dark-100 md:hidden ${
                     isRightPanelOpen ? "translate-x-0" : "translate-x-full"
                   }`}
                 >
-                  <div className="h-full overflow-y-auto rounded-md border dark:border-dark-200">
-                    {rightPanel}
-                  </div>
+                  <div className="h-full">{rightPanel}</div>
                 </div>
               )}
 

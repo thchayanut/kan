@@ -4,9 +4,11 @@ import { useRouter } from "next/navigation";
 import { Menu, Transition } from "@headlessui/react";
 import { t } from "@lingui/core/macro";
 import { Fragment } from "react";
+import { twMerge } from "tailwind-merge";
 
 import { authClient } from "@kan/auth/client";
 
+import { useIsMobile } from "~/hooks/useMediaQuery";
 import { useModal } from "~/providers/modal";
 import { useTheme } from "~/providers/theme";
 import { getAvatarUrl } from "~/utils/helpers";
@@ -16,10 +18,7 @@ interface UserMenuProps {
   email: string;
   isLoading: boolean;
   isCollapsed?: boolean;
-}
-
-function classNames(...classes: string[]): string {
-  return classes.filter(Boolean).join(" ");
+  onCloseSideNav?: () => void;
 }
 
 export default function UserMenu({
@@ -27,14 +26,32 @@ export default function UserMenu({
   email,
   isLoading,
   isCollapsed = false,
+  onCloseSideNav,
 }: UserMenuProps) {
   const router = useRouter();
   const { themePreference, switchTheme } = useTheme();
   const { openModal } = useModal();
+  const isMobile = useIsMobile();
 
   const handleLogout = async () => {
+    if (onCloseSideNav && isMobile) {
+      onCloseSideNav();
+    }
     await authClient.signOut();
     router.push("/login");
+  };
+
+  const handleLinkClick = () => {
+    if (onCloseSideNav && isMobile) {
+      onCloseSideNav();
+    }
+  };
+
+  const handleModalOpen = (modalType: string) => {
+    if (onCloseSideNav && isMobile) {
+      onCloseSideNav();
+    }
+    openModal(modalType);
   };
 
   const avatarUrl = imageUrl ? getAvatarUrl(imageUrl) : null;
@@ -43,11 +60,14 @@ export default function UserMenu({
     <Menu as="div" className="relative inline-block w-full text-left">
       <div>
         {isLoading ? (
-          <div className={classNames(isCollapsed ? "" : "flex")}>
+          <div className={twMerge(!isCollapsed && "flex")}>
             <div className="h-[30px] w-[30px] animate-pulse rounded-full bg-light-200 dark:bg-dark-200" />
-            {!isCollapsed && (
-              <div className="mx-2 h-[30px] w-[175px] animate-pulse rounded-md bg-light-200 dark:bg-dark-200" />
-            )}
+            <div
+              className={twMerge(
+                "mx-2 h-[30px] w-[175px] animate-pulse rounded-md bg-light-200 dark:bg-dark-200",
+                isCollapsed && "md:hidden",
+              )}
+            />
           </div>
         ) : (
           <Menu.Button
@@ -73,9 +93,14 @@ export default function UserMenu({
                 </svg>
               </span>
             )}
-            {!isCollapsed && (
-              <span className="mx-2 truncate text-sm">{email}</span>
-            )}
+            <span
+              className={twMerge(
+                "mx-2 truncate text-sm",
+                isCollapsed && "md:hidden",
+              )}
+            >
+              {email}
+            </span>
           </Menu.Button>
         )}
       </div>
@@ -90,7 +115,7 @@ export default function UserMenu({
         leaveTo="transform opacity-0 scale-95"
       >
         <Menu.Items
-          className={classNames(
+          className={twMerge(
             "absolute bottom-[40px] z-10 mt-2 origin-top-left rounded-md border border-light-600 bg-light-50 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:border-dark-600 dark:bg-dark-300",
             isCollapsed ? "left-0 w-48" : "left-0 w-full",
           )}
@@ -106,7 +131,7 @@ export default function UserMenu({
                   className="flex w-full items-center rounded-[5px] px-3 py-2 text-left text-xs hover:bg-light-200 dark:hover:bg-dark-400"
                 >
                   <span
-                    className={classNames(
+                    className={twMerge(
                       themePreference === "system" ? "visible" : "invisible",
                       "mr-4 h-[6px] w-[6px] rounded-full bg-light-900 dark:bg-dark-900",
                     )}
@@ -120,7 +145,7 @@ export default function UserMenu({
                   className="flex w-full items-center rounded-[5px] px-3 py-2 text-left text-xs hover:bg-light-200 dark:hover:bg-dark-400"
                 >
                   <span
-                    className={classNames(
+                    className={twMerge(
                       themePreference === "dark" ? "visible" : "invisible",
                       "mr-4 h-[6px] w-[6px] rounded-full bg-light-900 dark:bg-dark-900",
                     )}
@@ -134,7 +159,7 @@ export default function UserMenu({
                   className="flex w-full items-center rounded-[5px] px-3 py-2 text-left text-xs hover:bg-light-200 dark:hover:bg-dark-400"
                 >
                   <span
-                    className={classNames(
+                    className={twMerge(
                       themePreference === "light" ? "visible" : "invisible",
                       "mr-4 h-[6px] w-[6px] rounded-full bg-light-900 dark:bg-dark-900",
                     )}
@@ -149,6 +174,7 @@ export default function UserMenu({
                   href="mailto:support@kan.bn"
                   target="_blank"
                   rel="noreferrer"
+                  onClick={handleLinkClick}
                   className="flex w-full items-center rounded-[5px] px-3 py-2 text-left text-xs hover:bg-light-200 dark:hover:bg-dark-400"
                 >
                   {t`Support`}
@@ -159,6 +185,7 @@ export default function UserMenu({
                   href="https://docs.kan.bn"
                   target="_blank"
                   rel="noreferrer"
+                  onClick={handleLinkClick}
                   className="flex w-full items-center rounded-[5px] px-3 py-2 text-left text-xs hover:bg-light-200 dark:hover:bg-dark-400"
                 >
                   {t`Documentation`}
@@ -166,7 +193,7 @@ export default function UserMenu({
               </Menu.Item>
               <Menu.Item>
                 <button
-                  onClick={() => openModal("NEW_FEEDBACK")}
+                  onClick={() => handleModalOpen("NEW_FEEDBACK")}
                   className="flex w-full items-center rounded-[5px] px-3 py-2 text-left text-xs hover:bg-light-200 dark:hover:bg-dark-400"
                 >
                   {t`Feedback`}

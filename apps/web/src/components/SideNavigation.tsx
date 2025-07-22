@@ -23,6 +23,7 @@ import { useTheme } from "~/providers/theme";
 interface SideNavigationProps {
   user: UserType;
   isLoading: boolean;
+  onCloseSideNav?: () => void;
 }
 
 interface UserType {
@@ -33,6 +34,7 @@ interface UserType {
 export default function SideNavigation({
   user,
   isLoading,
+  onCloseSideNav,
 }: SideNavigationProps) {
   const router = useRouter();
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -87,12 +89,12 @@ export default function SideNavigation({
     <>
       <nav
         className={twMerge(
-          "flex h-full flex-col justify-between bg-light-100 pr-3 dark:bg-dark-100",
-          isCollapsed ? "w-auto" : "w-64",
+          "flex h-full w-64 flex-col justify-between border-r border-light-300 bg-light-100 p-3 dark:border-dark-300 dark:bg-dark-100 md:py-0 md:pl-0",
+          isCollapsed && "md:w-auto",
         )}
       >
         <div>
-          <div className="flex h-14 items-center justify-between pb-[18px] pt-1.5">
+          <div className="hidden h-14 items-center justify-between pb-[18px] pt-1.5 md:flex">
             {!isCollapsed && (
               <Link href="/" className="block">
                 <h1 className="pl-2 text-lg font-bold tracking-tight text-neutral-900 dark:text-dark-1000">
@@ -120,7 +122,7 @@ export default function SideNavigation({
               )}
             </Button>
           </div>
-          <div className="mx-1 mb-4 w-auto border-b border-light-300 dark:border-dark-400" />
+          <div className="mx-1 mb-4 hidden w-auto border-b border-light-300 dark:border-dark-400 md:block" />
 
           <WorkspaceMenu isCollapsed={isCollapsed} />
           <ul role="list" className="space-y-1">
@@ -132,6 +134,7 @@ export default function SideNavigation({
                   name={item.name}
                   json={item.icon}
                   isCollapsed={isCollapsed}
+                  onCloseSideNav={onCloseSideNav}
                 />
               </li>
             ))}
@@ -144,6 +147,7 @@ export default function SideNavigation({
             imageUrl={user.image ?? undefined}
             isLoading={isLoading}
             isCollapsed={isCollapsed}
+            onCloseSideNav={onCloseSideNav}
           />
         </div>
       </nav>

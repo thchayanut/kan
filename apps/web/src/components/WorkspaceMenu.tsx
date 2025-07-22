@@ -20,17 +20,20 @@ export default function WorkspaceMenu({
     <Menu as="div" className="relative inline-block w-full pb-3 text-left">
       <div>
         {isLoading ? (
-          <div className={twMerge("mb-1", isCollapsed && "flex p-1.5")}>
+          <div className={twMerge("mb-1", isCollapsed && "md:flex md:p-1.5")}>
             <div className="h-6 w-6 animate-pulse rounded-md bg-light-200 dark:bg-dark-200" />
-            {!isCollapsed && (
-              <div className="ml-2 h-6 w-[150px] animate-pulse rounded-md bg-light-200 dark:bg-dark-200" />
-            )}
+            <div
+              className={twMerge(
+                "ml-2 h-6 w-[150px] animate-pulse rounded-md bg-light-200 dark:bg-dark-200",
+                isCollapsed && "hidden md:block",
+              )}
+            />
           </div>
         ) : (
           <Menu.Button
             className={twMerge(
               "mb-1 flex h-[34px] w-full items-center rounded-md p-1.5 hover:bg-light-200 dark:hover:bg-dark-200",
-              isCollapsed && "mb-1.5 h-9 p-1",
+              isCollapsed && "md:mb-1.5 md:h-9 md:p-1",
             )}
             title={isCollapsed ? workspace.name : undefined}
           >
@@ -39,17 +42,23 @@ export default function WorkspaceMenu({
                 {workspace.name.charAt(0).toUpperCase()}
               </span>
             </span>
-            {!isCollapsed && (
-              <>
-                <span className="ml-2 text-sm font-bold text-neutral-900 dark:text-dark-1000">
-                  {workspace.name}
-                </span>
-                {workspace.plan === "pro" && (
-                  <span className="ml-2 inline-flex items-center rounded-md bg-indigo-100 px-2 py-1 text-[10px] font-medium text-indigo-700">
-                    Pro
-                  </span>
+            <span
+              className={twMerge(
+                "ml-2 text-sm font-bold text-neutral-900 dark:text-dark-1000",
+                isCollapsed && "md:hidden",
+              )}
+            >
+              {workspace.name}
+            </span>
+            {workspace.plan === "pro" && (
+              <span
+                className={twMerge(
+                  "ml-2 inline-flex items-center rounded-md bg-indigo-100 px-2 py-1 text-[10px] font-medium text-indigo-700",
+                  isCollapsed && "hidden md:inline-flex",
                 )}
-              </>
+              >
+                Pro
+              </span>
             )}
           </Menu.Button>
         )}
