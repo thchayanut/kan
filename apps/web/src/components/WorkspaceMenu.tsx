@@ -54,7 +54,7 @@ export default function WorkspaceMenu({
               <span
                 className={twMerge(
                   "ml-2 inline-flex items-center rounded-md bg-indigo-100 px-2 py-1 text-[10px] font-medium text-indigo-700",
-                  isCollapsed && "hidden md:inline-flex",
+                  isCollapsed && "md:hidden",
                 )}
               >
                 Pro
