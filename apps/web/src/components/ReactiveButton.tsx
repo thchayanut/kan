@@ -5,10 +5,6 @@ import { twMerge } from "tailwind-merge";
 import LottieIcon from "~/components/LottieIcon";
 import { useIsMobile } from "~/hooks/useMediaQuery";
 
-function classNames(...classes: string[]): string {
-  return classes.filter(Boolean).join(" ");
-}
-
 const Button: React.FC<{
   href: string;
   current: boolean;
@@ -37,11 +33,11 @@ const Button: React.FC<{
       href={href}
       onMouseEnter={handleMouseEnter}
       onClick={handleClick}
-      className={classNames(
-        "group flex h-[34px] items-center rounded-md p-1.5 text-sm font-normal leading-6 text-neutral-900 hover:bg-light-200 dark:hover:bg-dark-200 dark:hover:text-dark-1000",
+      className={twMerge(
+        "group flex h-[34px] items-center rounded-md p-1.5 text-sm font-normal leading-6 hover:bg-light-200 hover:text-light-1000 dark:hover:bg-dark-200 dark:hover:text-dark-1000",
         current
-          ? "bg-light-200 dark:bg-dark-200 dark:text-dark-1000"
-          : "dark:bg-dark-100 dark:text-dark-900",
+          ? "bg-light-200 text-light-1000 dark:bg-dark-200 dark:text-dark-1000"
+          : "text-neutral-600 dark:bg-dark-100 dark:text-dark-900",
         isCollapsed
           ? "justify-start gap-x-3 md:justify-center md:gap-x-0"
           : "gap-x-3",
