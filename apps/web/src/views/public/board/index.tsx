@@ -28,9 +28,14 @@ export default function PublicBoardView() {
     ? router.query.boardSlug[0]
     : router.query.boardSlug;
 
+  const workspaceSlug = Array.isArray(router.query.workspaceSlug)
+    ? router.query.workspaceSlug[0]
+    : router.query.workspaceSlug;
+
   const { data, isLoading } = api.board.bySlug.useQuery(
     {
       boardSlug: boardSlug ?? "",
+      workspaceSlug: workspaceSlug ?? "",
       members: formatToArray(router.query.members),
       labels: formatToArray(router.query.labels),
     },
