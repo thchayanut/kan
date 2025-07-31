@@ -3,8 +3,6 @@ import { t } from "@lingui/core/macro";
 import { useEffect, useRef, useState } from "react";
 import { HiXMark } from "react-icons/hi2";
 
-import { authClient } from "@kan/auth/client";
-
 import Badge from "~/components/Badge";
 import Editor from "~/components/Editor";
 import LabelIcon from "~/components/LabelIcon";
@@ -23,7 +21,6 @@ export function CardModal({
 }) {
   const router = useRouter();
   const { closeModal, isOpen } = useModal();
-  const { data: session } = authClient.useSession();
   const [showFade, setShowFade] = useState(false);
   const [showTopFade, setShowTopFade] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -95,7 +92,7 @@ export function CardModal({
                 </div>
               ) : (
                 <>
-                  <h1 className="font-bold leading-[2.3rem] tracking-tight text-neutral-900 dark:text-dark-1000 sm:text-[1.2rem]">
+                  <h1 className="pr-8 font-bold leading-[2.3rem] tracking-tight text-neutral-900 dark:text-dark-1000 sm:text-[1.2rem]">
                     {data?.title}
                   </h1>
                 </>
