@@ -16,7 +16,7 @@ import { users } from "./users";
 export const checklists = pgTable("card_checklist", {
   id: bigserial("id", { mode: "number" }).primaryKey(),
   publicId: varchar("publicId", { length: 12 }).notNull().unique(),
-  title: varchar("title", { length: 255 }).notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
   index: integer("index").notNull(),
   cardId: bigint("cardId", { mode: "number" })
     .notNull()

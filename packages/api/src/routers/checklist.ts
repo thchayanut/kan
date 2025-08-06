@@ -8,8 +8,8 @@ import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { assertUserInWorkspace } from "../utils/auth";
 
 const checklistSchema = z.object({
-  publicId: z.string(),
-  title: z.string(),
+  publicId: z.string().length(12),
+  name: z.string().min(1).max(255),
 });
 
 export const checklistRouter = createTRPCRouter({
@@ -26,8 +26,8 @@ export const checklistRouter = createTRPCRouter({
     })
     .input(
       z.object({
-        cardPublicId: z.string().min(12),
-        title: z.string().min(1),
+        cardPublicId: z.string().length(12),
+        name: z.string().min(1).max(255),
       }),
     )
     .output(checklistSchema)
@@ -54,7 +54,7 @@ export const checklistRouter = createTRPCRouter({
       await assertUserInWorkspace(ctx.db, userId, card.workspaceId);
 
       const newChecklist = await checklistRepo.create(ctx.db, {
-        title: input.title,
+        name: input.name,
         createdBy: userId,
         cardId: card.id,
       });

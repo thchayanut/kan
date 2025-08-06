@@ -17,7 +17,7 @@ ALTER TABLE "card_checklist_item" ENABLE ROW LEVEL SECURITY;--> statement-breakp
 CREATE TABLE IF NOT EXISTS "card_checklist" (
 	"id" bigserial PRIMARY KEY NOT NULL,
 	"publicId" varchar(12) NOT NULL,
-	"title" varchar(255) NOT NULL,
+	"name" varchar(255) NOT NULL,
 	"index" integer NOT NULL,
 	"cardId" bigint NOT NULL,
 	"createdBy" uuid,

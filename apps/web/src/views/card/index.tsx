@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { IoChevronForwardSharp } from "react-icons/io5";
 
 import Avatar from "~/components/Avatar";
+import CircularProgress from "~/components/CircularProgress";
 import Editor from "~/components/Editor";
 import FeedbackModal from "~/components/FeedbackModal";
 import { LabelForm } from "~/components/LabelForm";
@@ -25,6 +26,7 @@ import Dropdown from "./components/Dropdown";
 import LabelSelector from "./components/LabelSelector";
 import ListSelector from "./components/ListSelector";
 import MemberSelector from "./components/MemberSelector";
+import { NewChecklistForm } from "./components/NewChecklistForm";
 import NewCommentForm from "./components/NewCommentForm";
 
 interface FormValues {
@@ -251,6 +253,39 @@ export default function CardPage() {
                     </div>
                   </form>
                 </div>
+                {card.checklists.length > 0 && (
+                  <div className="border-light-300 pb-4 dark:border-dark-300">
+                    <div>
+                      {card.checklists.map((checklist) => {
+                        const completedItems = checklist.items.filter(
+                          (item) => item.completed,
+                        );
+                        const progress =
+                          checklist.items.length > 0
+                            ? (completedItems.length / checklist.items.length) *
+                              100
+                            : 2;
+
+                        return (
+                          <div
+                            className="text-md flex items-center gap-3 font-medium text-light-900 dark:text-dark-1000"
+                            key={checklist.publicId}
+                          >
+                            <span>{checklist.name}</span>
+                            <CircularProgress
+                              progress={progress}
+                              size="md"
+                              className="flex-shrink-0"
+                            />
+                            <span className="text-sm text-light-900 dark:text-dark-900">
+                              {completedItems.length}/{checklist.items.length}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
                 <div className="border-t-[1px] border-light-300 pt-12 dark:border-dark-300">
                   <h2 className="text-md pb-4 font-medium text-light-900 dark:text-dark-1000">
                     {t`Activity`}
@@ -303,6 +338,9 @@ export default function CardPage() {
             />
           )}
           {modalContentType === "NEW_WORKSPACE" && <NewWorkspaceForm />}
+          {modalContentType === "ADD_CHECKLIST" && (
+            <NewChecklistForm cardPublicId={cardId} />
+          )}
         </Modal>
       </div>
     </>

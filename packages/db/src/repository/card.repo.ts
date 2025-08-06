@@ -6,6 +6,7 @@ import {
   cards,
   cardsToLabels,
   cardToWorkspaceMembers,
+  checklists,
   labels,
   lists,
   workspaceMembers,
@@ -296,6 +297,24 @@ export const getWithListAndMembersByPublicId = async (
               publicId: true,
               name: true,
               colourCode: true,
+            },
+          },
+        },
+      },
+      checklists: {
+        columns: {
+          publicId: true,
+          name: true,
+          index: true,
+        },
+        where: isNull(checklists.deletedAt),
+        with: {
+          items: {
+            columns: {
+              publicId: true,
+              title: true,
+              completed: true,
+              index: true,
             },
           },
         },
