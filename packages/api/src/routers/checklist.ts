@@ -12,6 +12,12 @@ const checklistSchema = z.object({
   name: z.string().min(1).max(255),
 });
 
+const checklistItemSchema = z.object({
+  publicId: z.string().length(12),
+  title: z.string().min(1).max(500),
+  completed: z.boolean(),
+});
+
 export const checklistRouter = createTRPCRouter({
   create: protectedProcedure
     .meta({
@@ -74,6 +80,64 @@ export const checklistRouter = createTRPCRouter({
       // });
 
       return newChecklist;
+    }),
+  createItem: protectedProcedure
+    .meta({
+      openapi: {
+        summary: "Add an item to a checklist",
+        method: "POST",
+        path: "/checklists/{checklistPublicId}/items",
+        description: "Adds an item to a checklist",
+        tags: ["Cards"],
+        protect: true,
+      },
+    })
+    .input(
+      z.object({
+        checklistPublicId: z.string().length(12),
+        title: z.string().min(1).max(500),
+      }),
+    )
+    .output(checklistItemSchema)
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.user?.id;
+
+      if (!userId)
+        throw new TRPCError({
+          message: `User not authenticated`,
+          code: "UNAUTHORIZED",
+        });
+
+      const checklist = await checklistRepo.getChecklistByPublicId(
+        ctx.db,
+        input.checklistPublicId,
+      );
+
+      if (!checklist)
+        throw new TRPCError({
+          message: `Checklist with public ID ${input.checklistPublicId} not found`,
+          code: "NOT_FOUND",
+        });
+
+      await assertUserInWorkspace(
+        ctx.db,
+        userId,
+        checklist.card.list.board.workspace.id,
+      );
+
+      const newChecklistItem = await checklistRepo.createItem(ctx.db, {
+        title: input.title,
+        createdBy: userId,
+        checklistId: checklist.id,
+      });
+
+      if (!newChecklistItem?.id)
+        throw new TRPCError({
+          message: `Failed to create checklist item`,
+          code: "INTERNAL_SERVER_ERROR",
+        });
+
+      return newChecklistItem;
     }),
   // update: protectedProcedure
   //   .meta({

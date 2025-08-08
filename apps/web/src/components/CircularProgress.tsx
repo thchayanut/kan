@@ -32,8 +32,8 @@ const CircularProgress = ({
           r={radius}
           fill="none"
           stroke="currentColor"
-          strokeWidth="8"
-          className="text-light-300 dark:text-dark-300"
+          strokeWidth="14"
+          className="text-light-300 dark:text-dark-400"
         />
         <circle
           cx="50"
@@ -41,7 +41,7 @@ const CircularProgress = ({
           r={radius}
           fill="none"
           stroke="currentColor"
-          strokeWidth="8"
+          strokeWidth="14"
           strokeDasharray={circumference}
           strokeDashoffset={strokeDashoffset}
           strokeLinecap="round"

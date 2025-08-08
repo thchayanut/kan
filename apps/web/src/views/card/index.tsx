@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { t } from "@lingui/core/macro";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { HiPlus, HiXMark } from "react-icons/hi2";
 import { IoChevronForwardSharp } from "react-icons/io5";
 
 import Avatar from "~/components/Avatar";
@@ -27,6 +29,7 @@ import LabelSelector from "./components/LabelSelector";
 import ListSelector from "./components/ListSelector";
 import MemberSelector from "./components/MemberSelector";
 import { NewChecklistForm } from "./components/NewChecklistForm";
+import NewChecklistItemForm from "./components/NewChecklistItemForm";
 import NewCommentForm from "./components/NewCommentForm";
 
 interface FormValues {
@@ -137,6 +140,9 @@ export default function CardPage() {
   const { modalContentType, entityId } = useModal();
   const { showPopup } = usePopup();
   const { workspace } = useWorkspace();
+  const [activeChecklistForm, setActiveChecklistForm] = useState<string | null>(
+    null,
+  );
 
   const cardId = Array.isArray(router.query.cardId)
     ? router.query.cardId[0]
@@ -261,25 +267,54 @@ export default function CardPage() {
                           (item) => item.completed,
                         );
                         const progress =
-                          checklist.items.length > 0
+                          checklist.items.length > 0 &&
+                          completedItems.length > 0
                             ? (completedItems.length / checklist.items.length) *
                               100
                             : 2;
 
+                        console.log({ checklist });
+
                         return (
-                          <div
-                            className="text-md flex items-center gap-3 font-medium text-light-900 dark:text-dark-1000"
-                            key={checklist.publicId}
-                          >
-                            <span>{checklist.name}</span>
-                            <CircularProgress
-                              progress={progress}
-                              size="md"
-                              className="flex-shrink-0"
-                            />
-                            <span className="text-sm text-light-900 dark:text-dark-900">
-                              {completedItems.length}/{checklist.items.length}
-                            </span>
+                          <div key={checklist.publicId}>
+                            <div className="text-md mb-4 flex items-center justify-between font-medium text-light-900 dark:text-dark-1000">
+                              <div className="flex items-center gap-2">
+                                <span>{checklist.name}</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-1 rounded-full border-[1px] border-light-300 px-2 py-1 dark:border-dark-300">
+                                  <CircularProgress
+                                    progress={progress}
+                                    size="sm"
+                                    className="flex-shrink-0"
+                                  />
+                                  <span className="text-[11px] text-light-900 dark:text-dark-700">
+                                    {completedItems.length}/
+                                    {checklist.items.length}
+                                  </span>
+                                </div>
+                                <div>
+                                  <button className="rounded-md p-1 text-light-900 hover:bg-light-100 dark:text-dark-700 dark:hover:bg-dark-100">
+                                    <HiXMark size={16} />
+                                  </button>
+                                  <button
+                                    onClick={() =>
+                                      setActiveChecklistForm(checklist.publicId)
+                                    }
+                                    className="rounded-md p-1 text-light-900 hover:bg-light-100 dark:text-dark-700 dark:hover:bg-dark-100"
+                                  >
+                                    <HiPlus size={16} />
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                            {activeChecklistForm === checklist.publicId && (
+                              <NewChecklistItemForm
+                                checklistPublicId={checklist.publicId}
+                                cardPublicId={cardId}
+                                onCancel={() => setActiveChecklistForm(null)}
+                              />
+                            )}
                           </div>
                         );
                       })}
