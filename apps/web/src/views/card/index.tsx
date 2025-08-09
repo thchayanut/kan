@@ -22,6 +22,7 @@ import { api } from "~/utils/api";
 import { formatMemberDisplayName, getAvatarUrl } from "~/utils/helpers";
 import { DeleteLabelConfirmation } from "../../components/DeleteLabelConfirmation";
 import ActivityList from "./components/ActivityList";
+import ChecklistItemRow from "./components/ChecklistItemRow";
 import { DeleteCardConfirmation } from "./components/DeleteCardConfirmation";
 import { DeleteCommentConfirmation } from "./components/DeleteCommentConfirmation";
 import Dropdown from "./components/Dropdown";
@@ -273,11 +274,9 @@ export default function CardPage() {
                               100
                             : 2;
 
-                        console.log({ checklist });
-
                         return (
-                          <div key={checklist.publicId}>
-                            <div className="text-md mb-4 flex items-center justify-between font-medium text-light-900 dark:text-dark-1000">
+                          <div key={checklist.publicId} className="mb-4">
+                            <div className="text-md mb-2 flex items-center justify-between font-medium text-light-900 dark:text-dark-1000">
                               <div className="flex items-center gap-2">
                                 <span>{checklist.name}</span>
                               </div>
@@ -308,12 +307,29 @@ export default function CardPage() {
                                 </div>
                               </div>
                             </div>
+
+                            <div className="ml-1">
+                              {checklist.items.map((item) => (
+                                <ChecklistItemRow
+                                  key={item.publicId}
+                                  item={{
+                                    publicId: item.publicId,
+                                    title: item.title,
+                                    completed: item.completed,
+                                  }}
+                                  cardPublicId={cardId}
+                                />
+                              ))}
+                            </div>
+
                             {activeChecklistForm === checklist.publicId && (
-                              <NewChecklistItemForm
-                                checklistPublicId={checklist.publicId}
-                                cardPublicId={cardId}
-                                onCancel={() => setActiveChecklistForm(null)}
-                              />
+                              <div className="ml-1">
+                                <NewChecklistItemForm
+                                  checklistPublicId={checklist.publicId}
+                                  cardPublicId={cardId}
+                                  onCancel={() => setActiveChecklistForm(null)}
+                                />
+                              </div>
                             )}
                           </div>
                         );

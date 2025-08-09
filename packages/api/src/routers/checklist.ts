@@ -71,14 +71,6 @@ export const checklistRouter = createTRPCRouter({
           code: "INTERNAL_SERVER_ERROR",
         });
 
-      // await cardActivityRepo.create(ctx.db, {
-      //   type: "card.updated.checklist.added" as const,
-      //   cardId: card.id,
-      //   checklistId: newChecklist.id,
-      //   toChecklist: newChecklist.title,
-      //   createdBy: userId,
-      // });
-
       return newChecklist;
     }),
   createItem: protectedProcedure
@@ -138,6 +130,116 @@ export const checklistRouter = createTRPCRouter({
         });
 
       return newChecklistItem;
+    }),
+  updateItem: protectedProcedure
+    .meta({
+      openapi: {
+        summary: "Update a checklist item",
+        method: "PUT",
+        path: "/checklists/items/{checklistItemPublicId}",
+        description: "Updates a checklist item (title/completed)",
+        tags: ["Cards"],
+        protect: true,
+      },
+    })
+    .input(
+      z.object({
+        checklistItemPublicId: z.string().length(12),
+        title: z.string().min(1).max(500).optional(),
+        completed: z.boolean().optional(),
+      }),
+    )
+    .output(checklistItemSchema)
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.user?.id;
+
+      if (!userId)
+        throw new TRPCError({
+          message: `User not authenticated`,
+          code: "UNAUTHORIZED",
+        });
+
+      const item = await checklistRepo.getChecklistItemByPublicIdWithChecklist(
+        ctx.db,
+        input.checklistItemPublicId,
+      );
+
+      if (!item)
+        throw new TRPCError({
+          message: `Checklist item with public ID ${input.checklistItemPublicId} not found`,
+          code: "NOT_FOUND",
+        });
+
+      await assertUserInWorkspace(
+        ctx.db,
+        userId,
+        item.checklist.card.list.board.workspace.id,
+      );
+
+      const updated = await checklistRepo.updateItemById(ctx.db, {
+        id: item.id,
+        title: input.title,
+        completed: input.completed,
+      });
+
+      if (!updated)
+        throw new TRPCError({
+          message: `Failed to update checklist item`,
+          code: "INTERNAL_SERVER_ERROR",
+        });
+
+      return updated;
+    }),
+  deleteItem: protectedProcedure
+    .meta({
+      openapi: {
+        summary: "Delete a checklist item",
+        method: "DELETE",
+        path: "/checklists/items/{checklistItemPublicId}",
+        description: "Deletes a checklist item",
+        tags: ["Cards"],
+        protect: true,
+      },
+    })
+    .input(z.object({ checklistItemPublicId: z.string().length(12) }))
+    .output(z.object({ success: z.boolean() }))
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.user?.id;
+      if (!userId)
+        throw new TRPCError({
+          message: `User not authenticated`,
+          code: "UNAUTHORIZED",
+        });
+
+      const item = await checklistRepo.getChecklistItemByPublicIdWithChecklist(
+        ctx.db,
+        input.checklistItemPublicId,
+      );
+      if (!item)
+        throw new TRPCError({
+          message: `Checklist item with public ID ${input.checklistItemPublicId} not found`,
+          code: "NOT_FOUND",
+        });
+
+      await assertUserInWorkspace(
+        ctx.db,
+        userId,
+        item.checklist.card.list.board.workspace.id,
+      );
+
+      const deleted = await checklistRepo.softDeleteItemById(ctx.db, {
+        id: item.id,
+        deletedAt: new Date(),
+        deletedBy: userId,
+      });
+
+      if (!deleted)
+        throw new TRPCError({
+          message: `Failed to delete item`,
+          code: "INTERNAL_SERVER_ERROR",
+        });
+
+      return { success: true };
     }),
   // update: protectedProcedure
   //   .meta({

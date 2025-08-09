@@ -106,3 +106,68 @@ export const getChecklistByPublicId = async (
 
   return checklist;
 };
+
+export const getChecklistItemByPublicIdWithChecklist = async (
+  db: dbClient,
+  checklistItemPublicId: string,
+) => {
+  const item = await db.query.checklistItems.findFirst({
+    where: and(
+      eq(checklistItems.publicId, checklistItemPublicId),
+      isNull(checklistItems.deletedAt),
+    ),
+    with: {
+      checklist: {
+        with: {
+          card: {
+            with: {
+              list: {
+                with: {
+                  board: {
+                    with: { workspace: true },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+
+  return item;
+};
+
+export const updateItemById = async (
+  db: dbClient,
+  args: { id: number; title?: string; completed?: boolean },
+) => {
+  const [result] = await db
+    .update(checklistItems)
+    .set({
+      ...(args.title !== undefined ? { title: args.title } : {}),
+      ...(args.completed !== undefined ? { completed: args.completed } : {}),
+      updatedAt: new Date(),
+    })
+    .where(eq(checklistItems.id, args.id))
+    .returning({
+      publicId: checklistItems.publicId,
+      title: checklistItems.title,
+      completed: checklistItems.completed,
+    });
+
+  return result;
+};
+
+export const softDeleteItemById = async (
+  db: dbClient,
+  args: { id: number; deletedAt: Date; deletedBy: string },
+) => {
+  const [result] = await db
+    .update(checklistItems)
+    .set({ deletedAt: args.deletedAt, deletedBy: args.deletedBy })
+    .where(eq(checklistItems.id, args.id))
+    .returning({ id: checklistItems.id });
+
+  return result;
+};
