@@ -23,6 +23,7 @@ import { formatMemberDisplayName, getAvatarUrl } from "~/utils/helpers";
 import { DeleteLabelConfirmation } from "../../components/DeleteLabelConfirmation";
 import ActivityList from "./components/ActivityList";
 import ChecklistItemRow from "./components/ChecklistItemRow";
+import ChecklistNameInput from "./components/ChecklistNameInput";
 import { DeleteCardConfirmation } from "./components/DeleteCardConfirmation";
 import { DeleteCommentConfirmation } from "./components/DeleteCommentConfirmation";
 import Dropdown from "./components/Dropdown";
@@ -276,11 +277,15 @@ export default function CardPage() {
 
                         return (
                           <div key={checklist.publicId} className="mb-4">
-                            <div className="text-md mb-2 flex items-center justify-between font-medium text-light-900 dark:text-dark-1000">
-                              <div className="flex items-center gap-2">
-                                <span>{checklist.name}</span>
+                            <div className="mb-2 flex items-center font-medium text-light-900 dark:text-dark-1000">
+                              <div className="min-w-0 flex-1">
+                                <ChecklistNameInput
+                                  checklistPublicId={checklist.publicId}
+                                  initialName={checklist.name}
+                                  cardPublicId={cardId}
+                                />
                               </div>
-                              <div className="flex items-center gap-2">
+                              <div className="ml-2 flex flex-shrink-0 items-center gap-2">
                                 <div className="flex items-center gap-1 rounded-full border-[1px] border-light-300 px-2 py-1 dark:border-dark-300">
                                   <CircularProgress
                                     progress={progress}

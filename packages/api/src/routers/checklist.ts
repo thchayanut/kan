@@ -73,6 +73,51 @@ export const checklistRouter = createTRPCRouter({
 
       return newChecklist;
     }),
+  update: protectedProcedure
+    .input(
+      z.object({
+        checklistPublicId: z.string().length(12),
+        name: z.string().min(1).max(255),
+      }),
+    )
+    .output(z.object({ publicId: z.string().length(12), name: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.user?.id;
+      if (!userId)
+        throw new TRPCError({
+          message: `User not authenticated`,
+          code: "UNAUTHORIZED",
+        });
+
+      const checklist = await checklistRepo.getChecklistByPublicId(
+        ctx.db,
+        input.checklistPublicId,
+      );
+      if (!checklist)
+        throw new TRPCError({
+          message: `Checklist with public ID ${input.checklistPublicId} not found`,
+          code: "NOT_FOUND",
+        });
+
+      await assertUserInWorkspace(
+        ctx.db,
+        userId,
+        checklist.card.list.board.workspace.id,
+      );
+
+      const updated = await checklistRepo.updateChecklistById(ctx.db, {
+        id: checklist.id,
+        name: input.name,
+      });
+
+      if (!updated)
+        throw new TRPCError({
+          message: `Failed to update checklist`,
+          code: "INTERNAL_SERVER_ERROR",
+        });
+
+      return updated;
+    }),
   createItem: protectedProcedure
     .meta({
       openapi: {
@@ -241,46 +286,4 @@ export const checklistRouter = createTRPCRouter({
 
       return { success: true };
     }),
-  // update: protectedProcedure
-  //   .meta({
-  //     openapi: {
-  //       summary: "Update a checklist",
-  //       method: "PUT",
-  //       path: "/cards/{cardPublicId}/checklists/{checklistPublicId}",
-  //       description: "Updates a checklist",
-  //       tags: ["Cards"],
-  //       protect: true,
-  //     },
-  //   })
-  //   .input(
-  //     z.object({
-  //       cardPublicId: z.string().min(12),
-  //       checklistPublicId: z.string().min(12),
-  //       title: z.string().min(1),
-  //     }),
-  //   )
-  //   .output(checklistSchema)
-  //   .mutation(async ({ ctx, input }) => {
-
-  //   }),
-  // delete: protectedProcedure
-  //   .meta({
-  //     openapi: {
-  //       summary: "Delete a checklist",
-  //       method: "DELETE",
-  //       path: "/cards/{cardPublicId}/checklists/{checklistPublicId}",
-  //       description: "Deletes a checklist",
-  //       tags: ["Cards"],
-  //     },
-  //   })
-  //   .input(
-  //     z.object({
-  //       cardPublicId: z.string().min(12),
-  //       checklistPublicId: z.string().min(12),
-  //     }),
-  //   )
-  //   .output(checklistSchema)
-  //   .mutation(async ({ ctx, input }) => {
-
-  //   }),
 });

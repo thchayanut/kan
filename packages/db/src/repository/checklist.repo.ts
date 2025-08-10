@@ -171,3 +171,15 @@ export const softDeleteItemById = async (
 
   return result;
 };
+
+export const updateChecklistById = async (
+  db: dbClient,
+  args: { id: number; name: string },
+) => {
+  const [result] = await db
+    .update(checklists)
+    .set({ name: args.name, updatedAt: new Date() })
+    .where(eq(checklists.id, args.id))
+    .returning({ publicId: checklists.publicId, name: checklists.name });
+  return result;
+};

@@ -91,10 +91,20 @@ export default function ChecklistItemRow({
   const [title, setTitle] = useState(item.title);
   const [completed, setCompleted] = useState(item.completed);
 
+  // Only resync from props when switching items to avoid clobbering edits
   useEffect(() => {
     setTitle(item.title);
     setCompleted(item.completed);
-  }, [item.publicId, item.title, item.completed]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [item.publicId]);
+
+  const sanitizeHtmlToPlainText = (html: string): string =>
+    html
+      .replace(/<br\s*\/?>(\n)?/gi, "\n")
+      .replace(/<div><br\s*\/?><\/div>/gi, "")
+      .replace(/<[^>]*>/g, "")
+      .replace(/&nbsp;/g, " ")
+      .trim();
 
   const handleToggleCompleted = () => {
     setCompleted((prev) => !prev);
@@ -104,12 +114,13 @@ export default function ChecklistItemRow({
     });
   };
 
-  const commitTitle = async () => {
-    const trimmed = title.trim();
-    if (!trimmed || trimmed === item.title) return;
+  const commitTitle = (rawHtml: string) => {
+    const plain = sanitizeHtmlToPlainText(rawHtml);
+    if (!plain || plain === item.title) return;
+    setTitle(plain);
     updateItem.mutate({
       checklistItemPublicId: item.publicId,
-      title: trimmed,
+      title: plain,
     });
   };
 
@@ -118,40 +129,26 @@ export default function ChecklistItemRow({
   };
 
   return (
-    <div className="group relative flex h-9 items-center gap-3 rounded-md pl-4 hover:bg-light-100 dark:hover:bg-dark-100">
-      <label className="relative inline-flex h-[16px] w-[16px] flex-shrink-0 cursor-pointer items-center justify-center">
+    <div className="group relative flex items-start gap-3 rounded-md py-2 pl-4 hover:bg-light-100 dark:hover:bg-dark-100">
+      <label className="relative mt-[2px] inline-flex h-[16px] w-[16px] flex-shrink-0 cursor-pointer items-center justify-center">
         <input
           type="checkbox"
           checked={completed}
           onChange={handleToggleCompleted}
-          className="peer h-[16px] w-[16px] appearance-none rounded-full border border-light-500 bg-transparent outline-none ring-0 checked:bg-indigo-600 hover:border-light-500 hover:bg-transparent focus:outline-none focus:ring-0 focus-visible:outline-none dark:border-dark-500 dark:hover:border-dark-500"
+          className="h-[16px] w-[16px] cursor-pointer appearance-none rounded-md border border-light-500 bg-transparent outline-none ring-0 checked:bg-blue-600 focus:shadow-none focus:ring-0 focus:ring-offset-0 focus-visible:outline-none dark:border-dark-500 dark:hover:border-dark-500"
         />
-        <svg
-          viewBox="0 0 20 20"
-          className="pointer-events-none absolute left-1/2 top-1/2 hidden h-[12px] w-[12px] -translate-x-1/2 -translate-y-1/2 text-white peer-checked:block"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M5 10.5l3 3 7-7"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
       </label>
       <div className="flex-1 pr-7">
         <ContentEditable
           html={title}
           onChange={(e) => setTitle(e.target.value)}
-          onBlur={commitTitle}
-          className="m-0 min-h-[20px] w-full p-0 text-[14px] leading-[20px] text-light-900 outline-none focus-visible:outline-none dark:text-dark-1000"
+          onBlur={() => commitTitle(title)}
+          className="m-0 min-h-[20px] w-full p-0 text-sm leading-[20px] text-light-900 outline-none focus-visible:outline-none dark:text-dark-950"
           placeholder={t`Add details...`}
-          onKeyDown={async (e) => {
+          onKeyDown={(e) => {
             if (e.key === "Enter") {
               e.preventDefault();
-              await commitTitle();
+              commitTitle(title);
             }
             if (e.key === "Escape") {
               e.preventDefault();

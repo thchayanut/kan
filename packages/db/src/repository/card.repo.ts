@@ -309,6 +309,7 @@ export const getWithListAndMembersByPublicId = async (
           index: true,
         },
         where: isNull(checklists.deletedAt),
+        orderBy: asc(checklists.index),
         with: {
           items: {
             columns: {
@@ -318,6 +319,7 @@ export const getWithListAndMembersByPublicId = async (
               index: true,
             },
             where: isNull(checklistItems.deletedAt),
+            orderBy: asc(checklistItems.index),
           },
         },
       },
