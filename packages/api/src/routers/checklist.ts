@@ -118,6 +118,63 @@ export const checklistRouter = createTRPCRouter({
 
       return updated;
     }),
+  delete: protectedProcedure
+    .meta({
+      openapi: {
+        summary: "Delete a checklist",
+        method: "DELETE",
+        path: "/checklists/{checklistPublicId}",
+        description: "Deletes a checklist by its public ID",
+        tags: ["Cards"],
+        protect: true,
+      },
+    })
+    .input(z.object({ checklistPublicId: z.string().length(12) }))
+    .output(z.object({ success: z.boolean() }))
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.user?.id;
+      if (!userId)
+        throw new TRPCError({
+          message: `User not authenticated`,
+          code: "UNAUTHORIZED",
+        });
+
+      const checklist = await checklistRepo.getChecklistByPublicId(
+        ctx.db,
+        input.checklistPublicId,
+      );
+      if (!checklist)
+        throw new TRPCError({
+          message: `Checklist with public ID ${input.checklistPublicId} not found`,
+          code: "NOT_FOUND",
+        });
+
+      await assertUserInWorkspace(
+        ctx.db,
+        userId,
+        checklist.card.list.board.workspace.id,
+      );
+
+      await checklistRepo.softDeleteAllItemsByChecklistId(ctx.db, {
+        checklistId: checklist.id,
+        deletedAt: new Date(),
+        deletedBy: userId,
+      });
+
+      const deleted = await checklistRepo.softDeleteById(ctx.db, {
+        id: checklist.id,
+        deletedAt: new Date(),
+        deletedBy: userId,
+      });
+
+      if (!deleted)
+        throw new TRPCError({
+          message: `Failed to delete checklist`,
+          code: "INTERNAL_SERVER_ERROR",
+        });
+
+      return { success: true };
+    }),
   createItem: protectedProcedure
     .meta({
       openapi: {

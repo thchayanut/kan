@@ -22,6 +22,9 @@ export default function ChecklistItemRow({
   const utils = api.useUtils();
   const { showPopup } = usePopup();
 
+  const [title, setTitle] = useState("");
+  const [completed, setCompleted] = useState(false);
+
   const updateItem = api.checklist.updateItem.useMutation({
     onMutate: async (vars) => {
       await utils.card.byId.cancel({ cardPublicId });
@@ -88,9 +91,6 @@ export default function ChecklistItemRow({
     },
   });
 
-  const [title, setTitle] = useState(item.title);
-  const [completed, setCompleted] = useState(item.completed);
-
   // Only resync from props when switching items to avoid clobbering edits
   useEffect(() => {
     setTitle(item.title);
@@ -116,7 +116,10 @@ export default function ChecklistItemRow({
 
   const commitTitle = (rawHtml: string) => {
     const plain = sanitizeHtmlToPlainText(rawHtml);
-    if (!plain || plain === item.title) return;
+    if (!plain || plain === item.title) {
+      setTitle(item.title);
+      return;
+    }
     setTitle(plain);
     updateItem.mutate({
       checklistItemPublicId: item.publicId,
@@ -142,7 +145,8 @@ export default function ChecklistItemRow({
         <ContentEditable
           html={title}
           onChange={(e) => setTitle(e.target.value)}
-          onBlur={() => commitTitle(title)}
+          // @ts-expect-error - valid event
+          onBlur={(e: Event) => commitTitle(e.target.innerHTML as string)}
           className="m-0 min-h-[20px] w-full p-0 text-sm leading-[20px] text-light-900 outline-none focus-visible:outline-none dark:text-dark-950"
           placeholder={t`Add details...`}
           onKeyDown={(e) => {

@@ -25,6 +25,7 @@ import ActivityList from "./components/ActivityList";
 import ChecklistItemRow from "./components/ChecklistItemRow";
 import ChecklistNameInput from "./components/ChecklistNameInput";
 import { DeleteCardConfirmation } from "./components/DeleteCardConfirmation";
+import { DeleteChecklistConfirmation } from "./components/DeleteChecklistConfirmation";
 import { DeleteCommentConfirmation } from "./components/DeleteCommentConfirmation";
 import Dropdown from "./components/Dropdown";
 import LabelSelector from "./components/LabelSelector";
@@ -139,7 +140,7 @@ export function CardRightPanel() {
 export default function CardPage() {
   const router = useRouter();
   const utils = api.useUtils();
-  const { modalContentType, entityId } = useModal();
+  const { modalContentType, entityId, openModal } = useModal();
   const { showPopup } = usePopup();
   const { workspace } = useWorkspace();
   const [activeChecklistForm, setActiveChecklistForm] = useState<string | null>(
@@ -298,7 +299,15 @@ export default function CardPage() {
                                   </span>
                                 </div>
                                 <div>
-                                  <button className="rounded-md p-1 text-light-900 hover:bg-light-100 dark:text-dark-700 dark:hover:bg-dark-100">
+                                  <button
+                                    className="rounded-md p-1 text-light-900 hover:bg-light-100 dark:text-dark-700 dark:hover:bg-dark-100"
+                                    onClick={() =>
+                                      openModal(
+                                        "DELETE_CHECKLIST",
+                                        checklist.publicId,
+                                      )
+                                    }
+                                  >
                                     <HiXMark size={16} />
                                   </button>
                                   <button
@@ -396,6 +405,12 @@ export default function CardPage() {
           {modalContentType === "NEW_WORKSPACE" && <NewWorkspaceForm />}
           {modalContentType === "ADD_CHECKLIST" && (
             <NewChecklistForm cardPublicId={cardId} />
+          )}
+          {modalContentType === "DELETE_CHECKLIST" && (
+            <DeleteChecklistConfirmation
+              cardPublicId={cardId}
+              checklistPublicId={entityId}
+            />
           )}
         </Modal>
       </div>

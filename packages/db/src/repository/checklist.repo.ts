@@ -172,6 +172,37 @@ export const softDeleteItemById = async (
   return result;
 };
 
+export const softDeleteAllItemsByChecklistId = async (
+  db: dbClient,
+  args: { checklistId: number; deletedAt: Date; deletedBy: string },
+) => {
+  const result = await db
+    .update(checklistItems)
+    .set({ deletedAt: args.deletedAt, deletedBy: args.deletedBy })
+    .where(
+      and(
+        eq(checklistItems.checklistId, args.checklistId),
+        isNull(checklistItems.deletedAt),
+      ),
+    )
+    .returning({ id: checklistItems.id });
+
+  return result;
+};
+
+export const softDeleteById = async (
+  db: dbClient,
+  args: { id: number; deletedAt: Date; deletedBy: string },
+) => {
+  const [result] = await db
+    .update(checklists)
+    .set({ deletedAt: args.deletedAt, deletedBy: args.deletedBy })
+    .where(eq(checklists.id, args.id))
+    .returning({ id: checklists.id });
+
+  return result;
+};
+
 export const updateChecklistById = async (
   db: dbClient,
   args: { id: number; name: string },
