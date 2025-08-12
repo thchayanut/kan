@@ -7,6 +7,8 @@ import {
   cards,
   cardsToLabels,
   cardToWorkspaceMembers,
+  checklistItems,
+  checklists,
   labels,
   lists,
   workspaceMembers,
@@ -161,6 +163,27 @@ export const getByPublicId = async (
                         },
                       },
                     },
+                  },
+                },
+              },
+              checklists: {
+                columns: {
+                  publicId: true,
+                  name: true,
+                  index: true,
+                },
+                where: isNull(checklists.deletedAt),
+                orderBy: asc(checklists.index),
+                with: {
+                  items: {
+                    columns: {
+                      publicId: true,
+                      title: true,
+                      completed: true,
+                      index: true,
+                    },
+                    where: isNull(checklistItems.deletedAt),
+                    orderBy: asc(checklistItems.index),
                   },
                 },
               },

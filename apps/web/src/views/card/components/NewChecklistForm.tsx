@@ -22,7 +22,7 @@ export function NewChecklistForm({ cardPublicId }: { cardPublicId: string }) {
 
   const utils = api.useUtils();
 
-  const { register, handleSubmit, reset, setValue, watch } =
+  const { register, handleSubmit, reset, watch } =
     useForm<NewChecklistFormInput>({
       defaultValues: {
         name: "Checklist",
@@ -32,34 +32,45 @@ export function NewChecklistForm({ cardPublicId }: { cardPublicId: string }) {
 
   const createChecklist = api.checklist.create.useMutation({
     onMutate: async (args) => {
-      // await utils.board.byId.cancel();
-      // const currentState = utils.board.byId.getData(queryParams);
-      // utils.board.byId.setData(queryParams, (oldBoard) => {
-      //   if (!oldBoard) return oldBoard;
-      //   const newList = {
-      //     publicId: generateUID(),
-      //     name: args.name,
-      //     boardId: 1,
-      //     boardPublicId,
-      //     cards: [],
-      //     index: oldBoard.lists.length,
-      //   };
-      //   const updatedLists = [...oldBoard.lists, newList];
-      //   return { ...oldBoard, lists: updatedLists };
-      // });
-      // return { previousState: currentState };
+      await utils.card.byId.cancel({ cardPublicId: args.cardPublicId });
+      const previous = utils.card.byId.getData({
+        cardPublicId: args.cardPublicId,
+      });
+      utils.card.byId.setData({ cardPublicId: args.cardPublicId }, (old) => {
+        if (!old) return old as any;
+        const placeholderChecklist = {
+          publicId: `PLACEHOLDER_${generateUID()}`,
+          name: args.name,
+          index: old.checklists.length,
+          items: [] as {
+            publicId: string;
+            title: string;
+            completed: boolean;
+            index: number;
+          }[],
+        };
+        return {
+          ...old,
+          checklists: [...old.checklists, placeholderChecklist],
+        } as typeof old;
+      });
+      return { previous };
     },
-    onError: (_error, _newList, context) => {
-      // utils.board.byId.setData(queryParams, context?.previousState);
+    onError: (_error, vars, ctx) => {
+      if (ctx?.previous)
+        utils.card.byId.setData(
+          { cardPublicId: vars.cardPublicId },
+          ctx.previous,
+        );
       showPopup({
         header: t`Unable to create checklist`,
         message: t`Please try again later, or contact customer support.`,
         icon: "error",
       });
     },
-    // onSettled: async () => {
-    //   await utils.board.byId.invalidate(queryParams);
-    // },
+    onSettled: async (_data, _error, vars) => {
+      await utils.card.byId.invalidate({ cardPublicId: vars.cardPublicId });
+    },
   });
 
   useEffect(() => {
