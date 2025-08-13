@@ -75,7 +75,7 @@ export default function ChecklistNameInput({
         }
       }}
       title={name}
-      className="text-md block w-full truncate border-0 bg-transparent p-0 py-0 font-medium text-light-900 outline-none focus:ring-0 dark:text-dark-1000"
+      className="text-md block w-full truncate border-0 bg-transparent p-0 py-0 font-medium text-light-1000 outline-none focus:ring-0 dark:text-dark-1000"
     />
   );
 }

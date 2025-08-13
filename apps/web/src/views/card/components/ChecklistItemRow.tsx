@@ -147,7 +147,7 @@ export default function ChecklistItemRow({
           onChange={(e) => setTitle(e.target.value)}
           // @ts-expect-error - valid event
           onBlur={(e: Event) => commitTitle(e.target.innerHTML as string)}
-          className="m-0 min-h-[20px] w-full p-0 text-sm leading-[20px] text-light-900 outline-none focus-visible:outline-none dark:text-dark-950"
+          className="m-0 min-h-[20px] w-full p-0 text-sm leading-[20px] text-light-950 outline-none focus-visible:outline-none dark:text-dark-950"
           placeholder={t`Add details...`}
           onKeyDown={(e) => {
             if (e.key === "Enter") {

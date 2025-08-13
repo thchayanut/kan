@@ -278,7 +278,7 @@ export default function CardPage() {
 
                         return (
                           <div key={checklist.publicId} className="mb-4">
-                            <div className="mb-2 flex items-center font-medium text-light-900 dark:text-dark-1000">
+                            <div className="mb-2 flex items-center font-medium text-light-1000 dark:text-dark-1000">
                               <div className="min-w-0 flex-1">
                                 <ChecklistNameInput
                                   checklistPublicId={checklist.publicId}
@@ -352,7 +352,7 @@ export default function CardPage() {
                   </div>
                 )}
                 <div className="border-t-[1px] border-light-300 pt-12 dark:border-dark-300">
-                  <h2 className="text-md pb-4 font-medium text-light-900 dark:text-dark-1000">
+                  <h2 className="text-md pb-4 font-medium text-light-1000 dark:text-dark-1000">
                     {t`Activity`}
                   </h2>
                   <div>
