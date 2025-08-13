@@ -40,17 +40,12 @@ const NewChecklistItemForm = ({
   const refocusEditable = () => {
     const el = editableRef.current;
     if (!el) return;
+    el.focus();
+
+    // hack to ensure the input is focused after creating new checklist item
     setTimeout(() => {
       el.focus();
-      const range = document.createRange();
-      range.selectNodeContents(el);
-      range.collapse(false);
-      const sel = window.getSelection();
-      if (sel) {
-        sel.removeAllRanges();
-        sel.addRange(range);
-      }
-    }, 0);
+    }, 100);
   };
 
   const addChecklistItemMutation = api.checklist.createItem.useMutation({
@@ -150,6 +145,8 @@ const NewChecklistItemForm = ({
         </label>
         <div className="flex-1 pr-7">
           <ContentEditable
+            id={`checklist-item-input-${checklistPublicId}`}
+            tabIndex={0}
             placeholder={t`Add an item...`}
             html={title}
             disabled={false}

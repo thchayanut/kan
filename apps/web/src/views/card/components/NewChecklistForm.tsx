@@ -17,7 +17,7 @@ interface NewChecklistFormInput {
 }
 
 export function NewChecklistForm({ cardPublicId }: { cardPublicId: string }) {
-  const { closeModal } = useModal();
+  const { closeModal, setModalState } = useModal();
   const { showPopup } = usePopup();
 
   const utils = api.useUtils();
@@ -55,6 +55,9 @@ export function NewChecklistForm({ cardPublicId }: { cardPublicId: string }) {
         } as typeof old;
       });
       return { previous };
+    },
+    onSuccess: (data) => {
+      setModalState("ADD_CHECKLIST", { createdChecklistId: data.publicId });
     },
     onError: (_error, vars, ctx) => {
       if (ctx?.previous)

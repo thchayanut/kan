@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { t } from "@lingui/core/macro";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { HiPlus, HiXMark } from "react-icons/hi2";
 import { IoChevronForwardSharp } from "react-icons/io5";
@@ -140,7 +140,13 @@ export function CardRightPanel() {
 export default function CardPage() {
   const router = useRouter();
   const utils = api.useUtils();
-  const { modalContentType, entityId, openModal } = useModal();
+  const {
+    modalContentType,
+    entityId,
+    openModal,
+    getModalState,
+    clearModalState,
+  } = useModal();
   const { showPopup } = usePopup();
   const { workspace } = useWorkspace();
   const [activeChecklistForm, setActiveChecklistForm] = useState<string | null>(
@@ -191,6 +197,17 @@ export default function CardPage() {
       description: values.description,
     });
   };
+
+  // Open the new item form after creating a new checklist
+  useEffect(() => {
+    if (!card) return;
+    const state = getModalState("ADD_CHECKLIST");
+    const createdId: string | undefined = state?.createdChecklistId;
+    if (createdId) {
+      setActiveChecklistForm(createdId);
+      clearModalState("ADD_CHECKLIST");
+    }
+  }, [card, getModalState, clearModalState]);
 
   if (!cardId) return <></>;
 
