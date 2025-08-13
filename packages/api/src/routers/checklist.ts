@@ -2,6 +2,7 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import * as cardRepo from "@kan/db/repository/card.repo";
+import * as cardActivityRepo from "@kan/db/repository/cardActivity.repo";
 import * as checklistRepo from "@kan/db/repository/checklist.repo";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
@@ -71,6 +72,13 @@ export const checklistRouter = createTRPCRouter({
           code: "INTERNAL_SERVER_ERROR",
         });
 
+      await cardActivityRepo.create(ctx.db, {
+        type: "card.updated.checklist.added",
+        cardId: card.id,
+        toTitle: newChecklist.name,
+        createdBy: userId,
+      });
+
       return newChecklist;
     }),
   update: protectedProcedure
@@ -105,6 +113,8 @@ export const checklistRouter = createTRPCRouter({
         checklist.card.list.board.workspace.id,
       );
 
+      const previousName = checklist.name;
+
       const updated = await checklistRepo.updateChecklistById(ctx.db, {
         id: checklist.id,
         name: input.name,
@@ -115,6 +125,14 @@ export const checklistRouter = createTRPCRouter({
           message: `Failed to update checklist`,
           code: "INTERNAL_SERVER_ERROR",
         });
+
+      await cardActivityRepo.create(ctx.db, {
+        type: "card.updated.checklist.renamed",
+        cardId: checklist.cardId,
+        fromTitle: previousName,
+        toTitle: updated.name,
+        createdBy: userId,
+      });
 
       return updated;
     }),
@@ -172,6 +190,13 @@ export const checklistRouter = createTRPCRouter({
           message: `Failed to delete checklist`,
           code: "INTERNAL_SERVER_ERROR",
         });
+
+      await cardActivityRepo.create(ctx.db, {
+        type: "card.updated.checklist.deleted",
+        cardId: checklist.cardId,
+        fromTitle: checklist.name,
+        createdBy: userId,
+      });
 
       return { success: true };
     }),
@@ -231,6 +256,13 @@ export const checklistRouter = createTRPCRouter({
           code: "INTERNAL_SERVER_ERROR",
         });
 
+      await cardActivityRepo.create(ctx.db, {
+        type: "card.updated.checklist.item.added",
+        cardId: checklist.cardId,
+        toTitle: newChecklistItem.title,
+        createdBy: userId,
+      });
+
       return newChecklistItem;
     }),
   updateItem: protectedProcedure
@@ -278,6 +310,8 @@ export const checklistRouter = createTRPCRouter({
         item.checklist.card.list.board.workspace.id,
       );
 
+      const previousTitle = item.title;
+
       const updated = await checklistRepo.updateItemById(ctx.db, {
         id: item.id,
         title: input.title,
@@ -289,6 +323,29 @@ export const checklistRouter = createTRPCRouter({
           message: `Failed to update checklist item`,
           code: "INTERNAL_SERVER_ERROR",
         });
+
+      // Log completion toggle
+      if (input.completed !== undefined) {
+        await cardActivityRepo.create(ctx.db, {
+          type: input.completed
+            ? "card.updated.checklist.item.completed"
+            : "card.updated.checklist.item.uncompleted",
+          cardId: item.checklist.cardId,
+          toTitle: updated.title,
+          createdBy: userId,
+        });
+      }
+
+      // Log title change
+      if (input.title !== undefined && input.title !== previousTitle) {
+        await cardActivityRepo.create(ctx.db, {
+          type: "card.updated.checklist.item.updated",
+          cardId: item.checklist.cardId,
+          fromTitle: previousTitle,
+          toTitle: updated.title,
+          createdBy: userId,
+        });
+      }
 
       return updated;
     }),
@@ -340,6 +397,13 @@ export const checklistRouter = createTRPCRouter({
           message: `Failed to delete item`,
           code: "INTERNAL_SERVER_ERROR",
         });
+
+      await cardActivityRepo.create(ctx.db, {
+        type: "card.updated.checklist.item.deleted",
+        cardId: item.checklist.cardId,
+        fromTitle: item.title,
+        createdBy: userId,
+      });
 
       return { success: true };
     }),
