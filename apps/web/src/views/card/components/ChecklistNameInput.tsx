@@ -1,5 +1,6 @@
 import { t } from "@lingui/core/macro";
 import { useEffect, useRef, useState } from "react";
+import { twMerge } from "tailwind-merge";
 
 import { usePopup } from "~/providers/popup";
 import { api } from "~/utils/api";
@@ -8,10 +9,12 @@ export default function ChecklistNameInput({
   checklistPublicId,
   initialName,
   cardPublicId,
+  viewOnly = false,
 }: {
   checklistPublicId: string;
   initialName: string;
   cardPublicId: string;
+  viewOnly?: boolean;
 }) {
   const utils = api.useUtils();
   const { showPopup } = usePopup();
@@ -50,6 +53,7 @@ export default function ChecklistNameInput({
   });
 
   const commit = () => {
+    if (viewOnly) return;
     const trimmed = name.trim();
     if (!trimmed || trimmed === initialName) return;
     update.mutate({ checklistPublicId, name: trimmed });
@@ -60,9 +64,11 @@ export default function ChecklistNameInput({
       ref={inputRef}
       type="text"
       value={name}
+      readOnly={viewOnly}
       onChange={(e) => setName(e.target.value)}
       onBlur={commit}
       onKeyDown={(e) => {
+        if (viewOnly) return;
         if (e.key === "Enter") {
           e.preventDefault();
           commit();
@@ -75,7 +81,10 @@ export default function ChecklistNameInput({
         }
       }}
       title={name}
-      className="text-md block w-full truncate border-0 bg-transparent p-0 py-0 font-medium text-light-1000 outline-none focus:ring-0 dark:text-dark-1000"
+      className={twMerge(
+        "text-md block w-full truncate border-0 bg-transparent p-0 py-0 font-medium text-light-1000 outline-none focus:ring-0 dark:text-dark-1000",
+        viewOnly && "cursor-default",
+      )}
     />
   );
 }

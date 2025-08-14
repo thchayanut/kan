@@ -9,6 +9,7 @@ import LabelIcon from "~/components/LabelIcon";
 import { useModal } from "~/providers/modal";
 import { api } from "~/utils/api";
 import ActivityList from "~/views/card/components/ActivityList";
+import Checklists from "~/views/card/components/Checklists";
 
 export function CardModal({
   cardPublicId,
@@ -122,6 +123,13 @@ export function CardModal({
                     <Editor content={data.description} readOnly />
                   </div>
                 </div>
+              )}
+              {data?.checklists && data.checklists.length > 0 && (
+                <Checklists
+                  checklists={data.checklists}
+                  cardPublicId={cardPublicId ?? ""}
+                  viewOnly
+                />
               )}
               <div className="border-t-[1px] border-light-600 pb-4 pt-12 dark:border-dark-400">
                 <h2 className="text-md pb-4 font-medium text-light-900 dark:text-dark-1000">

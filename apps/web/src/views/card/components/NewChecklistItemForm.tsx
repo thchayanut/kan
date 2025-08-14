@@ -16,12 +16,14 @@ interface NewChecklistItemFormProps {
   checklistPublicId: string;
   cardPublicId: string;
   onCancel: () => void;
+  readOnly?: boolean;
 }
 
 const NewChecklistItemForm = ({
   checklistPublicId,
   cardPublicId,
   onCancel,
+  readOnly = false,
 }: NewChecklistItemFormProps) => {
   const utils = api.useUtils();
   const { showPopup } = usePopup();
@@ -40,6 +42,7 @@ const NewChecklistItemForm = ({
   const refocusEditable = () => {
     const el = editableRef.current;
     if (!el) return;
+    if (readOnly) return;
     el.focus();
 
     // hack to ensure the input is focused after creating new checklist item
@@ -102,6 +105,7 @@ const NewChecklistItemForm = ({
   };
 
   const submitIfNotEmpty = (keepOpen: boolean) => {
+    if (readOnly) return;
     keepOpenRef.current = keepOpen;
     const currentHtml = getValues("title") ?? "";
     const plain = sanitizeHtmlToPlainText(currentHtml);
@@ -132,14 +136,15 @@ const NewChecklistItemForm = ({
         <div className="flex-1 pr-7">
           <ContentEditable
             id={`checklist-item-input-${checklistPublicId}`}
-            tabIndex={0}
+            tabIndex={readOnly ? -1 : 0}
             placeholder={t`Add an item...`}
             html={title}
-            disabled={false}
+            disabled={readOnly}
             onChange={(e) => setValue("title", e.target.value)}
             className="m-0 min-h-[20px] w-full p-0 text-sm leading-5 text-light-900 outline-none focus-visible:outline-none dark:text-dark-950"
             onBlur={() => submitIfNotEmpty(false)}
             onKeyDown={async (e) => {
+              if (readOnly) return;
               if (e.key === "Enter") {
                 e.preventDefault();
                 submitIfNotEmpty(true);

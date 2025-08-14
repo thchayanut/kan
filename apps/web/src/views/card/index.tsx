@@ -3,11 +3,9 @@ import { useRouter } from "next/router";
 import { t } from "@lingui/core/macro";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { HiPlus, HiXMark } from "react-icons/hi2";
 import { IoChevronForwardSharp } from "react-icons/io5";
 
 import Avatar from "~/components/Avatar";
-import CircularProgress from "~/components/CircularProgress";
 import Editor from "~/components/Editor";
 import FeedbackModal from "~/components/FeedbackModal";
 import { LabelForm } from "~/components/LabelForm";
@@ -22,8 +20,7 @@ import { api } from "~/utils/api";
 import { formatMemberDisplayName, getAvatarUrl } from "~/utils/helpers";
 import { DeleteLabelConfirmation } from "../../components/DeleteLabelConfirmation";
 import ActivityList from "./components/ActivityList";
-import ChecklistItemRow from "./components/ChecklistItemRow";
-import ChecklistNameInput from "./components/ChecklistNameInput";
+import Checklists from "./components/Checklists";
 import { DeleteCardConfirmation } from "./components/DeleteCardConfirmation";
 import { DeleteChecklistConfirmation } from "./components/DeleteChecklistConfirmation";
 import { DeleteCommentConfirmation } from "./components/DeleteCommentConfirmation";
@@ -279,95 +276,12 @@ export default function CardPage() {
                     </div>
                   </form>
                 </div>
-                {card.checklists.length > 0 && (
-                  <div className="border-light-300 pb-4 dark:border-dark-300">
-                    <div>
-                      {card.checklists.map((checklist) => {
-                        const completedItems = checklist.items.filter(
-                          (item) => item.completed,
-                        );
-                        const progress =
-                          checklist.items.length > 0 &&
-                          completedItems.length > 0
-                            ? (completedItems.length / checklist.items.length) *
-                              100
-                            : 2;
-
-                        return (
-                          <div key={checklist.publicId} className="mb-4">
-                            <div className="mb-2 flex items-center font-medium text-light-1000 dark:text-dark-1000">
-                              <div className="min-w-0 flex-1">
-                                <ChecklistNameInput
-                                  checklistPublicId={checklist.publicId}
-                                  initialName={checklist.name}
-                                  cardPublicId={cardId}
-                                />
-                              </div>
-                              <div className="ml-2 flex flex-shrink-0 items-center gap-2">
-                                <div className="flex items-center gap-1 rounded-full border-[1px] border-light-300 px-2 py-1 dark:border-dark-300">
-                                  <CircularProgress
-                                    progress={progress}
-                                    size="sm"
-                                    className="flex-shrink-0"
-                                  />
-                                  <span className="text-[11px] text-light-900 dark:text-dark-700">
-                                    {completedItems.length}/
-                                    {checklist.items.length}
-                                  </span>
-                                </div>
-                                <div>
-                                  <button
-                                    className="rounded-md p-1 text-light-900 hover:bg-light-100 dark:text-dark-700 dark:hover:bg-dark-100"
-                                    onClick={() =>
-                                      openModal(
-                                        "DELETE_CHECKLIST",
-                                        checklist.publicId,
-                                      )
-                                    }
-                                  >
-                                    <HiXMark size={16} />
-                                  </button>
-                                  <button
-                                    onClick={() =>
-                                      setActiveChecklistForm(checklist.publicId)
-                                    }
-                                    className="rounded-md p-1 text-light-900 hover:bg-light-100 dark:text-dark-700 dark:hover:bg-dark-100"
-                                  >
-                                    <HiPlus size={16} />
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div className="ml-1">
-                              {checklist.items.map((item) => (
-                                <ChecklistItemRow
-                                  key={item.publicId}
-                                  item={{
-                                    publicId: item.publicId,
-                                    title: item.title,
-                                    completed: item.completed,
-                                  }}
-                                  cardPublicId={cardId}
-                                />
-                              ))}
-                            </div>
-
-                            {activeChecklistForm === checklist.publicId && (
-                              <div className="ml-1">
-                                <NewChecklistItemForm
-                                  checklistPublicId={checklist.publicId}
-                                  cardPublicId={cardId}
-                                  onCancel={() => setActiveChecklistForm(null)}
-                                />
-                              </div>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
+                <Checklists
+                  checklists={card.checklists}
+                  cardPublicId={cardId}
+                  activeChecklistForm={activeChecklistForm}
+                  setActiveChecklistForm={setActiveChecklistForm}
+                />
                 <div className="border-t-[1px] border-light-300 pt-12 dark:border-dark-300">
                   <h2 className="text-md pb-4 font-medium text-light-1000 dark:text-dark-1000">
                     {t`Activity`}
