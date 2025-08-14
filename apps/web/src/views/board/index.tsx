@@ -13,7 +13,6 @@ import type { UpdateBoardInput } from "@kan/api/types";
 
 import Button from "~/components/Button";
 import { DeleteLabelConfirmation } from "~/components/DeleteLabelConfirmation";
-import FeedbackModal from "~/components/FeedbackModal";
 import { LabelForm } from "~/components/LabelForm";
 import Modal from "~/components/modal";
 import { NewWorkspaceForm } from "~/components/NewWorkspaceForm";
@@ -492,7 +491,7 @@ export default function BoardPage() {
                                             title={card.title}
                                             labels={card.labels}
                                             members={card.members}
-                                            checklists={card.checklists}
+                                            checklists={card.checklists ?? []}
                                           />
                                         </Link>
                                       )}
