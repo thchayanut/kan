@@ -5,6 +5,7 @@ import type { BoardVisibilityStatus } from "@kan/db/schema";
 import {
   boards,
   cards,
+  cardImages,
   cardsToLabels,
   cardToWorkspaceMembers,
   checklistItems,
@@ -187,6 +188,24 @@ export const getByPublicId = async (
                   },
                 },
               },
+              images: {
+                columns: {
+                  publicId: true,
+                  filename: true,
+                  originalName: true,
+                  mimeType: true,
+                  fileSize: true,
+                  s3Key: true,
+                  s3Url: true,
+                  thumbnailS3Key: true,
+                  thumbnailS3Url: true,
+                  width: true,
+                  height: true,
+                  uploadedBy: true,
+                  createdAt: true,
+                },
+                where: isNull(cardImages.deletedAt),
+              },
             },
             where: and(
               cardIds.length > 0 ? inArray(cards.publicId, cardIds) : undefined,
@@ -214,6 +233,7 @@ export const getByPublicId = async (
         members: card.members
           .map((member) => member.member)
           .filter((member) => member.deletedAt === null),
+        images: card.images || [],
       })),
     })),
   };
@@ -324,6 +344,24 @@ export const getBySlug = async (
                   },
                 },
               },
+              images: {
+                columns: {
+                  publicId: true,
+                  filename: true,
+                  originalName: true,
+                  mimeType: true,
+                  fileSize: true,
+                  s3Key: true,
+                  s3Url: true,
+                  thumbnailS3Key: true,
+                  thumbnailS3Url: true,
+                  width: true,
+                  height: true,
+                  uploadedBy: true,
+                  createdAt: true,
+                },
+                where: isNull(cardImages.deletedAt),
+              },
             },
             where: and(
               cardIds.length > 0 ? inArray(cards.publicId, cardIds) : undefined,
@@ -353,6 +391,7 @@ export const getBySlug = async (
       cards: list.cards.map((card) => ({
         ...card,
         labels: card.labels.map((label) => label.label),
+        images: card.images || [],
       })),
     })),
   };

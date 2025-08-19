@@ -4,12 +4,29 @@ import { z } from "zod";
 import * as cardRepo from "@kan/db/repository/card.repo";
 import * as cardActivityRepo from "@kan/db/repository/cardActivity.repo";
 import * as cardCommentRepo from "@kan/db/repository/cardComment.repo";
+import * as cardImageRepo from "@kan/db/repository/cardImage.repo";
 import * as labelRepo from "@kan/db/repository/label.repo";
 import * as listRepo from "@kan/db/repository/list.repo";
 import * as workspaceRepo from "@kan/db/repository/workspace.repo";
 
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { assertUserInWorkspace } from "../utils/auth";
+
+// Helper functions for image activity logging
+export const logImageActivity = async (
+  db: any,
+  type: "card.updated.image.added" | "card.updated.image.removed" | "card.updated.image.replaced",
+  cardId: number,
+  userId: string,
+  imageId?: number,
+) => {
+  await cardActivityRepo.create(db, {
+    type,
+    cardId,
+    createdBy: userId,
+    ...(imageId && { commentId: imageId }), // Using commentId field to store imageId for now
+  });
+};
 
 export const cardRouter = createTRPCRouter({
   create: protectedProcedure
@@ -688,11 +705,11 @@ export const cardRouter = createTRPCRouter({
 
       let result:
         | {
-            id: number;
-            title: string;
-            description: string | null;
-            publicId: string;
-          }
+          id: number;
+          title: string;
+          description: string | null;
+          publicId: string;
+        }
         | undefined;
 
       if (input.title || input.description) {
@@ -810,6 +827,253 @@ export const cardRouter = createTRPCRouter({
         cardId: card.id,
         createdBy: userId,
       });
+
+      return { success: true };
+    }),
+  addImage: protectedProcedure
+    .meta({
+      openapi: {
+        summary: "Associate an image with a card",
+        method: "POST",
+        path: "/cards/{cardPublicId}/images",
+        description: "Associates an uploaded image with a card and logs activity",
+        tags: ["Cards"],
+        protect: true,
+      },
+    })
+    .input(
+      z.object({
+        cardPublicId: z.string().min(12),
+        imagePublicId: z.string().min(12),
+      }),
+    )
+    .output(z.object({ success: z.boolean() }))
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.user?.id;
+
+      if (!userId)
+        throw new TRPCError({
+          message: `User not authenticated`,
+          code: "UNAUTHORIZED",
+        });
+
+      const card = await cardRepo.getWorkspaceAndCardIdByCardPublicId(
+        ctx.db,
+        input.cardPublicId,
+      );
+
+      if (!card)
+        throw new TRPCError({
+          message: `Card with public ID ${input.cardPublicId} not found`,
+          code: "NOT_FOUND",
+        });
+
+      await assertUserInWorkspace(ctx.db, userId, card.workspaceId);
+
+      // Verify the image exists and get its ID
+      const image = await cardImageRepo.getByPublicId(
+        ctx.db,
+        input.imagePublicId,
+      );
+
+      if (!image)
+        throw new TRPCError({
+          message: `Image with public ID ${input.imagePublicId} not found`,
+          code: "NOT_FOUND",
+        });
+
+      // Verify the image belongs to this card
+      if (image.cardId !== card.id)
+        throw new TRPCError({
+          message: `Image does not belong to this card`,
+          code: "BAD_REQUEST",
+        });
+
+      // Log the image addition activity
+      await logImageActivity(
+        ctx.db,
+        "card.updated.image.added",
+        card.id,
+        userId,
+        image.id,
+      );
+
+      return { success: true };
+    }),
+  removeImage: protectedProcedure
+    .meta({
+      openapi: {
+        summary: "Remove an image from a card",
+        method: "DELETE",
+        path: "/cards/{cardPublicId}/images/{imagePublicId}",
+        description: "Removes an image from a card and logs activity",
+        tags: ["Cards"],
+        protect: true,
+      },
+    })
+    .input(
+      z.object({
+        cardPublicId: z.string().min(12),
+        imagePublicId: z.string().min(12),
+      }),
+    )
+    .output(z.object({ success: z.boolean() }))
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.user?.id;
+
+      if (!userId)
+        throw new TRPCError({
+          message: `User not authenticated`,
+          code: "UNAUTHORIZED",
+        });
+
+      const card = await cardRepo.getWorkspaceAndCardIdByCardPublicId(
+        ctx.db,
+        input.cardPublicId,
+      );
+
+      if (!card)
+        throw new TRPCError({
+          message: `Card with public ID ${input.cardPublicId} not found`,
+          code: "NOT_FOUND",
+        });
+
+      await assertUserInWorkspace(ctx.db, userId, card.workspaceId);
+
+      // Get the image to verify it exists and belongs to this card
+      const image = await cardImageRepo.getByPublicId(
+        ctx.db,
+        input.imagePublicId,
+      );
+
+      if (!image)
+        throw new TRPCError({
+          message: `Image with public ID ${input.imagePublicId} not found`,
+          code: "NOT_FOUND",
+        });
+
+      // Verify the image belongs to this card
+      if (image.cardId !== card.id)
+        throw new TRPCError({
+          message: `Image does not belong to this card`,
+          code: "BAD_REQUEST",
+        });
+
+      // Soft delete the image
+      const deletedImage = await cardImageRepo.softDeleteByPublicId(ctx.db, {
+        imagePublicId: input.imagePublicId,
+        deletedAt: new Date(),
+        deletedBy: userId,
+      });
+
+      if (!deletedImage)
+        throw new TRPCError({
+          message: `Failed to remove image`,
+          code: "INTERNAL_SERVER_ERROR",
+        });
+
+      // Log the image removal activity
+      await logImageActivity(
+        ctx.db,
+        "card.updated.image.removed",
+        card.id,
+        userId,
+        image.id,
+      );
+
+      return { success: true };
+    }),
+  replaceImage: protectedProcedure
+    .meta({
+      openapi: {
+        summary: "Replace an image on a card",
+        method: "PUT",
+        path: "/cards/{cardPublicId}/images/{oldImagePublicId}",
+        description: "Replaces an existing image with a new one and logs activity",
+        tags: ["Cards"],
+        protect: true,
+      },
+    })
+    .input(
+      z.object({
+        cardPublicId: z.string().min(12),
+        oldImagePublicId: z.string().min(12),
+        newImagePublicId: z.string().min(12),
+      }),
+    )
+    .output(z.object({ success: z.boolean() }))
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.user?.id;
+
+      if (!userId)
+        throw new TRPCError({
+          message: `User not authenticated`,
+          code: "UNAUTHORIZED",
+        });
+
+      const card = await cardRepo.getWorkspaceAndCardIdByCardPublicId(
+        ctx.db,
+        input.cardPublicId,
+      );
+
+      if (!card)
+        throw new TRPCError({
+          message: `Card with public ID ${input.cardPublicId} not found`,
+          code: "NOT_FOUND",
+        });
+
+      await assertUserInWorkspace(ctx.db, userId, card.workspaceId);
+
+      // Verify both images exist
+      const oldImage = await cardImageRepo.getByPublicId(
+        ctx.db,
+        input.oldImagePublicId,
+      );
+      const newImage = await cardImageRepo.getByPublicId(
+        ctx.db,
+        input.newImagePublicId,
+      );
+
+      if (!oldImage)
+        throw new TRPCError({
+          message: `Old image with public ID ${input.oldImagePublicId} not found`,
+          code: "NOT_FOUND",
+        });
+
+      if (!newImage)
+        throw new TRPCError({
+          message: `New image with public ID ${input.newImagePublicId} not found`,
+          code: "NOT_FOUND",
+        });
+
+      // Verify both images belong to this card
+      if (oldImage.cardId !== card.id || newImage.cardId !== card.id)
+        throw new TRPCError({
+          message: `Images do not belong to this card`,
+          code: "BAD_REQUEST",
+        });
+
+      // Soft delete the old image
+      const deletedImage = await cardImageRepo.softDeleteByPublicId(ctx.db, {
+        imagePublicId: input.oldImagePublicId,
+        deletedAt: new Date(),
+        deletedBy: userId,
+      });
+
+      if (!deletedImage)
+        throw new TRPCError({
+          message: `Failed to replace image`,
+          code: "INTERNAL_SERVER_ERROR",
+        });
+
+      // Log the image replacement activity
+      await logImageActivity(
+        ctx.db,
+        "card.updated.image.replaced",
+        card.id,
+        userId,
+        newImage.id,
+      );
 
       return { success: true };
     }),

@@ -1,0 +1,53 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AppFullAccess",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::975705621801:root"
+            },
+            "Action": [
+                "s3:GetObject",
+                "s3:PutObject", 
+                "s3:DeleteObject",
+                "s3:PutObjectAcl",
+                "s3:HeadObject"
+            ],
+            "Resource": "arn:aws:s3:::kan-storage-loveganesh-lv/*"
+        },
+        {
+            "Sid": "AllowPresignedURLAccess",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::kan-storage-loveganesh-lv/*",
+            "Condition": {
+                "StringEquals": {
+                    "s3:authType": "REST-QUERY-STRING"
+                }
+            }
+        },
+        {
+            "Sid": "AllowThumbnailDirectAccess",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::kan-storage-loveganesh-lv/*/thumbnails/*"
+        },
+        {
+            "Sid": "DenyOtherDirectAccess",
+            "Effect": "Deny",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": [
+                "arn:aws:s3:::kan-storage-loveganesh-lv/*/images/*"
+            ],
+            "Condition": {
+                "StringNotEquals": {
+                    "s3:authType": "REST-QUERY-STRING"
+                }
+            }
+        }
+    ]
+}

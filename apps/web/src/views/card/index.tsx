@@ -8,6 +8,8 @@ import { IoChevronForwardSharp } from "react-icons/io5";
 import Avatar from "~/components/Avatar";
 import Editor from "~/components/Editor";
 import FeedbackModal from "~/components/FeedbackModal";
+import ImageDisplay from "~/components/ImageDisplay";
+import ImageUpload from "~/components/ImageUpload";
 import { LabelForm } from "~/components/LabelForm";
 import LabelIcon from "~/components/LabelIcon";
 import Modal from "~/components/modal";
@@ -39,6 +41,9 @@ interface FormValues {
 
 export function CardRightPanel() {
   const router = useRouter();
+  const utils = api.useUtils();
+  const { showPopup } = usePopup();
+
   const cardId = Array.isArray(router.query.cardId)
     ? router.query.cardId[0]
     : router.query.cardId;
@@ -179,6 +184,27 @@ export default function CardPage() {
     },
   });
 
+  const deleteImageMutation = api.image.delete.useMutation({
+    onSuccess: () => {
+      // Refetch card data to update the UI
+      if (cardId) {
+        utils.card.byId.invalidate({ cardPublicId: cardId });
+      }
+      showPopup({
+        header: t`Image deleted`,
+        message: t`The image has been successfully deleted.`,
+        icon: "success",
+      });
+    },
+    onError: (error: any) => {
+      showPopup({
+        header: t`Failed to delete image`,
+        message: error.message || t`Please try again later.`,
+        icon: "error",
+      });
+    },
+  });
+
   const { register, handleSubmit, setValue, watch } = useForm<FormValues>({
     values: {
       cardId: cardId ?? "",
@@ -278,6 +304,68 @@ export default function CardPage() {
                       </div>
                     </form>
                   </div>
+
+                  {/* Images Section */}
+                  <div className="mb-10">
+                    <h2 className="text-md pb-4 font-medium text-light-1000 dark:text-dark-1000">
+                      {t`Images`}
+                    </h2>
+
+                    {/* Display existing images */}
+                    {card.images && card.images.length > 0 && (
+                      <div className="mb-6">
+                        <ImageDisplay
+                          images={card.images}
+                          cardPublicId={cardId}
+                          isEditable={true}
+                          onImageDelete={(imageId) => {
+                            deleteImageMutation.mutate({ imagePublicId: imageId });
+                          }}
+                          onImageReplace={(oldImageId, newImage) => {
+                            // Handle image replacement - for now just show success
+                            showPopup({
+                              header: t`Image replaced`,
+                              message: t`The image has been successfully replaced.`,
+                              icon: "success",
+                            });
+                            // Refetch card data
+                            utils.card.byId.invalidate({ cardPublicId: cardId });
+                          }}
+                          onError={(error) => {
+                            showPopup({
+                              header: t`Image error`,
+                              message: error || t`An error occurred with the image.`,
+                              icon: "error",
+                            });
+                          }}
+                        />
+                      </div>
+                    )}
+
+                    {/* Upload new images */}
+                    {cardId && (
+                      <ImageUpload
+                        cardPublicId={cardId}
+                        onUploadComplete={(image) => {
+                          // Refetch card data to show the new image
+                          void utils.card.byId.invalidate({ cardPublicId: cardId });
+                          showPopup({
+                            header: t`Image uploaded`,
+                            message: t`Your image has been successfully uploaded.`,
+                            icon: "success",
+                          });
+                        }}
+                        onUploadError={(error) => {
+                          showPopup({
+                            header: t`Upload failed`,
+                            message: error || t`Failed to upload image. Please try again.`,
+                            icon: "error",
+                          });
+                        }}
+                      />
+                    )}
+                  </div>
+
                   <Checklists
                     checklists={card.checklists}
                     cardPublicId={cardId}

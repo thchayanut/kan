@@ -182,6 +182,8 @@ export default function PublicBoardView() {
                             labels={card.labels}
                             checklists={card.checklists ?? []}
                             members={[]}
+                            images={card.images ?? []}
+                            cardPublicId={card.publicId}
                           />
                         </Link>
                       ))}

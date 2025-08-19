@@ -1,0 +1,27 @@
+[
+    {
+        "AllowedHeaders": [
+            "Authorization",
+            "Content-Type",
+            "Content-Length",
+            "Content-MD5",
+            "Cache-Control",
+            "x-amz-*"
+        ],
+        "AllowedMethods": [
+            "GET",
+            "PUT",
+            "POST",
+            "HEAD"
+        ],
+        "AllowedOrigins": [
+            "https://project.loveganesh.com",
+            "http://localhost:3000"
+        ],
+        "ExposeHeaders": [
+            "ETag",
+            "x-amz-request-id"
+        ],
+        "MaxAgeSeconds": 86400
+    }
+]

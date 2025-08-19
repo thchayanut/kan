@@ -3,6 +3,7 @@ import { and, asc, desc, eq, gt, inArray, isNull, sql } from "drizzle-orm";
 import type { dbClient } from "@kan/db/client";
 import {
   cardActivities,
+  cardImages,
   cards,
   cardsToLabels,
   cardToWorkspaceMembers,
@@ -322,6 +323,22 @@ export const getWithListAndMembersByPublicId = async (
             orderBy: asc(checklistItems.index),
           },
         },
+      },
+      images: {
+        columns: {
+          publicId: true,
+          filename: true,
+          originalName: true,
+          mimeType: true,
+          fileSize: true,
+          s3Url: true,
+          thumbnailS3Url: true,
+          width: true,
+          height: true,
+          createdAt: true,
+        },
+        where: isNull(cardImages.deletedAt),
+        orderBy: asc(cardImages.createdAt),
       },
       list: {
         columns: {
@@ -764,9 +781,9 @@ export const getWorkspaceAndCardIdByCardPublicId = async (
 
   return result
     ? {
-        id: result.id,
-        workspaceId: result.list.board.workspaceId,
-        workspaceVisibility: result.list.board.visibility,
-      }
+      id: result.id,
+      workspaceId: result.list.board.workspaceId,
+      workspaceVisibility: result.list.board.visibility,
+    }
     : null;
 };

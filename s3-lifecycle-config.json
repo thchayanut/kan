@@ -1,0 +1,32 @@
+{
+    "Rules": [
+        {
+            "ID": "DeleteIncompleteMultipartUploads",
+            "Status": "Enabled",
+            "Filter": {},
+            "AbortIncompleteMultipartUpload": {
+                "DaysAfterInitiation": 7
+            }
+        },
+        {
+            "ID": "DeleteFailedUploads",
+            "Status": "Enabled",
+            "Filter": {
+                "Prefix": "temp/"
+            },
+            "Expiration": {
+                "Days": 1
+            }
+        },
+        {
+            "ID": "CleanupOldDeletedObjects",
+            "Status": "Enabled",
+            "Filter": {
+                "Prefix": "deleted/"
+            },
+            "Expiration": {
+                "Days": 30
+            }
+        }
+    ]
+}

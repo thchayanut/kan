@@ -476,13 +476,12 @@ export default function BoardPage() {
                                           }}
                                           key={card.publicId}
                                           href={`/cards/${card.publicId}`}
-                                          className={`mb-2 flex !cursor-pointer flex-col ${
-                                            card.publicId.startsWith(
-                                              "PLACEHOLDER",
-                                            )
+                                          className={`mb-2 flex !cursor-pointer flex-col ${card.publicId.startsWith(
+                                            "PLACEHOLDER",
+                                          )
                                               ? "pointer-events-none"
                                               : ""
-                                          }`}
+                                            }`}
                                           ref={provided.innerRef}
                                           {...provided.draggableProps}
                                           {...provided.dragHandleProps}
@@ -492,6 +491,8 @@ export default function BoardPage() {
                                             labels={card.labels}
                                             members={card.members}
                                             checklists={card.checklists ?? []}
+                                            images={card.images ?? []}
+                                            cardPublicId={card.publicId}
                                           />
                                         </Link>
                                       )}

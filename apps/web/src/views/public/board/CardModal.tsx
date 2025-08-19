@@ -5,8 +5,11 @@ import { HiXMark } from "react-icons/hi2";
 
 import Badge from "~/components/Badge";
 import Editor from "~/components/Editor";
+import ImageDisplay from "~/components/ImageDisplay";
+import ImageUpload from "~/components/ImageUpload";
 import LabelIcon from "~/components/LabelIcon";
 import { useModal } from "~/providers/modal";
+import { usePopup } from "~/providers/popup";
 import { api } from "~/utils/api";
 import ActivityList from "~/views/card/components/ActivityList";
 import Checklists from "~/views/card/components/Checklists";
@@ -22,9 +25,11 @@ export function CardModal({
 }) {
   const router = useRouter();
   const { closeModal, isOpen } = useModal();
+  const { showPopup } = usePopup();
   const [showFade, setShowFade] = useState(false);
   const [showTopFade, setShowTopFade] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const utils = api.useUtils();
 
   const { data, isLoading } = api.card.byId.useQuery(
     {
@@ -34,6 +39,7 @@ export function CardModal({
       enabled: isOpen && !!cardPublicId,
     },
   );
+
 
   const labels = data?.labels ?? [];
 
@@ -123,11 +129,80 @@ export function CardModal({
                     <Editor
                       content={data.description}
                       readOnly
-                      workspaceMembers={data?.list.board.workspace.members ?? []}
+                      workspaceMembers={data.list.board.workspace.members ?? []}
                     />
                   </div>
                 </div>
               )}
+
+              {/* Images Section */}
+              <div className="mb-10">
+                <h2 className="text-md pb-4 font-medium text-light-1000 dark:text-dark-1000">
+                  {t`Images`}
+                </h2>
+
+                {/* Display existing images */}
+                {data?.images && data.images.length > 0 && (
+                  <div className="mb-6">
+                    <ImageDisplay
+                      images={data.images}
+                      cardPublicId={cardPublicId}
+                      isEditable={true}
+                      onImageDelete={(imageId) => {
+                        // Just invalidate cache and show success message
+                        // The actual deletion is handled by ImageManagement component
+                        void utils.card.byId.invalidate({ cardPublicId });
+                        showPopup({
+                          header: t`Image deleted`,
+                          message: t`The image has been successfully deleted.`,
+                          icon: "success",
+                        });
+                      }}
+                      onImageReplace={(_oldImageId, _newImage) => {
+                        // Handle image replacement - for now just show success
+                        showPopup({
+                          header: t`Image replaced`,
+                          message: t`The image has been successfully replaced.`,
+                          icon: "success",
+                        });
+                        // Refetch card data
+                        void utils.card.byId.invalidate({ cardPublicId });
+                      }}
+                      onError={(error) => {
+                        showPopup({
+                          header: t`Image error`,
+                          message: error || t`An error occurred with the image.`,
+                          icon: "error",
+                        });
+                      }}
+                    />
+                  </div>
+                )}
+
+                {/* Upload new images */}
+                {cardPublicId && (
+                  <ImageUpload
+                    cardPublicId={cardPublicId}
+                    onUploadComplete={(_image) => {
+                      // Refetch card data to show the new image
+                      void utils.card.byId.invalidate({ cardPublicId });
+                      showPopup({
+                        header: t`Image uploaded`,
+                        message: t`Your image has been successfully uploaded.`,
+                        icon: "success",
+                      });
+                    }}
+                    onUploadError={(error) => {
+                      showPopup({
+                        header: t`Upload failed`,
+                        message: error || t`Failed to upload image. Please try again.`,
+                        icon: "error",
+                      });
+                    }}
+                  />
+                )}
+              </div>
+
               {data?.checklists && data.checklists.length > 0 && (
                 <Checklists
                   checklists={data.checklists}

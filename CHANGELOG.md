@@ -7,6 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased](https://github.com/kanbn/kan/compare/v0.2.4...HEAD)
 
+### Added
+
+- 🖼️ **Card Image Attachments**: Full-featured image management system
+  - Upload multiple images per card with drag-and-drop support
+  - Automatic thumbnail generation (200x200px) and image optimization
+  - Secure S3 storage with presigned URLs for access control
+  - Image delete and replace functionality
+  - Lazy loading with intersection observer for performance
+  - Mobile-responsive image gallery with modal viewer
+- Sharp-based server-side image processing and compression
+- Dynamic image loading with React Query caching (50-minute stale time)
+- Image metadata storage and database schema migration support
+
+### Changed
+
+- Enhanced S3 service with advanced image processing capabilities
+- Improved error handling for image operations and Sharp library compatibility
+- Updated tRPC image endpoints with batch presigned URL generation
+
+### Fixed
+
+- Sharp library loading issues on macOS ARM64 with dynamic imports
+- React hydration errors in image components with consistent SSR/client rendering
+- Image delete race conditions by implementing single responsibility pattern
+- TypeScript import path resolution for image-related components
+- Next.js build cache corruption affecting image processing
+
 ## [0.2.4](https://github.com/kanbn/kan/compare/v0.2.3...v0.2.4) - 2025-01-14
 
 ### Added

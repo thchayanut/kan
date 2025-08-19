@@ -26,6 +26,7 @@
 - 🚀 **Trello Imports**: Easily import your Trello boards
 - 🔍 **Labels & Filters**: Organise and find cards quickly
 - 💬 **Comments**: Discuss and collaborate with your team
+- 🖼️ **Image Attachments**: Upload and manage card images with automatic thumbnails
 - 📝 **Activity Log**: Track all card changes with detailed activity history
 - 🎨 **Templates (coming soon)** : Save time with reusable board templates
 - ⚡️ **Integrations (coming soon)** : Connect your favourite tools
