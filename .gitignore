@@ -56,3 +56,4 @@ i18n.cache
 .mcp.json
 .vscode/settings.json
 CLAUDE.md
+.env.loveganesh
