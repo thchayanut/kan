@@ -57,3 +57,7 @@ i18n.cache
 .vscode/settings.json
 CLAUDE.md
 .env.loveganesh
+.env.loveganesh-mailgun
+.env.loveganesh-postmark
+.env.siamlatext-mailgun
+.env.siamlatext-postmark
